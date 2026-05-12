@@ -1,0 +1,20 @@
+{
+  "name": "OralPath Learn — Odontogenic Oral Pathology",
+  "short_name": "OralPath",
+  "description": "Interactive Educational Application in Odontogenic Oral Pathology — reading, AR, quizzes, chatbot.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f1115",
+  "theme_color": "#0b6b5e",
+  "icons": [
+    {
+      "src": "./assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "medical"]
+}

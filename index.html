@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <meta name="theme-color" content="#0b6b5e" />
+    <meta name="description" content="OralPath Learn — Interactive Educational Application in Odontogenic Oral Pathology" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./assets/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./assets/icon.svg" />
+    <link rel="stylesheet" href="./src/styles/app.css" />
+    <title>OralPath Learn — Odontogenic Oral Pathology</title>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+  </head>
+  <body>
+    <noscript>This application requires JavaScript. Please enable it to continue.</noscript>
+    <div id="root">
+      <div class="boot">
+        <div class="boot__logo">OP</div>
+        <div class="boot__title">OralPath Learn</div>
+        <div class="boot__sub">Loading interactive modules…</div>
+      </div>
+    </div>
+    <script type="module" src="./dist/bundle.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js').catch(() => {});
+        });
+      }
+    </script>
+  </body>
+</html>
