@@ -5,9 +5,10 @@
   "type": "module",
   "description": "Interactive Educational Application in Odontogenic Oral Pathology",
   "scripts": {
-    "dev": "esbuild src/main.jsx --bundle --outfile=dist/bundle.js --format=esm --loader:.js=jsx --jsx=automatic --servedir=. --serve=0.0.0.0:5173",
-    "build": "esbuild src/main.jsx --bundle --outfile=dist/bundle.js --format=esm --loader:.js=jsx --jsx=automatic --minify --define:process.env.NODE_ENV=\\\"production\\\"",
-    "start": "python3 -m http.server 5173"
+    "dev":    "node build.mjs --dev && esbuild src/main.jsx --bundle --outfile=dist/bundle.js --format=esm --loader:.js=jsx --jsx=automatic --servedir=. --serve=0.0.0.0:5173",
+    "build":  "node build.mjs",
+    "deploy": "node build.mjs && git add -A && git commit -m 'deploy' && git push origin main",
+    "start":  "python3 -m http.server 5173"
   },
   "dependencies": {
     "react": "^18.3.1",

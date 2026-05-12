@@ -1,9 +1,47 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { MODELS } from "../data/models.js";
 
 export default function ARView() {
   const [active, setActive] = useState(MODELS[0].id);
+  const mvRef = useRef(null);
   const m = MODELS.find(x => x.id === active);
+
+  // Dynamically reposition hotspots once the model loads so they sit
+  // at anatomically meaningful spots relative to the real bounding box.
+  useEffect(() => {
+    const mv = mvRef.current;
+    if (!mv) return;
+
+    const placeHotspots = () => {
+      try {
+        const c = mv.getBoundingBoxCenter();   // {x, y, z}
+        const d = mv.getDimensions();          // {x, y, z} — full extents
+        if (!c || !d) return;
+
+        const fmt = n => Number(n).toFixed(3);
+
+        // Four spread positions: front-upper, right-mid, rear-lower, left-mid
+        const positions = [
+          `${fmt(c.x)}                   ${fmt(c.y + d.y * 0.30)} ${fmt(c.z + d.z * 0.35)}`,
+          `${fmt(c.x + d.x * 0.42)}     ${fmt(c.y)}               ${fmt(c.z - d.z * 0.10)}`,
+          `${fmt(c.x)}                   ${fmt(c.y - d.y * 0.30)} ${fmt(c.z - d.z * 0.25)}`,
+          `${fmt(c.x - d.x * 0.42)}     ${fmt(c.y)}               ${fmt(c.z - d.z * 0.10)}`,
+        ];
+
+        m.hotspots.forEach((h, i) => {
+          if (positions[i]) {
+            mv.updateHotspot({ name: `hotspot-${h.id}`, position: positions[i] });
+          }
+        });
+      } catch (_) { /* model not ready yet */ }
+    };
+
+    mv.addEventListener("load", placeHotspots);
+    // If model was already cached and loaded before effect ran:
+    if (mv.loaded) placeHotspots();
+
+    return () => mv.removeEventListener("load", placeHotspots);
+  }, [active, m]);
 
   return (
     <section className="container section">
@@ -35,6 +73,7 @@ export default function ARView() {
 
       <div className="viewer">
         <model-viewer
+          ref={mvRef}
           key={m.id}
           src={m.url}
           alt={m.title}
@@ -51,8 +90,8 @@ export default function ARView() {
               key={h.id}
               className="hotspot"
               slot={`hotspot-${h.id}`}
-              data-position={h.position}
-              data-normal={h.normal}
+              data-position="0 0 0"
+              data-normal="0 1 0"
               style={{
                 background: "rgba(24,169,153,0.95)", color: "#fff",
                 border: "0", padding: "6px 10px", borderRadius: 999,

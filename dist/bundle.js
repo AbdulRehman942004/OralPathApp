@@ -1091,11 +1091,11 @@ var require_react_development = __commonJS({
           var dispatcher = resolveDispatcher();
           return dispatcher.useReducer(reducer, initialArg, init);
         }
-        function useRef3(initialValue) {
+        function useRef4(initialValue) {
           var dispatcher = resolveDispatcher();
           return dispatcher.useRef(initialValue);
         }
-        function useEffect6(create, deps) {
+        function useEffect7(create, deps) {
           var dispatcher = resolveDispatcher();
           return dispatcher.useEffect(create, deps);
         }
@@ -1878,14 +1878,14 @@ var require_react_development = __commonJS({
         exports.useContext = useContext;
         exports.useDebugValue = useDebugValue;
         exports.useDeferredValue = useDeferredValue;
-        exports.useEffect = useEffect6;
+        exports.useEffect = useEffect7;
         exports.useId = useId;
         exports.useImperativeHandle = useImperativeHandle;
         exports.useInsertionEffect = useInsertionEffect;
         exports.useLayoutEffect = useLayoutEffect;
         exports.useMemo = useMemo4;
         exports.useReducer = useReducer;
-        exports.useRef = useRef3;
+        exports.useRef = useRef4;
         exports.useState = useState12;
         exports.useSyncExternalStore = useSyncExternalStore;
         exports.useTransition = useTransition;
@@ -25379,7 +25379,35 @@ var MODELS = [
 var import_jsx_runtime9 = __toESM(require_jsx_runtime(), 1);
 function ARView() {
   const [active, setActive] = (0, import_react5.useState)(MODELS[0].id);
+  const mvRef = (0, import_react5.useRef)(null);
   const m = MODELS.find((x) => x.id === active);
+  (0, import_react5.useEffect)(() => {
+    const mv = mvRef.current;
+    if (!mv) return;
+    const placeHotspots = () => {
+      try {
+        const c = mv.getBoundingBoxCenter();
+        const d = mv.getDimensions();
+        if (!c || !d) return;
+        const fmt = (n) => Number(n).toFixed(3);
+        const positions = [
+          `${fmt(c.x)}                   ${fmt(c.y + d.y * 0.3)} ${fmt(c.z + d.z * 0.35)}`,
+          `${fmt(c.x + d.x * 0.42)}     ${fmt(c.y)}               ${fmt(c.z - d.z * 0.1)}`,
+          `${fmt(c.x)}                   ${fmt(c.y - d.y * 0.3)} ${fmt(c.z - d.z * 0.25)}`,
+          `${fmt(c.x - d.x * 0.42)}     ${fmt(c.y)}               ${fmt(c.z - d.z * 0.1)}`
+        ];
+        m.hotspots.forEach((h, i) => {
+          if (positions[i]) {
+            mv.updateHotspot({ name: `hotspot-${h.id}`, position: positions[i] });
+          }
+        });
+      } catch (_) {
+      }
+    };
+    mv.addEventListener("load", placeHotspots);
+    if (mv.loaded) placeHotspots();
+    return () => mv.removeEventListener("load", placeHotspots);
+  }, [active, m]);
   return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("section", { className: "container section", children: [
     /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h2", { className: "section__title", children: "3D & Augmented Reality" }),
     /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("p", { className: "section__sub", children: [
@@ -25411,6 +25439,7 @@ function ARView() {
       /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
         "model-viewer",
         {
+          ref: mvRef,
           src: m.url,
           alt: m.title,
           "camera-controls": true,
@@ -25425,8 +25454,8 @@ function ARView() {
             {
               className: "hotspot",
               slot: `hotspot-${h.id}`,
-              "data-position": h.position,
-              "data-normal": h.normal,
+              "data-position": "0 0 0",
+              "data-normal": "0 1 0",
               style: {
                 background: "rgba(24,169,153,0.95)",
                 color: "#fff",
