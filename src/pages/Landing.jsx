@@ -25,14 +25,14 @@ export default function Landing() {
         </div>
         <div className="hero__art">
           <model-viewer
-            src="./assets/tooth.glb"
-            alt="Molar Tooth 3D model"
+            src="./assets/mandible-tooth.glb"
+            alt="Mandibular dental anatomy 3D model"
             camera-controls auto-rotate
             disable-zoom
             style={{ width: "100%", height: 360, background: "transparent" }}
           ></model-viewer>
           <div className="muted center" style={{ marginTop: 8, fontSize: 12 }}>
-            Molar Tooth — rotate &amp; explore in the <span className="kbd">AR Viewer</span>
+            Mandibular anatomy — interactive 3D model from NIH 3D Print Exchange
           </div>
         </div>
       </section>

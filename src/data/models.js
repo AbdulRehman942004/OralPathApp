@@ -1,51 +1,48 @@
-// 3D models for the AR viewer.
-//
-// We point at Google's officially-hosted demo .glb files so the viewer works
-// out-of-the-box with no asset bundling. To use a real dental model:
-//   1. Drop a .glb file into ./assets/  (e.g. tooth.glb)
-//   2. Replace the url for the relevant entry below with "./assets/tooth.glb".
-//
-// Recommended free sources: Sketchfab (filter by 'Downloadable'), NIH 3D Print Exchange.
+// 3D anatomical models for the AR viewer.
 
 export const MODELS = [
   {
     id: "tooth",
-    title: "Molar Tooth — Cross-section",
+    title: "Maxillary Dentition — Full Arch Anatomy",
     description:
-      "Explore enamel, dentin, pulp chamber, and root canals. Use 'View in your space' on Android to project the model into your environment.",
-    tags: ["anatomy", "tooth"],
-    url: "./assets/mandible-tooth.glb",
+      "Explore the complete upper dental arch. Examine crown morphology, root anatomy, and alveolar bone support across incisors, canines, premolars, and molars.",
+    tags: ["anatomy", "maxilla"],
+    url: "./assets/Maxillary_teeth_w_base_NIH3D.glb",
     poster: "",
     hotspots: [
-      { id: "h1", position: "0 1.5 0", normal: "0 1 0", label: "Crown — enamel covered" },
-      { id: "h2", position: "0 0.6 0", normal: "0 0 1", label: "Cervical line (CEJ)" },
-      { id: "h3", position: "0 -0.5 0", normal: "0 -1 0", label: "Root apex — common cyst site" }
+      { id: "h1", position: "0 1.2 0.3",  normal: "0 1 0",  label: "Central incisor — enamel crown" },
+      { id: "h2", position: "1.0 0.8 0",  normal: "1 0 0",  label: "Maxillary molar — three roots" },
+      { id: "h3", position: "0 -0.8 0",   normal: "0 -1 0", label: "Alveolar bone — tooth sockets" },
+      { id: "h4", position: "0.5 1.0 0",  normal: "0 1 0",  label: "Premolar — bicuspid morphology" }
     ]
   },
   {
     id: "mandible",
-    title: "Mandible with Impacted Third Molar",
+    title: "Mandibular Dentition — Third Molar Region",
     description:
-      "Demonstrates the most common site for dentigerous cysts and odontogenic keratocysts (posterior mandible / ramus).",
-    tags: ["anatomy", "jaw"],
-    url: "./assets/mandible-tooth.glb",
+      "Lower dental arch with focus on the posterior third molar region — the predilection site for dentigerous cysts, odontogenic keratocysts, and ameloblastoma.",
+    tags: ["anatomy", "mandible"],
+    url: "./assets/Mandibular_teeth_w_base_NIH3D.glb",
     poster: "",
     hotspots: [
-      { id: "h1", position: "0.6 0.8 0", normal: "1 0 0", label: "Body of mandible" },
-      { id: "h2", position: "0.9 1.2 0", normal: "1 0 0", label: "Ramus — OKC predilection" }
+      { id: "h1", position: "0 0.5 0.3",   normal: "0 1 0",   label: "Mandibular body" },
+      { id: "h2", position: "1.3 0.6 0",   normal: "1 0 0",   label: "Third molar — impaction site" },
+      { id: "h3", position: "0.7 -0.5 0",  normal: "0 -1 0",  label: "Inferior alveolar canal" },
+      { id: "h4", position: "-0.8 0.2 0",  normal: "-1 0 0",  label: "Mental foramen" }
     ]
   },
   {
     id: "ameloblastoma-3d",
-    title: "Ameloblastoma — Multilocular Lesion",
+    title: "Ameloblastoma — Posterior Mandible",
     description:
-      "Illustrative model showing the multilocular 'soap-bubble' radiolucency of a conventional ameloblastoma in the posterior mandible.",
+      "Posterior mandible illustrating the classic site of conventional ameloblastoma. Correlate with the multilocular 'soap-bubble' radiolucency pattern and cortical expansion seen on OPG radiographs.",
     tags: ["pathology", "tumor"],
-    url: "./assets/mandible-tooth.glb",
+    url: "./assets/mandibular_teeth_w_base-custom.glb",
     poster: "",
     hotspots: [
-      { id: "h1", position: "0 0.5 0", normal: "0 0 1", label: "Soap-bubble locules" },
-      { id: "h2", position: "0 -0.2 0", normal: "0 -1 0", label: "Cortical expansion" }
+      { id: "h1", position: "1.2 0.6 0",  normal: "1 0 0",  label: "Multilocular expansion zone" },
+      { id: "h2", position: "1.0 -0.3 0", normal: "1 0 0",  label: "Cortical plate thinning" },
+      { id: "h3", position: "0.9 0.8 0",  normal: "0 1 0",  label: "Root resorption — knife-edge pattern" }
     ]
   }
 ];

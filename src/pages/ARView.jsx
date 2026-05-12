@@ -77,9 +77,9 @@ export default function ARView() {
           </ul>
 
           <div className="notice mt-16">
-            Demo models are loaded from Google's <span className="kbd">modelviewer.dev</span> CDN.
-            Replace any URL in <span className="kbd">src/data/models.js</span> with a dental{" "}
-            <span className="kbd">.glb</span> placed in <span className="kbd">assets/</span>.
+            All anatomical models are sourced from the NIH 3D Print Exchange and processed
+            for interactive clinical education. Use <span className="kbd">View in your space</span> on
+            supported Android devices for augmented reality overlay.
           </div>
         </div>
       </div>

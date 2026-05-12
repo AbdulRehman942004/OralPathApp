@@ -24963,18 +24963,15 @@ function Landing() {
         /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
           "model-viewer",
           {
-            src: "./assets/tooth.glb",
-            alt: "Molar Tooth 3D model",
+            src: "./assets/mandible-tooth.glb",
+            alt: "Mandibular dental anatomy 3D model",
             "camera-controls": true,
             "auto-rotate": true,
             "disable-zoom": true,
             style: { width: "100%", height: 360, background: "transparent" }
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "muted center", style: { marginTop: 8, fontSize: 12 }, children: [
-          "Molar Tooth \u2014 rotate & explore in the ",
-          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { className: "kbd", children: "AR Viewer" })
-        ] })
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "muted center", style: { marginTop: 8, fontSize: 12 }, children: "Mandibular anatomy \u2014 interactive 3D model from NIH 3D Print Exchange" })
       ] })
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("section", { className: "container section", children: [
@@ -25337,39 +25334,43 @@ var import_react5 = __toESM(require_react(), 1);
 var MODELS = [
   {
     id: "tooth",
-    title: "Molar Tooth \u2014 Cross-section",
-    description: "Explore enamel, dentin, pulp chamber, and root canals. Use 'View in your space' on Android to project the model into your environment.",
-    tags: ["anatomy", "tooth"],
-    url: "./assets/mandible-tooth.glb",
+    title: "Maxillary Dentition \u2014 Full Arch Anatomy",
+    description: "Explore the complete upper dental arch. Examine crown morphology, root anatomy, and alveolar bone support across incisors, canines, premolars, and molars.",
+    tags: ["anatomy", "maxilla"],
+    url: "./assets/Maxillary_teeth_w_base_NIH3D.glb",
     poster: "",
     hotspots: [
-      { id: "h1", position: "0 1.5 0", normal: "0 1 0", label: "Crown \u2014 enamel covered" },
-      { id: "h2", position: "0 0.6 0", normal: "0 0 1", label: "Cervical line (CEJ)" },
-      { id: "h3", position: "0 -0.5 0", normal: "0 -1 0", label: "Root apex \u2014 common cyst site" }
+      { id: "h1", position: "0 1.2 0.3", normal: "0 1 0", label: "Central incisor \u2014 enamel crown" },
+      { id: "h2", position: "1.0 0.8 0", normal: "1 0 0", label: "Maxillary molar \u2014 three roots" },
+      { id: "h3", position: "0 -0.8 0", normal: "0 -1 0", label: "Alveolar bone \u2014 tooth sockets" },
+      { id: "h4", position: "0.5 1.0 0", normal: "0 1 0", label: "Premolar \u2014 bicuspid morphology" }
     ]
   },
   {
     id: "mandible",
-    title: "Mandible with Impacted Third Molar",
-    description: "Demonstrates the most common site for dentigerous cysts and odontogenic keratocysts (posterior mandible / ramus).",
-    tags: ["anatomy", "jaw"],
-    url: "./assets/mandible-tooth.glb",
+    title: "Mandibular Dentition \u2014 Third Molar Region",
+    description: "Lower dental arch with focus on the posterior third molar region \u2014 the predilection site for dentigerous cysts, odontogenic keratocysts, and ameloblastoma.",
+    tags: ["anatomy", "mandible"],
+    url: "./assets/Mandibular_teeth_w_base_NIH3D.glb",
     poster: "",
     hotspots: [
-      { id: "h1", position: "0.6 0.8 0", normal: "1 0 0", label: "Body of mandible" },
-      { id: "h2", position: "0.9 1.2 0", normal: "1 0 0", label: "Ramus \u2014 OKC predilection" }
+      { id: "h1", position: "0 0.5 0.3", normal: "0 1 0", label: "Mandibular body" },
+      { id: "h2", position: "1.3 0.6 0", normal: "1 0 0", label: "Third molar \u2014 impaction site" },
+      { id: "h3", position: "0.7 -0.5 0", normal: "0 -1 0", label: "Inferior alveolar canal" },
+      { id: "h4", position: "-0.8 0.2 0", normal: "-1 0 0", label: "Mental foramen" }
     ]
   },
   {
     id: "ameloblastoma-3d",
-    title: "Ameloblastoma \u2014 Multilocular Lesion",
-    description: "Illustrative model showing the multilocular 'soap-bubble' radiolucency of a conventional ameloblastoma in the posterior mandible.",
+    title: "Ameloblastoma \u2014 Posterior Mandible",
+    description: "Posterior mandible illustrating the classic site of conventional ameloblastoma. Correlate with the multilocular 'soap-bubble' radiolucency pattern and cortical expansion seen on OPG radiographs.",
     tags: ["pathology", "tumor"],
-    url: "./assets/mandible-tooth.glb",
+    url: "./assets/mandibular_teeth_w_base-custom.glb",
     poster: "",
     hotspots: [
-      { id: "h1", position: "0 0.5 0", normal: "0 0 1", label: "Soap-bubble locules" },
-      { id: "h2", position: "0 -0.2 0", normal: "0 -1 0", label: "Cortical expansion" }
+      { id: "h1", position: "1.2 0.6 0", normal: "1 0 0", label: "Multilocular expansion zone" },
+      { id: "h2", position: "1.0 -0.3 0", normal: "1 0 0", label: "Cortical plate thinning" },
+      { id: "h3", position: "0.9 0.8 0", normal: "0 1 0", label: "Root resorption \u2014 knife-edge pattern" }
     ]
   }
 ];
@@ -25467,16 +25468,9 @@ function ARView() {
           ] })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "notice mt-16", children: [
-          "Demo models are loaded from Google's ",
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "kbd", children: "modelviewer.dev" }),
-          " CDN. Replace any URL in ",
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "kbd", children: "src/data/models.js" }),
-          " with a dental",
-          " ",
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "kbd", children: ".glb" }),
-          " placed in ",
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "kbd", children: "assets/" }),
-          "."
+          "All anatomical models are sourced from the NIH 3D Print Exchange and processed for interactive clinical education. Use ",
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "kbd", children: "View in your space" }),
+          " on supported Android devices for augmented reality overlay."
         ] })
       ] })
     ] })
