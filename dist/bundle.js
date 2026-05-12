@@ -24963,7 +24963,7 @@ function Landing() {
         /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
           "model-viewer",
           {
-            src: "/assets/tooth.glb",
+            src: "./assets/tooth.glb",
             alt: "Molar Tooth 3D model",
             "camera-controls": true,
             "auto-rotate": true,
@@ -25340,7 +25340,7 @@ var MODELS = [
     title: "Molar Tooth \u2014 Cross-section",
     description: "Explore enamel, dentin, pulp chamber, and root canals. Use 'View in your space' on Android to project the model into your environment.",
     tags: ["anatomy", "tooth"],
-    url: "/assets/tooth.glb",
+    url: "./assets/mandible-tooth.glb",
     poster: "",
     hotspots: [
       { id: "h1", position: "0 1.5 0", normal: "0 1 0", label: "Crown \u2014 enamel covered" },
@@ -25353,7 +25353,7 @@ var MODELS = [
     title: "Mandible with Impacted Third Molar",
     description: "Demonstrates the most common site for dentigerous cysts and odontogenic keratocysts (posterior mandible / ramus).",
     tags: ["anatomy", "jaw"],
-    url: "/assets/mandible-tooth.glb",
+    url: "./assets/mandible-tooth.glb",
     poster: "",
     hotspots: [
       { id: "h1", position: "0.6 0.8 0", normal: "1 0 0", label: "Body of mandible" },
@@ -25365,7 +25365,7 @@ var MODELS = [
     title: "Ameloblastoma \u2014 Multilocular Lesion",
     description: "Illustrative model showing the multilocular 'soap-bubble' radiolucency of a conventional ameloblastoma in the posterior mandible.",
     tags: ["pathology", "tumor"],
-    url: "/assets/mandible-tooth.glb",
+    url: "./assets/mandible-tooth.glb",
     poster: "",
     hotspots: [
       { id: "h1", position: "0 0.5 0", normal: "0 0 1", label: "Soap-bubble locules" },

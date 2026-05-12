@@ -14,7 +14,7 @@ export const MODELS = [
     description:
       "Explore enamel, dentin, pulp chamber, and root canals. Use 'View in your space' on Android to project the model into your environment.",
     tags: ["anatomy", "tooth"],
-    url: "/assets/mandible-tooth.glb",
+    url: "./assets/mandible-tooth.glb",
     poster: "",
     hotspots: [
       { id: "h1", position: "0 1.5 0", normal: "0 1 0", label: "Crown — enamel covered" },
@@ -28,7 +28,7 @@ export const MODELS = [
     description:
       "Demonstrates the most common site for dentigerous cysts and odontogenic keratocysts (posterior mandible / ramus).",
     tags: ["anatomy", "jaw"],
-    url: "/assets/mandible-tooth.glb",
+    url: "./assets/mandible-tooth.glb",
     poster: "",
     hotspots: [
       { id: "h1", position: "0.6 0.8 0", normal: "1 0 0", label: "Body of mandible" },
@@ -41,7 +41,7 @@ export const MODELS = [
     description:
       "Illustrative model showing the multilocular 'soap-bubble' radiolucency of a conventional ameloblastoma in the posterior mandible.",
     tags: ["pathology", "tumor"],
-    url: "/assets/mandible-tooth.glb",
+    url: "./assets/mandible-tooth.glb",
     poster: "",
     hotspots: [
       { id: "h1", position: "0 0.5 0", normal: "0 0 1", label: "Soap-bubble locules" },

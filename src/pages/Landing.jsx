@@ -25,7 +25,7 @@ export default function Landing() {
         </div>
         <div className="hero__art">
           <model-viewer
-            src="/assets/tooth.glb"
+            src="./assets/tooth.glb"
             alt="Molar Tooth 3D model"
             camera-controls auto-rotate
             disable-zoom
