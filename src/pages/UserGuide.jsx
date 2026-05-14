@@ -65,8 +65,21 @@ export default function UserGuide() {
           <p className="muted">
             Open <Link to="/ar">AR</Link>, pick a model, then rotate / zoom with your mouse or finger.
             On a supported Android device, tap <b>View in your space</b> to project the model into your environment.
+            Switch to <b>Compare</b> mode to view normal anatomy side-by-side with the pathology variant.
           </p>
           <Shot src="./screenshots/ar.png" caption="3D viewer with model selector and AR launcher" />
+        </Step>
+
+        <Step title="4b · Computer-vision image lab">
+          <p className="muted">
+            The <Link to="/cv">CV Lab</Link> is the assignment-critical Computer Vision module.
+            Upload an OPG, periapical, intra-oral photograph or histology slide and the app runs a
+            client-side pipeline: grayscale → histogram → Sobel edges → Otsu binarisation.
+            A manual threshold slider lets you sweep through values, and the optional
+            <b> Run AI analysis</b> button sends the image to GPT-4o-mini for a structured educational
+            interpretation (only with your own OpenAI key).
+          </p>
+          <Shot src="./screenshots/cv.png" caption="CV Lab — pipeline output (grayscale / histogram / Sobel / Otsu) and AI panel" />
         </Step>
 
         <Step title="5 · Student — take a quiz">
@@ -106,9 +119,30 @@ export default function UserGuide() {
         <Step title="9 · Faculty — read performance reports">
           <p className="muted">
             <Link to="/reports">Reports</Link> aggregates every quiz attempt: total attempts, unique students,
-            class average, pass rate, average per quiz, and a filter by individual student.
+            class average, pass rate, average per quiz, a filter by individual student, and a one-click
+            <b> CSV export</b> of the full table.
           </p>
           <Shot src="./screenshots/faculty-reports.png" caption="Faculty reports — class average, pass rate, per-quiz bars, all attempts" />
+        </Step>
+
+        <Step title="9b · Faculty — blog manager (articles + PDFs)">
+          <p className="muted">
+            The <Link to="/faculty/blog">Blog manager</Link> lets you publish supplementary
+            articles for your students. Each post can carry a title, body (with
+            light Markdown), tags, a cover image and an optional PDF attachment
+            that students can read inline or download. Posts appear in the
+            student-facing <Link to="/blog">Blog</Link> page and remain editable here.
+          </p>
+          <Shot src="./screenshots/faculty-blog.png" caption="Faculty blog manager — compose form and list of published posts" />
+        </Step>
+
+        <Step title="9c · Student — read articles &amp; attached PDFs">
+          <p className="muted">
+            From the student dashboard or top navigation, open <Link to="/blog">Blog</Link>.
+            Filter by tag, search the body, and click a card to read the article.
+            Attached PDFs are embedded inline and can also be downloaded.
+          </p>
+          <Shot src="./screenshots/blog.png" caption="Student-facing blog — searchable list of faculty-published articles" />
         </Step>
 
         <Step title="10 · Chatbot — get help any time">

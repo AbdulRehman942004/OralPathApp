@@ -61,3 +61,25 @@ export const toggleBookmark = (email, topicId) => {
   storage.set(`bookmarks:${email}`, list);
   return list;
 };
+
+// ---- Faculty blog posts ----
+// { id, title, body, tags[], coverDataUrl, pdfDataUrl, pdfName, by, byEmail, when, views }
+export const getBlogPosts = () => storage.get("blog_posts", []);
+export const saveBlogPost = (p) => {
+  const list = getBlogPosts();
+  const id = p.id || `post_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+  const next = { ...p, id, when: p.when || new Date().toISOString(), views: p.views || 0 };
+  const existing = list.findIndex(x => x.id === id);
+  if (existing >= 0) list[existing] = next;
+  else list.unshift(next);
+  storage.set("blog_posts", list);
+  return next;
+};
+export const removeBlogPost = (id) =>
+  storage.set("blog_posts", getBlogPosts().filter(p => p.id !== id));
+export const incrementBlogView = (id) => {
+  const list = getBlogPosts();
+  const p = list.find(x => x.id === id);
+  if (p) { p.views = (p.views || 0) + 1; storage.set("blog_posts", list); }
+};
+export const getBlogPost = (id) => getBlogPosts().find(p => p.id === id);

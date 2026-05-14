@@ -128,8 +128,10 @@ export default function FacultyUpload({ user }) {
         onClick={() => inputRef.current?.click()}
         style={{ cursor: "pointer" }}
       >
-        <div style={{ fontSize: 22 }}>📄</div>
-        <h3 style={{ margin: "6px 0" }}>Click to choose a PDF, or drop it here</h3>
+        <div className="drop__icon">📄</div>
+        <h3 style={{ margin: "6px 0", fontFamily: "var(--font-display)", fontSize: 22, letterSpacing: "-0.01em" }}>
+          Click to choose a PDF, or drop it here
+        </h3>
         <p>Up to ~25 MB · text-based PDFs only (scanned images won't extract).</p>
         <input
           ref={inputRef}

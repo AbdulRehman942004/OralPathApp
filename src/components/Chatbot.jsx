@@ -2,12 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { TOPICS } from "../data/topics.js";
 import { askChat, hasApiKey, OpenAIError } from "../utils/openai.js";
 
-// The chatbot has two backends:
-//   * OpenAI (gpt-4o-mini) when the user has configured a key in Settings.
-//   * A rule-based retrieval fallback over the curated TOPICS otherwise.
-// The UI is identical in both cases. The footer chip shows which backend is
-// currently active so the user is never surprised.
-
 const corpus = TOPICS.map(t => ({
   id: t.id,
   title: t.title,
@@ -49,12 +43,23 @@ const answerLocal = (q) => {
   return "I couldn't find a confident match. Try keywords like 'dentigerous cyst', 'OKC', 'ameloblastoma', 'odontoma', or 'radicular cyst'.";
 };
 
+const SUGGESTIONS = [
+  "What is an odontogenic keratocyst?",
+  "Compare dentigerous cyst vs OKC",
+  "Treatment of ameloblastoma",
+  "What is Gorlin syndrome?",
+  "How do I use the AR viewer?"
+];
+
 export default function Chatbot() {
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const [usingAI, setUsingAI] = useState(hasApiKey());
   const [msgs, setMsgs] = useState([
-    { who: "bot", text: "Hi — I'm your OralPath assistant. Ask about any cyst, tumor, or how to use the app." }
+    {
+      who: "bot",
+      text: "Hi — I'm your OralPath assistant. Ask about any cyst, tumour, or how to use the app. I'll route to the OpenAI tutor if your key is set in Settings, otherwise I'll answer from the local knowledge base."
+    }
   ]);
   const [text, setText] = useState("");
   const bodyRef = useRef(null);
@@ -64,20 +69,21 @@ export default function Chatbot() {
     if (bodyRef.current) bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
   }, [msgs, open, busy]);
 
-  // Refresh "using AI" status when the panel is opened (user might have set a key in Settings).
   useEffect(() => {
     if (open) setUsingAI(hasApiKey());
   }, [open]);
 
-  const send = async (e) => {
-    e?.preventDefault();
-    const q = text.trim();
+  const sendQ = async (q) => {
     if (!q || busy) return;
     setMsgs(m => [...m, { who: "user", text: q }]);
     setText("");
 
     if (!hasApiKey()) {
-      setTimeout(() => setMsgs(m => [...m, { who: "bot", text: answerLocal(q) }]), 180);
+      setBusy(true);
+      setTimeout(() => {
+        setMsgs(m => [...m, { who: "bot", text: answerLocal(q) }]);
+        setBusy(false);
+      }, 450);
       return;
     }
 
@@ -101,7 +107,9 @@ export default function Chatbot() {
     }
   };
 
+  const send = (e) => { e?.preventDefault(); sendQ(text.trim()); };
   const cancel = () => abortRef.current?.abort();
+  const reset  = () => setMsgs([{ who: "bot", text: "Cleared. What would you like to learn?" }]);
 
   return (
     <>
@@ -111,15 +119,22 @@ export default function Chatbot() {
       {open && (
         <div className="chat-panel" role="dialog" aria-label="OralPath chatbot">
           <div className="chat-head">
-            <div>
-              <div style={{ fontWeight: 700 }}>OralPath Assistant</div>
-              <div className="muted" style={{ fontSize: 12 }}>
-                {usingAI ? "Online · gpt-4o-mini" : "Online · local fallback"}
+            <div className="chat-head__title">
+              <div className="chat-head__avatar">🤖</div>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: 14 }}>OralPath Assistant</div>
+                <div className="muted" style={{ fontSize: 11 }}>
+                  {usingAI ? "● Online · gpt-4o-mini" : "● Offline · knowledge-base"}
+                </div>
               </div>
             </div>
-            <button className="btn btn--sm" onClick={() => setOpen(false)}>Close</button>
+            <div className="row" style={{ gap: 6 }}>
+              <button className="btn btn--sm" onClick={reset} title="Clear conversation">↻</button>
+              <button className="btn btn--sm" onClick={() => setOpen(false)}>✕</button>
+            </div>
           </div>
-          <div ref={bodyRef} className="chat-body">
+
+          <div ref={bodyRef} className="chat-body scroll-hide">
             {msgs.map((m, i) => (
               <div key={i} className={`chat-msg chat-msg--${m.who}`} style={{ whiteSpace: "pre-wrap" }}>
                 {m.text}
@@ -127,10 +142,19 @@ export default function Chatbot() {
             ))}
             {busy && (
               <div className="chat-msg chat-msg--bot" aria-live="polite">
-                <span className="muted">Thinking…</span>
+                <div className="chat-typing"><i></i><i></i><i></i></div>
               </div>
             )}
           </div>
+
+          {msgs.length <= 2 && !busy && (
+            <div className="chat-suggest">
+              {SUGGESTIONS.map(s => (
+                <button key={s} onClick={() => sendQ(s)}>{s}</button>
+              ))}
+            </div>
+          )}
+
           <form className="chat-form" onSubmit={send}>
             <input
               value={text}
@@ -138,11 +162,12 @@ export default function Chatbot() {
               placeholder={busy ? "Waiting for response…" : "Ask anything…"}
               aria-label="Type your question"
               disabled={busy}
+              autoFocus
             />
             {busy ? (
               <button className="btn" type="button" onClick={cancel}>Cancel</button>
             ) : (
-              <button className="btn btn--primary" type="submit">Send</button>
+              <button className="btn btn--primary" type="submit" disabled={!text.trim()}>Send</button>
             )}
           </form>
         </div>

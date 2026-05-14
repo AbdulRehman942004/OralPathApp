@@ -15,10 +15,13 @@ import Results from "./pages/Results.jsx";
 import Prompting from "./pages/Prompting.jsx";
 import FacultyUpload from "./pages/FacultyUpload.jsx";
 import FacultyReports from "./pages/FacultyReports.jsx";
+import FacultyBlog from "./pages/FacultyBlog.jsx";
+import Blog from "./pages/Blog.jsx";
+import CVAnalysis from "./pages/CVAnalysis.jsx";
 import UserGuide from "./pages/UserGuide.jsx";
 import Settings from "./pages/Settings.jsx";
 
-const requireAuth = (user, allowedRoles, path) => {
+const requireAuth = (user, allowedRoles) => {
   if (!user) { navigate("/login"); return false; }
   if (allowedRoles && !allowedRoles.includes(user.role)) {
     navigate(user.role === "faculty" ? "/faculty" : "/student");
@@ -47,17 +50,29 @@ export default function App() {
         ? (user.role === "faculty" ? <FacultyHome user={user} /> : <StudentHome user={user} />)
         : <Login onLogin={setUser} />;
       break;
+
+    // ----- Student-only -----
     case "/student":
       if (requireAuth(user, ["student"])) page = <StudentHome user={user} />;
       break;
+
+    // ----- Faculty-only -----
     case "/faculty":
       if (requireAuth(user, ["faculty"])) page = <FacultyHome user={user} />;
       break;
+    case "/upload":
+      if (requireAuth(user, ["faculty"])) page = <FacultyUpload user={user} />;
+      break;
+    case "/reports":
+      if (requireAuth(user, ["faculty"])) page = <FacultyReports />;
+      break;
+    case "/faculty/blog":
+      if (requireAuth(user, ["faculty"])) page = <FacultyBlog user={user} />;
+      break;
+
+    // ----- Shared (both roles) -----
     case "/reading":
       if (requireAuth(user, ["student", "faculty"])) page = <Reading user={user} />;
-      break;
-    case "/ar":
-      page = <ARView />;
       break;
     case "/quiz":
       if (requireAuth(user, ["student", "faculty"])) page = <Quiz user={user} />;
@@ -68,18 +83,24 @@ export default function App() {
     case "/prompting":
       if (requireAuth(user, ["student", "faculty"])) page = <Prompting />;
       break;
-    case "/upload":
-      if (requireAuth(user, ["faculty"])) page = <FacultyUpload user={user} />;
+    case "/blog":
+      page = <Blog user={user} />;
       break;
-    case "/reports":
-      if (requireAuth(user, ["faculty"])) page = <FacultyReports />;
-      break;
-    case "/guide":
-      page = <UserGuide />;
+    case "/cv":
+      page = <CVAnalysis />;
       break;
     case "/settings":
       if (requireAuth(user, ["student", "faculty"])) page = <Settings />;
       break;
+
+    // ----- Public -----
+    case "/ar":
+      page = <ARView />;
+      break;
+    case "/guide":
+      page = <UserGuide />;
+      break;
+
     default:
       page = (
         <section className="container section center">
@@ -91,13 +112,24 @@ export default function App() {
   }
 
   return (
-    <div className="app">
+    <div className="app" data-role={user?.role || "guest"}>
       <Header user={user} onLogout={() => setUser(null)} />
       {page}
       <footer className="footer">
         <div className="container footer__inner">
-          <div>© {new Date().getFullYear()} OralPath Learn — Computer Vision Assignment 3</div>
-          <div className="muted">Built with React · model-viewer · pdf.js</div>
+          <div>
+            © {new Date().getFullYear()} <b>OralPath Learn</b> — Computer Vision Assignment 3 · BSCS-8 · Bahria University Lahore
+          </div>
+          <div className="footer__links">
+            <a className="u-link" href="#/guide">User guide</a>
+            <a className="u-link" href="#/ar">AR demo</a>
+            <a className="u-link" href="#/cv">CV demo</a>
+            <a className="u-link" href="#/blog">Blog</a>
+            <a className="u-link" href="https://3dprint.nih.gov/" target="_blank" rel="noreferrer">3D source (NIH)</a>
+          </div>
+        </div>
+        <div className="container muted center mt-8" style={{ fontSize: 12 }}>
+          Built with React 18 · model-viewer · pdf.js · OpenAI gpt-4o-mini (chat + vision) · canvas-based CV pipeline · 100% client-side · installable PWA
         </div>
       </footer>
       <Chatbot />

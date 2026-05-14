@@ -18,18 +18,27 @@ export default function Login({ onLogin }) {
     if (!email || !form.password) { setErr("Enter your email and password."); return; }
     if (mode === "register" && !form.name.trim()) { setErr("Enter your full name."); return; }
 
-    // Demo auth: any non-empty credentials are accepted.
-    // Faculty can use any email; the role chip controls dashboard.
     const user = { name, email, role, since: new Date().toISOString() };
     setUser(user);
     onLogin(user);
     navigate(role === "faculty" ? "/faculty" : "/student");
   };
 
+  const demoFill = () => {
+    setForm({
+      name: role === "faculty" ? "Dr. Ayesha Khan" : "Hamza Ali",
+      email: role === "faculty" ? "ayesha.khan@bahria.edu.pk" : "hamza.bscs@bahria.edu.pk",
+      password: "demo123"
+    });
+    setMode("login");
+  };
+
   return (
-    <section className="container auth-wrap">
+    <section className="container auth-wrap fade-in">
+      <div className="bg-orbs" aria-hidden="true" />
       <div className="auth-card">
-        <h2>{mode === "login" ? "Welcome back" : "Create your account"}</h2>
+        <span className="hero__chip"><span className="dot" />Sign in or register</span>
+        <h2 className="mt-12">{mode === "login" ? "Welcome back" : "Create your account"}</h2>
         <p>
           {mode === "login"
             ? "Sign in to continue your OralPath learning journey."
@@ -38,10 +47,10 @@ export default function Login({ onLogin }) {
 
         <div className="auth-tabs" role="tablist" aria-label="Role">
           <button type="button" className={role === "student" ? "active" : ""} onClick={() => setRole("student")}>
-            Student
+            🎓 Student
           </button>
           <button type="button" className={role === "faculty" ? "active" : ""} onClick={() => setRole("faculty")}>
-            Faculty
+            🧑‍🏫 Faculty
           </button>
         </div>
 
@@ -54,25 +63,32 @@ export default function Login({ onLogin }) {
           )}
           <div className="field">
             <label>Email</label>
-            <input type="email" value={form.email} onChange={change("email")} placeholder="you@example.com" />
+            <input type="email" value={form.email} onChange={change("email")} placeholder="you@bahria.edu.pk" />
           </div>
           <div className="field">
             <label>Password</label>
             <input type="password" value={form.password} onChange={change("password")} placeholder="••••••••" />
           </div>
           {err && <div className="notice notice--warn">{err}</div>}
-          <button className="btn btn--primary btn--block" type="submit">
-            {mode === "login" ? "Sign in" : "Create account"}
+          <button className="btn btn--primary btn--block btn--lg" type="submit">
+            {mode === "login" ? "Sign in →" : "Create account →"}
           </button>
-          <div className="center muted" style={{ fontSize: 13 }}>
-            {mode === "login" ? (
-              <>New here? <a href="#" onClick={(e) => { e.preventDefault(); setMode("register"); }}>Create an account</a></>
-            ) : (
-              <>Already registered? <a href="#" onClick={(e) => { e.preventDefault(); setMode("login"); }}>Sign in</a></>
-            )}
+
+          <div className="row" style={{ justifyContent: "space-between", fontSize: 13 }}>
+            <span className="muted">
+              {mode === "login" ? (
+                <>New here? <a href="#" onClick={(e) => { e.preventDefault(); setMode("register"); }}>Create an account</a></>
+              ) : (
+                <>Already registered? <a href="#" onClick={(e) => { e.preventDefault(); setMode("login"); }}>Sign in</a></>
+              )}
+            </span>
+            <button type="button" className="btn btn--sm btn--ghost" onClick={demoFill}>
+              ✨ Fill demo credentials
+            </button>
           </div>
+
           <div className="notice" style={{ fontSize: 12 }}>
-            <b>Demo build:</b> credentials are stored locally on this device — no server.
+            Demo build · credentials are stored locally on this device — no server.
             Use any email + password to enter.
           </div>
         </form>

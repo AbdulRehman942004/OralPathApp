@@ -1083,7 +1083,7 @@ var require_react_development = __commonJS({
           }
           return dispatcher.useContext(Context);
         }
-        function useState12(initialState) {
+        function useState17(initialState) {
           var dispatcher = resolveDispatcher();
           return dispatcher.useState(initialState);
         }
@@ -1091,11 +1091,11 @@ var require_react_development = __commonJS({
           var dispatcher = resolveDispatcher();
           return dispatcher.useReducer(reducer, initialArg, init);
         }
-        function useRef4(initialValue) {
+        function useRef8(initialValue) {
           var dispatcher = resolveDispatcher();
           return dispatcher.useRef(initialValue);
         }
-        function useEffect7(create, deps) {
+        function useEffect11(create, deps) {
           var dispatcher = resolveDispatcher();
           return dispatcher.useEffect(create, deps);
         }
@@ -1111,7 +1111,7 @@ var require_react_development = __commonJS({
           var dispatcher = resolveDispatcher();
           return dispatcher.useCallback(callback, deps);
         }
-        function useMemo4(create, deps) {
+        function useMemo6(create, deps) {
           var dispatcher = resolveDispatcher();
           return dispatcher.useMemo(create, deps);
         }
@@ -1878,15 +1878,15 @@ var require_react_development = __commonJS({
         exports.useContext = useContext;
         exports.useDebugValue = useDebugValue;
         exports.useDeferredValue = useDeferredValue;
-        exports.useEffect = useEffect7;
+        exports.useEffect = useEffect11;
         exports.useId = useId;
         exports.useImperativeHandle = useImperativeHandle;
         exports.useInsertionEffect = useInsertionEffect;
         exports.useLayoutEffect = useLayoutEffect;
-        exports.useMemo = useMemo4;
+        exports.useMemo = useMemo6;
         exports.useReducer = useReducer;
-        exports.useRef = useRef4;
-        exports.useState = useState12;
+        exports.useRef = useRef8;
+        exports.useState = useState17;
         exports.useSyncExternalStore = useSyncExternalStore;
         exports.useTransition = useTransition;
         exports.version = ReactVersion;
@@ -2433,7 +2433,7 @@ var require_react_dom_development = __commonJS({
         var HostPortal = 4;
         var HostComponent = 5;
         var HostText = 6;
-        var Fragment5 = 7;
+        var Fragment7 = 7;
         var Mode = 8;
         var ContextConsumer = 9;
         var ContextProvider = 10;
@@ -3589,7 +3589,7 @@ var require_react_dom_development = __commonJS({
               return "DehydratedFragment";
             case ForwardRef:
               return getWrappedName$1(type, type.render, "ForwardRef");
-            case Fragment5:
+            case Fragment7:
               return "Fragment";
             case HostComponent:
               return type;
@@ -11972,7 +11972,7 @@ var require_react_dom_development = __commonJS({
             }
           }
           function updateFragment2(returnFiber, current2, fragment, lanes, key) {
-            if (current2 === null || current2.tag !== Fragment5) {
+            if (current2 === null || current2.tag !== Fragment7) {
               var created = createFiberFromFragment(fragment, returnFiber.mode, lanes, key);
               created.return = returnFiber;
               return created;
@@ -12375,7 +12375,7 @@ var require_react_dom_development = __commonJS({
               if (child.key === key) {
                 var elementType = element.type;
                 if (elementType === REACT_FRAGMENT_TYPE) {
-                  if (child.tag === Fragment5) {
+                  if (child.tag === Fragment7) {
                     deleteRemainingChildren(returnFiber, child.sibling);
                     var existing = useFiber(child, element.props.children);
                     existing.return = returnFiber;
@@ -17850,7 +17850,7 @@ var require_react_dom_development = __commonJS({
               var _resolvedProps2 = workInProgress2.elementType === type ? _unresolvedProps2 : resolveDefaultProps(type, _unresolvedProps2);
               return updateForwardRef(current2, workInProgress2, type, _resolvedProps2, renderLanes2);
             }
-            case Fragment5:
+            case Fragment7:
               return updateFragment(current2, workInProgress2, renderLanes2);
             case Mode:
               return updateMode(current2, workInProgress2, renderLanes2);
@@ -18122,7 +18122,7 @@ var require_react_dom_development = __commonJS({
             case SimpleMemoComponent:
             case FunctionComponent:
             case ForwardRef:
-            case Fragment5:
+            case Fragment7:
             case Mode:
             case Profiler:
             case ContextConsumer:
@@ -22373,7 +22373,7 @@ var require_react_dom_development = __commonJS({
           return fiber;
         }
         function createFiberFromFragment(elements, mode, lanes, key) {
-          var fiber = createFiber(Fragment5, elements, key, mode);
+          var fiber = createFiber(Fragment7, elements, key, mode);
           fiber.lanes = lanes;
           return fiber;
         }
@@ -24405,11 +24405,11 @@ var require_react_jsx_runtime_development = __commonJS({
             return jsxWithValidation(type, props, key, false);
           }
         }
-        var jsx19 = jsxWithValidationDynamic;
-        var jsxs17 = jsxWithValidationStatic;
+        var jsx23 = jsxWithValidationDynamic;
+        var jsxs21 = jsxWithValidationStatic;
         exports.Fragment = REACT_FRAGMENT_TYPE;
-        exports.jsx = jsx19;
-        exports.jsxs = jsxs17;
+        exports.jsx = jsx23;
+        exports.jsxs = jsxs21;
       })();
     }
   }
@@ -24431,7 +24431,7 @@ var require_jsx_runtime = __commonJS({
 var import_client = __toESM(require_client(), 1);
 
 // src/App.jsx
-var import_react11 = __toESM(require_react(), 1);
+var import_react16 = __toESM(require_react(), 1);
 
 // src/utils/storage.js
 var NS = "oralpath:v1:";
@@ -24489,6 +24489,27 @@ var toggleBookmark = (email, topicId) => {
   storage.set(`bookmarks:${email}`, list);
   return list;
 };
+var getBlogPosts = () => storage.get("blog_posts", []);
+var saveBlogPost = (p) => {
+  const list = getBlogPosts();
+  const id = p.id || `post_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+  const next = { ...p, id, when: p.when || (/* @__PURE__ */ new Date()).toISOString(), views: p.views || 0 };
+  const existing = list.findIndex((x) => x.id === id);
+  if (existing >= 0) list[existing] = next;
+  else list.unshift(next);
+  storage.set("blog_posts", list);
+  return next;
+};
+var removeBlogPost = (id) => storage.set("blog_posts", getBlogPosts().filter((p) => p.id !== id));
+var incrementBlogView = (id) => {
+  const list = getBlogPosts();
+  const p = list.find((x) => x.id === id);
+  if (p) {
+    p.views = (p.views || 0) + 1;
+    storage.set("blog_posts", list);
+  }
+};
+var getBlogPost = (id) => getBlogPosts().find((p) => p.id === id);
 
 // src/utils/router.js
 var import_react = __toESM(require_react(), 1);
@@ -24529,65 +24550,126 @@ var Link = ({ to, params, className, children, ...rest }) => {
 };
 
 // src/components/Header.jsx
+var import_react3 = __toESM(require_react(), 1);
+
+// src/utils/theme.js
+var import_react2 = __toESM(require_react(), 1);
+var KEY = "theme";
+var getTheme = () => storage.get(KEY, "dark");
+var applyTheme = (theme) => {
+  document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
+  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", theme === "light" ? "#f5f7fb" : "#07090f");
+};
+var setTheme = (theme) => {
+  storage.set(KEY, theme);
+  applyTheme(theme);
+};
+var useTheme = () => {
+  const [theme, setT] = (0, import_react2.useState)(getTheme());
+  (0, import_react2.useEffect)(() => {
+    applyTheme(theme);
+  }, [theme]);
+  return [theme, (t) => {
+    setTheme(t);
+    setT(t);
+  }];
+};
+
+// src/components/Header.jsx
 var import_jsx_runtime2 = __toESM(require_jsx_runtime(), 1);
 function Header({ user, onLogout }) {
   const { path } = useRoute();
+  const [open, setOpen] = (0, import_react3.useState)(false);
+  const [theme, setTheme2] = useTheme();
   const isActive = (p) => path === p ? "active" : "";
   const initials = (user?.name || user?.email || "U").slice(0, 2).toUpperCase();
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("header", { className: "header", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "container header__inner", children: [
+  (0, import_react3.useEffect)(() => {
+    setOpen(false);
+  }, [path]);
+  const logout = () => {
+    clearUser();
+    onLogout();
+    navigate("/");
+  };
+  const themeBtn = /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+    "button",
+    {
+      className: "icon-btn",
+      "aria-label": "Toggle theme",
+      onClick: () => setTheme2(theme === "light" ? "dark" : "light"),
+      title: theme === "light" ? "Switch to dark mode" : "Switch to light mode",
+      children: theme === "light" ? "\u{1F319}" : "\u2600\uFE0F"
+    }
+  );
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("header", { className: "header", "data-role": user?.role || "guest", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "container header__inner", children: [
     /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(Link, { to: "/", className: "brand", children: [
       /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "brand__mark", children: "OP" }),
       /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { children: [
         /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "brand__name", children: "OralPath Learn" }),
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "brand__sub", children: "Odontogenic Oral Pathology" })
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "brand__sub", children: user?.role === "faculty" ? "Faculty portal \xB7 content & analytics" : user?.role === "student" ? "Student portal \xB7 learn \xB7 practise \xB7 master" : "Odontogenic Oral Pathology \xB7 AI-assisted" })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("nav", { className: "nav", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+      "button",
+      {
+        className: "icon-btn menu-toggle",
+        "aria-label": "Toggle menu",
+        onClick: () => setOpen((v) => !v),
+        children: open ? "\u2715" : "\u2630"
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("nav", { className: "nav" + (open ? " open" : ""), children: [
       !user && /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(import_jsx_runtime2.Fragment, { children: [
         /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/", className: isActive("/"), children: "Home" }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/ar", className: isActive("/ar"), children: "3D / AR" }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/cv", className: isActive("/cv"), children: "CV Lab" }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/blog", className: isActive("/blog"), children: "Blog" }),
         /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/guide", className: isActive("/guide"), children: "User Guide" }),
+        themeBtn,
         /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/login", className: isActive("/login"), children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { className: "btn btn--primary btn--sm", children: "Sign in" }) })
       ] }),
       user?.role === "student" && /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(import_jsx_runtime2.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "role-badge role-badge--student", children: "\u{1F393} Student" }),
         /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/student", className: isActive("/student"), children: "Dashboard" }),
         /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/reading", className: isActive("/reading"), children: "Reading" }),
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/ar", className: isActive("/ar"), children: "AR" }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/ar", className: isActive("/ar"), children: "3D / AR" }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/cv", className: isActive("/cv"), children: "CV Lab" }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/blog", className: isActive("/blog"), children: "Blog" }),
         /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/quiz", className: isActive("/quiz"), children: "Quiz" }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/prompting", className: isActive("/prompting"), children: "Prompting" }),
         /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/results", className: isActive("/results"), children: "Results" }),
         /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/guide", className: isActive("/guide"), children: "Guide" }),
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/settings", className: isActive("/settings"), title: "Settings", "aria-label": "Settings", children: "\u2699\uFE0F" }),
+        themeBtn,
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/settings", className: "icon-btn " + isActive("/settings"), title: "Settings", "aria-label": "Settings", children: "\u2699\uFE0F" }),
         /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("span", { className: "user-chip", children: [
           /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "user-chip__avatar", children: initials }),
           user.name || user.email
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { className: "btn btn--sm", onClick: () => {
-          clearUser();
-          onLogout();
-          navigate("/");
-        }, children: "Logout" })
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { className: "btn btn--sm", onClick: logout, children: "Logout" })
       ] }),
       user?.role === "faculty" && /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(import_jsx_runtime2.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "role-badge role-badge--faculty", children: "\u{1F9D1}\u200D\u{1F3EB} Faculty" }),
         /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/faculty", className: isActive("/faculty"), children: "Dashboard" }),
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/upload", className: isActive("/upload"), children: "Upload & Generate" }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/upload", className: isActive("/upload"), children: "PDF \u2192 Quiz" }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/faculty/blog", className: isActive("/faculty/blog"), children: "Blog manager" }),
         /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/reports", className: isActive("/reports"), children: "Reports" }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/cv", className: isActive("/cv"), children: "CV Lab" }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/ar", className: isActive("/ar"), children: "3D / AR" }),
         /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/guide", className: isActive("/guide"), children: "Guide" }),
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/settings", className: isActive("/settings"), title: "Settings", "aria-label": "Settings", children: "\u2699\uFE0F" }),
+        themeBtn,
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/settings", className: "icon-btn " + isActive("/settings"), title: "Settings", "aria-label": "Settings", children: "\u2699\uFE0F" }),
         /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("span", { className: "user-chip", children: [
           /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "user-chip__avatar", children: initials }),
           user.name || user.email
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { className: "btn btn--sm", onClick: () => {
-          clearUser();
-          onLogout();
-          navigate("/");
-        }, children: "Logout" })
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { className: "btn btn--sm", onClick: logout, children: "Logout" })
       ] })
     ] })
   ] }) });
 }
 
 // src/components/Chatbot.jsx
-var import_react2 = __toESM(require_react(), 1);
+var import_react4 = __toESM(require_react(), 1);
 
 // src/data/topics.js
 var TOPICS = [
@@ -24693,12 +24775,13 @@ var TOPICS = [
 ];
 
 // src/utils/openai.js
-var KEY = "openai_key";
+var KEY2 = "openai_key";
 var MODEL = "gpt-4o-mini";
+var VISION_MODEL = "gpt-4o-mini";
 var ENDPOINT = "https://api.openai.com/v1/chat/completions";
-var getApiKey = () => storage.get(KEY, "");
-var setApiKey = (k) => storage.set(KEY, (k || "").trim());
-var clearApiKey = () => storage.remove(KEY);
+var getApiKey = () => storage.get(KEY2, "");
+var setApiKey = (k) => storage.set(KEY2, (k || "").trim());
+var clearApiKey = () => storage.remove(KEY2);
 var hasApiKey = () => Boolean(getApiKey());
 var sanitize = (msg) => (msg || "").replace(/sk-[A-Za-z0-9_-]+/g, "sk-***");
 var OpenAIError = class extends Error {
@@ -24822,6 +24905,68 @@ ${trimmed}
     qid: `ai_${i}`
   }));
 };
+var VISION_SYSTEM = `You are a dental-radiology teaching assistant. The user will
+share an image \u2014 typically an OPG / panoramic radiograph, a periapical film, a
+clinical intra-oral photograph, or a histopathology slide.
+
+Respond with a SHORT structured analysis (max ~180 words), strictly for student
+self-study and never as a clinical diagnosis. Use this exact structure:
+
+**Image type & quality:** one line.
+**Notable observations:** 3\u20135 bullets with what is visible (anatomical landmarks,
+radiolucent/radiopaque regions, asymmetry, expansion, etc.).
+**Educational differentials:** 2\u20134 plausible teaching differentials with one-line rationale each.
+**Suggested next steps for learning:** one line \u2014 which Reading module(s) to revisit
+(e.g., Dentigerous cyst, OKC, Ameloblastoma).
+
+End with: "\u26A0\uFE0F For education only \u2014 not a clinical diagnosis."`;
+var analyseImageWithOpenAI = async (dataUrlOrBase64, { signal, prompt } = {}) => {
+  const apiKey = getApiKey();
+  if (!apiKey) throw new OpenAIError("No API key configured.", { type: "no_key" });
+  const url = dataUrlOrBase64.startsWith("data:") ? dataUrlOrBase64 : `data:image/jpeg;base64,${dataUrlOrBase64}`;
+  const body = {
+    model: VISION_MODEL,
+    temperature: 0.25,
+    max_tokens: 600,
+    messages: [
+      { role: "system", content: VISION_SYSTEM },
+      {
+        role: "user",
+        content: [
+          { type: "text", text: prompt || "Analyse this dental image for educational purposes." },
+          { type: "image_url", image_url: { url, detail: "low" } }
+        ]
+      }
+    ]
+  };
+  let res;
+  try {
+    res = await fetch(ENDPOINT, {
+      method: "POST",
+      signal,
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
+      body: JSON.stringify(body)
+    });
+  } catch (e) {
+    if (e?.name === "AbortError") throw new OpenAIError("Request cancelled.", { type: "abort" });
+    throw new OpenAIError("Network error contacting OpenAI.", { type: "network" });
+  }
+  if (!res.ok) {
+    let detail = "";
+    try {
+      detail = (await res.json())?.error?.message || "";
+    } catch {
+    }
+    throw new OpenAIError(detail || `OpenAI returned HTTP ${res.status}`, {
+      status: res.status,
+      type: res.status === 401 ? "auth" : res.status === 429 ? "rate_limit" : "http"
+    });
+  }
+  const data = await res.json();
+  const content = data?.choices?.[0]?.message?.content;
+  if (!content) throw new OpenAIError("OpenAI returned an empty response.", { type: "empty" });
+  return content;
+};
 
 // src/components/Chatbot.jsx
 var import_jsx_runtime3 = __toESM(require_jsx_runtime(), 1);
@@ -24867,30 +25012,42 @@ Open the Reading page for the full notes.`;
   }
   return "I couldn't find a confident match. Try keywords like 'dentigerous cyst', 'OKC', 'ameloblastoma', 'odontoma', or 'radicular cyst'.";
 };
+var SUGGESTIONS = [
+  "What is an odontogenic keratocyst?",
+  "Compare dentigerous cyst vs OKC",
+  "Treatment of ameloblastoma",
+  "What is Gorlin syndrome?",
+  "How do I use the AR viewer?"
+];
 function Chatbot() {
-  const [open, setOpen] = (0, import_react2.useState)(false);
-  const [busy, setBusy] = (0, import_react2.useState)(false);
-  const [usingAI, setUsingAI] = (0, import_react2.useState)(hasApiKey());
-  const [msgs, setMsgs] = (0, import_react2.useState)([
-    { who: "bot", text: "Hi \u2014 I'm your OralPath assistant. Ask about any cyst, tumor, or how to use the app." }
+  const [open, setOpen] = (0, import_react4.useState)(false);
+  const [busy, setBusy] = (0, import_react4.useState)(false);
+  const [usingAI, setUsingAI] = (0, import_react4.useState)(hasApiKey());
+  const [msgs, setMsgs] = (0, import_react4.useState)([
+    {
+      who: "bot",
+      text: "Hi \u2014 I'm your OralPath assistant. Ask about any cyst, tumour, or how to use the app. I'll route to the OpenAI tutor if your key is set in Settings, otherwise I'll answer from the local knowledge base."
+    }
   ]);
-  const [text, setText] = (0, import_react2.useState)("");
-  const bodyRef = (0, import_react2.useRef)(null);
-  const abortRef = (0, import_react2.useRef)(null);
-  (0, import_react2.useEffect)(() => {
+  const [text, setText] = (0, import_react4.useState)("");
+  const bodyRef = (0, import_react4.useRef)(null);
+  const abortRef = (0, import_react4.useRef)(null);
+  (0, import_react4.useEffect)(() => {
     if (bodyRef.current) bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
   }, [msgs, open, busy]);
-  (0, import_react2.useEffect)(() => {
+  (0, import_react4.useEffect)(() => {
     if (open) setUsingAI(hasApiKey());
   }, [open]);
-  const send = async (e) => {
-    e?.preventDefault();
-    const q = text.trim();
+  const sendQ = async (q) => {
     if (!q || busy) return;
     setMsgs((m) => [...m, { who: "user", text: q }]);
     setText("");
     if (!hasApiKey()) {
-      setTimeout(() => setMsgs((m) => [...m, { who: "bot", text: answerLocal(q) }]), 180);
+      setBusy(true);
+      setTimeout(() => {
+        setMsgs((m) => [...m, { who: "bot", text: answerLocal(q) }]);
+        setBusy(false);
+      }, 450);
       return;
     }
     setBusy(true);
@@ -24907,21 +25064,37 @@ function Chatbot() {
       abortRef.current = null;
     }
   };
+  const send = (e) => {
+    e?.preventDefault();
+    sendQ(text.trim());
+  };
   const cancel = () => abortRef.current?.abort();
+  const reset = () => setMsgs([{ who: "bot", text: "Cleared. What would you like to learn?" }]);
   return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
     /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { className: "chat-fab", "aria-label": "Open chatbot", onClick: () => setOpen((v) => !v), children: open ? "\xD7" : "\u{1F4AC}" }),
     open && /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "chat-panel", role: "dialog", "aria-label": "OralPath chatbot", children: [
       /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "chat-head", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { style: { fontWeight: 700 }, children: "OralPath Assistant" }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "muted", style: { fontSize: 12 }, children: usingAI ? "Online \xB7 gpt-4o-mini" : "Online \xB7 local fallback" })
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "chat-head__title", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "chat-head__avatar", children: "\u{1F916}" }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { style: { fontWeight: 700, fontSize: 14 }, children: "OralPath Assistant" }),
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "muted", style: { fontSize: 11 }, children: usingAI ? "\u25CF Online \xB7 gpt-4o-mini" : "\u25CF Offline \xB7 knowledge-base" })
+          ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { className: "btn btn--sm", onClick: () => setOpen(false), children: "Close" })
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "row", style: { gap: 6 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { className: "btn btn--sm", onClick: reset, title: "Clear conversation", children: "\u21BB" }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { className: "btn btn--sm", onClick: () => setOpen(false), children: "\u2715" })
+        ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { ref: bodyRef, className: "chat-body", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { ref: bodyRef, className: "chat-body scroll-hide", children: [
         msgs.map((m, i) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: `chat-msg chat-msg--${m.who}`, style: { whiteSpace: "pre-wrap" }, children: m.text }, i)),
-        busy && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "chat-msg chat-msg--bot", "aria-live": "polite", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { className: "muted", children: "Thinking\u2026" }) })
+        busy && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "chat-msg chat-msg--bot", "aria-live": "polite", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "chat-typing", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("i", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("i", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("i", {})
+        ] }) })
       ] }),
+      msgs.length <= 2 && !busy && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "chat-suggest", children: SUGGESTIONS.map((s) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { onClick: () => sendQ(s), children: s }, s)) }),
       /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("form", { className: "chat-form", onSubmit: send, children: [
         /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
           "input",
@@ -24930,405 +25103,15 @@ function Chatbot() {
             onChange: (e) => setText(e.target.value),
             placeholder: busy ? "Waiting for response\u2026" : "Ask anything\u2026",
             "aria-label": "Type your question",
-            disabled: busy
+            disabled: busy,
+            autoFocus: true
           }
         ),
-        busy ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { className: "btn", type: "button", onClick: cancel, children: "Cancel" }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { className: "btn btn--primary", type: "submit", children: "Send" })
+        busy ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { className: "btn", type: "button", onClick: cancel, children: "Cancel" }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { className: "btn btn--primary", type: "submit", disabled: !text.trim(), children: "Send" })
       ] })
     ] })
   ] });
 }
-
-// src/pages/Landing.jsx
-var import_jsx_runtime4 = __toESM(require_jsx_runtime(), 1);
-function Landing() {
-  return /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_jsx_runtime4.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("section", { className: "container hero", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { className: "tag", children: "Computer Vision \xB7 BSCS \xB7 Assignment 3" }),
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("h1", { className: "mt-12", children: [
-          "Bridge the gap between textbook theory and clinical practice with",
-          " ",
-          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { style: { color: "var(--brand)" }, children: "OralPath Learn" }),
-          "."
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("p", { children: "An interactive educational application in odontogenic oral pathology. Explore 3D anatomy with augmented reality, read concise modules, test yourself with generated quizzes, and ask the in-app assistant for help \u2014 all in your browser." }),
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "hero__cta", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Link, { to: "/login", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("button", { className: "btn btn--primary", children: "Get started" }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Link, { to: "/ar", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("button", { className: "btn", children: "Try the AR viewer" }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Link, { to: "/guide", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("button", { className: "btn btn--ghost", children: "User guide" }) })
-        ] })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "hero__art", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
-          "model-viewer",
-          {
-            src: "./assets/mandible-tooth.glb",
-            alt: "Mandibular dental anatomy 3D model",
-            "camera-controls": true,
-            "auto-rotate": true,
-            "disable-zoom": true,
-            style: { width: "100%", height: 360, background: "transparent" }
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "muted center", style: { marginTop: 8, fontSize: 12 }, children: "Mandibular anatomy \u2014 interactive 3D model from NIH 3D Print Exchange" })
-      ] })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("section", { className: "container section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h2", { className: "section__title", children: "Built for dental students & faculty" }),
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("p", { className: "section__sub", children: "Everything you need for a complete learning loop, in one cross-platform app." }),
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "grid", children: [
-        { i: "\u{1F4D6}", t: "Reading modules", d: "Curated notes on the most common odontogenic cysts and tumors." },
-        { i: "\u{1F9B7}", t: "3D / AR viewer", d: "Rotate, zoom and project anatomical models into your space (Android AR)." },
-        { i: "\u{1F4DD}", t: "Quizzes", d: "Topic quizzes + a randomised sample quiz with instant feedback." },
-        { i: "\u{1F916}", t: "Chatbot", d: "Ask any question; the assistant searches the knowledge base." },
-        { i: "\u{1F4C4}", t: "PDF \u2192 quiz", d: "Faculty can upload a PDF and auto-generate a quiz to share." },
-        { i: "\u{1F4CA}", t: "Performance reports", d: "Faculty view class-wide attempts, scores and topic breakdown." }
-      ].map((f, i) => /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "card", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "card__icon", children: f.i }),
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h3", { children: f.t }),
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("p", { children: f.d })
-      ] }, i)) })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("section", { className: "container section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h2", { className: "section__title", children: "Topics in this release" }),
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("p", { className: "section__sub", children: [
-        TOPICS.length,
-        " curated reading modules with linked quizzes and 3D anatomy."
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "grid", children: TOPICS.map((t) => /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "card", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "row", children: t.tags.map((tag) => /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { className: "tag", children: tag }, tag)) }),
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h3", { children: t.title }),
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("p", { children: t.summary }),
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "card__row", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Link, { to: "/reading", params: { topic: t.id }, children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("button", { className: "btn btn--sm", children: "Read" }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Link, { to: "/quiz", params: { topic: t.id }, children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("button", { className: "btn btn--sm btn--primary", children: "Quiz" }) })
-        ] })
-      ] }, t.id)) })
-    ] })
-  ] });
-}
-
-// src/pages/Login.jsx
-var import_react3 = __toESM(require_react(), 1);
-var import_jsx_runtime5 = __toESM(require_jsx_runtime(), 1);
-function Login({ onLogin }) {
-  const [role, setRole] = (0, import_react3.useState)("student");
-  const [mode, setMode] = (0, import_react3.useState)("login");
-  const [form, setForm] = (0, import_react3.useState)({ name: "", email: "", password: "" });
-  const [err, setErr] = (0, import_react3.useState)("");
-  const change = (k) => (e) => setForm({ ...form, [k]: e.target.value });
-  const submit = (e) => {
-    e.preventDefault();
-    setErr("");
-    const email = form.email.trim().toLowerCase();
-    const name = form.name.trim() || email.split("@")[0];
-    if (!email || !form.password) {
-      setErr("Enter your email and password.");
-      return;
-    }
-    if (mode === "register" && !form.name.trim()) {
-      setErr("Enter your full name.");
-      return;
-    }
-    const user = { name, email, role, since: (/* @__PURE__ */ new Date()).toISOString() };
-    setUser(user);
-    onLogin(user);
-    navigate(role === "faculty" ? "/faculty" : "/student");
-  };
-  return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("section", { className: "container auth-wrap", children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "auth-card", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("h2", { children: mode === "login" ? "Welcome back" : "Create your account" }),
-    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("p", { children: mode === "login" ? "Sign in to continue your OralPath learning journey." : "Register as a student or faculty member to access the modules." }),
-    /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "auth-tabs", role: "tablist", "aria-label": "Role", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", className: role === "student" ? "active" : "", onClick: () => setRole("student"), children: "Student" }),
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", className: role === "faculty" ? "active" : "", onClick: () => setRole("faculty"), children: "Faculty" })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("form", { className: "form", onSubmit: submit, children: [
-      mode === "register" && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "field", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("label", { children: "Full name" }),
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { value: form.name, onChange: change("name"), placeholder: "e.g. Dr. Ayesha Khan" })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "field", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("label", { children: "Email" }),
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "email", value: form.email, onChange: change("email"), placeholder: "you@example.com" })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "field", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("label", { children: "Password" }),
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "password", value: form.password, onChange: change("password"), placeholder: "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022" })
-      ] }),
-      err && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: "notice notice--warn", children: err }),
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { className: "btn btn--primary btn--block", type: "submit", children: mode === "login" ? "Sign in" : "Create account" }),
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: "center muted", style: { fontSize: 13 }, children: mode === "login" ? /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_jsx_runtime5.Fragment, { children: [
-        "New here? ",
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("a", { href: "#", onClick: (e) => {
-          e.preventDefault();
-          setMode("register");
-        }, children: "Create an account" })
-      ] }) : /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_jsx_runtime5.Fragment, { children: [
-        "Already registered? ",
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("a", { href: "#", onClick: (e) => {
-          e.preventDefault();
-          setMode("login");
-        }, children: "Sign in" })
-      ] }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "notice", style: { fontSize: 12 }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("b", { children: "Demo build:" }),
-        " credentials are stored locally on this device \u2014 no server. Use any email + password to enter."
-      ] })
-    ] })
-  ] }) });
-}
-
-// src/pages/StudentHome.jsx
-var import_jsx_runtime6 = __toESM(require_jsx_runtime(), 1);
-function StudentHome({ user }) {
-  const attempts = attemptsFor(user.email);
-  const last = attempts[0];
-  const avg = attempts.length ? Math.round(attempts.reduce((s, a) => s + a.percent, 0) / attempts.length) : 0;
-  return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("section", { className: "container section", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "spread mb-16", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("h2", { className: "section__title", children: [
-          "Welcome, ",
-          user.name?.split(" ")[0] || "Student",
-          " \u{1F44B}"
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "section__sub", children: "Pick up where you left off, or start with a sample quiz." })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Link, { to: "/quiz", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { className: "btn btn--primary", children: "Take sample quiz" }) })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "stats mb-24", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "stat", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "stat__label", children: "Attempts" }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "stat__value", children: attempts.length })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "stat", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "stat__label", children: "Average score" }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "stat__value", children: [
-          avg,
-          "%"
-        ] })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "stat", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "stat__label", children: "Topics available" }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "stat__value", children: TOPICS.length })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "stat", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "stat__label", children: "Last attempt" }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "stat__value", style: { fontSize: 18 }, children: last ? `${last.title} \u2022 ${last.percent}%` : "\u2014" })
-      ] })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("h3", { className: "section__title", children: "Study tools" }),
-    /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "grid mb-24", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(Link, { to: "/reading", className: "card", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "card__icon", children: "\u{1F4D6}" }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("h3", { children: "Reading" }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { children: "Concise notes on every topic in the syllabus." })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(Link, { to: "/prompting", className: "card", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "card__icon", children: "\u{1F4A1}" }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("h3", { children: "Prompting drills" }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { children: "Practice clinical vignettes \u2014 type your own answer and compare." })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(Link, { to: "/ar", className: "card", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "card__icon", children: "\u{1F9B7}" }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("h3", { children: "AR anatomy" }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { children: "3D models with augmented-reality projection on Android." })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(Link, { to: "/quiz", className: "card", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "card__icon", children: "\u{1F4DD}" }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("h3", { children: "Take a quiz" }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { children: "Topic quizzes or a randomised mixed sample." })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(Link, { to: "/results", className: "card", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "card__icon", children: "\u{1F4C8}" }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("h3", { children: "My results" }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { children: "Review all your past attempts and trends." })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(Link, { to: "/guide", className: "card", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "card__icon", children: "\u2753" }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("h3", { children: "User guide" }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { children: "How to use every feature, with annotated screenshots." })
-      ] })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("h3", { className: "section__title", children: "Recent attempts" }),
-    attempts.length ? /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("table", { className: "table", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("tr", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("th", { children: "When" }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("th", { children: "Quiz" }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("th", { children: "Score" }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("th", { children: "Result" })
-      ] }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("tbody", { children: attempts.slice(0, 8).map((a) => /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("tr", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("td", { children: new Date(a.when).toLocaleString() }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("td", { children: a.title }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("td", { children: [
-          a.score,
-          "/",
-          a.total
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("td", { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("span", { className: "tag " + (a.percent >= 70 ? "" : a.percent >= 50 ? "tag--warn" : "tag--danger"), children: [
-          a.percent,
-          "%"
-        ] }) })
-      ] }, a.id)) })
-    ] }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "notice", children: "No attempts yet. Take your first quiz to see results here." })
-  ] });
-}
-
-// src/pages/FacultyHome.jsx
-var import_jsx_runtime7 = __toESM(require_jsx_runtime(), 1);
-function FacultyHome({ user }) {
-  const materials = getMaterials();
-  const attempts = getAttempts();
-  const studentCount = new Set(attempts.filter((a) => a.role === "student").map((a) => a.userEmail)).size;
-  const avg = attempts.length ? Math.round(attempts.reduce((s, a) => s + a.percent, 0) / attempts.length) : 0;
-  return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("section", { className: "container section", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "spread mb-16", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("h2", { className: "section__title", children: [
-          "Welcome, Dr. ",
-          user.name?.split(" ").slice(-1)[0] || "Faculty",
-          " \u{1F44B}"
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { className: "section__sub", children: "Manage materials, generate quizzes from PDFs, and review class performance." })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Link, { to: "/upload", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { className: "btn btn--primary", children: "Upload PDF & generate quiz" }) })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "stats mb-24", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "stat", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "stat__label", children: "Materials" }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "stat__value", children: materials.length })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "stat", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "stat__label", children: "Total attempts" }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "stat__value", children: attempts.length })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "stat", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "stat__label", children: "Active students" }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "stat__value", children: studentCount })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "stat", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "stat__label", children: "Class average" }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "stat__value", children: [
-          avg,
-          "%"
-        ] })
-      ] })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { className: "section__title", children: "Quick actions" }),
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "grid mb-24", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Link, { to: "/upload", className: "card", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "card__icon", children: "\u{1F4C4}" }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { children: "Upload & generate" }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { children: "Upload a PDF chapter and auto-generate a quiz from its content." })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Link, { to: "/reports", className: "card", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "card__icon", children: "\u{1F4CA}" }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { children: "Performance reports" }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { children: "See per-quiz, per-topic averages and per-student attempt history." })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Link, { to: "/ar", className: "card", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "card__icon", children: "\u{1F9B7}" }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { children: "Preview AR models" }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { children: "Check the 3D content available to students." })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Link, { to: "/guide", className: "card", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "card__icon", children: "\u2753" }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { children: "User guide" }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { children: "Walkthrough of every feature with annotated screenshots." })
-      ] })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { className: "section__title", children: "Recent materials" }),
-    materials.length ? /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("table", { className: "table", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("tr", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("th", { children: "Title" }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("th", { children: "Uploaded" }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("th", { children: "By" }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("th", { children: "Quiz" })
-      ] }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("tbody", { children: materials.slice(0, 6).map((m) => /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("tr", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("td", { children: m.title }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("td", { children: new Date(m.when).toLocaleDateString() }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("td", { children: m.by }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("td", { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Link, { to: "/quiz", params: { material: m.id }, children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { className: "btn btn--sm", children: "Preview quiz" }) }) })
-      ] }, m.id)) })
-    ] }) : /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "notice", children: "No materials yet. Upload a PDF to auto-generate your first quiz." })
-  ] });
-}
-
-// src/pages/Reading.jsx
-var import_react4 = __toESM(require_react(), 1);
-var import_jsx_runtime8 = __toESM(require_jsx_runtime(), 1);
-function Reading({ user }) {
-  const { params } = useRoute();
-  const startId = params.topic && TOPICS.some((t) => t.id === params.topic) ? params.topic : TOPICS[0].id;
-  const [active, setActive] = (0, import_react4.useState)(startId);
-  const topic = TOPICS.find((t) => t.id === active);
-  const email = user?.email || "guest@local";
-  const [bookmarks, setBookmarks] = (0, import_react4.useState)(getBookmarks(email));
-  const [note, setNote] = (0, import_react4.useState)(getNotes(email)[active] || "");
-  (0, import_react4.useEffect)(() => {
-    setNote(getNotes(email)[active] || "");
-  }, [active, email]);
-  const saveNote = (v) => {
-    setNote(v);
-    setNoteFor(email, active, v);
-  };
-  const onBookmark = () => setBookmarks(toggleBookmark(email, active));
-  return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("section", { className: "container section", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "spread mb-16", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h2", { className: "section__title", children: "Reading" }),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("p", { className: "section__sub", children: [
-          TOPICS.length,
-          " modules \xB7 click any topic to read."
-        ] })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Link, { to: "/quiz", params: { topic: active }, children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { className: "btn btn--primary", children: "Quiz on this topic" }) })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "reading", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "reading__toc", children: TOPICS.map((t) => /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
-        "button",
-        {
-          className: t.id === active ? "active" : "",
-          onClick: () => {
-            setActive(t.id);
-            navigate("/reading", { topic: t.id });
-          },
-          children: [
-            bookmarks.includes(t.id) ? "\u2605 " : "",
-            t.title
-          ]
-        },
-        t.id
-      )) }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("article", { className: "reading__content", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "spread", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h2", { children: topic.title }),
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { className: "btn btn--sm", onClick: onBookmark, children: bookmarks.includes(topic.id) ? "\u2605 Bookmarked" : "\u2606 Bookmark" })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "row mt-12", children: topic.tags.map((t) => /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { className: "tag", children: t }, t)) }),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { className: "muted mt-12", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("em", { children: topic.summary }) }),
-        topic.body.map((p, i) => /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { children: p }, i)),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { className: "mt-24", children: "My notes" }),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
-          "textarea",
-          {
-            className: "field",
-            value: note,
-            onChange: (e) => saveNote(e.target.value),
-            placeholder: "Type your notes here \u2014 saved locally as you type.",
-            style: { width: "100%", minHeight: 120, background: "var(--bg-2)", border: "1px solid var(--border)", color: "var(--text)", padding: 12, borderRadius: 10, fontFamily: "inherit" }
-          }
-        )
-      ] })
-    ] })
-  ] });
-}
-
-// src/pages/ARView.jsx
-var import_react5 = __toESM(require_react(), 1);
 
 // src/data/models.js
 var MODELS = [
@@ -25375,68 +25158,1106 @@ var MODELS = [
   }
 ];
 
-// src/pages/ARView.jsx
+// src/pages/Landing.jsx
+var import_jsx_runtime4 = __toESM(require_jsx_runtime(), 1);
+var FEATURES = [
+  { i: "\u{1F52C}", t: "CV image analysis lab", d: "Upload a radiograph \u2014 grayscale, histogram, Sobel edges, Otsu segmentation, plus optional GPT-4o vision interpretation.", k: "feature" },
+  { i: "\u{1F9B7}", t: "Interactive 3D & AR", d: "Rotate, zoom, pan and project NIH anatomical models into your room with ARCore on Android.", k: "violet" },
+  { i: "\u{1F4D6}", t: "Curated reading modules", d: "Eight expert-summarised topics covering every major odontogenic cyst and tumour.", k: "warm" },
+  { i: "\u{1F916}", t: "AI tutor chatbot", d: "gpt-4o-mini powered Q&A on any lesion \u2014 with a knowledge-base fallback when offline.", k: "feature" },
+  { i: "\u270D\uFE0F", t: "Faculty blog & resources", d: "Teachers publish articles with cover images and PDF attachments; students browse, search and download.", k: "violet" },
+  { i: "\u{1F4DD}", t: "Smart quiz engine", d: "Topic, mixed, or PDF-generated quizzes with timer, confetti and instant review.", k: "warm" },
+  { i: "\u{1F4C4}", t: "PDF \u2192 quiz in seconds", d: "Faculty drop a chapter, the app extracts text in-browser and produces editable MCQs.", k: "feature" },
+  { i: "\u{1F4CA}", t: "Live performance reports", d: "Class average, pass rate, grade-distribution donut and per-student attempt history.", k: "violet" },
+  { i: "\u{1F4A1}", t: "Prompting drills", d: "Clinical vignettes with model answers and keyword-overlap scoring for free-text reasoning.", k: "warm" },
+  { i: "\u{1F3C6}", t: "Achievements & streaks", d: "Spaced practice, learning streak ring and 8 unlockable badges keep motivation high.", k: "feature" }
+];
+var STATS = [
+  { n: TOPICS.length, l: "Reading modules" },
+  { n: MODELS.length, l: "3D anatomical models" },
+  { n: "60+", l: "MCQs in the bank" },
+  { n: "PWA", l: "Installable, offline-capable" }
+];
+var FAQ = [
+  { q: "Do I need to install anything?", a: "No. OralPath Learn is a Progressive Web App. Open the URL in Chrome or Edge \u2014 on Android you can tap Install and add it to your home screen." },
+  { q: "How does the AR view work?", a: "We use Google's <model-viewer> custom element which projects glTF models via WebXR / ARCore on supported Android devices and Quick Look on iOS." },
+  { q: "Where does the AI come from?", a: "The chatbot and PDF\u2192quiz generator call OpenAI gpt-4o-mini directly from your browser if you provide your own key in Settings \u2014 otherwise everything falls back to a local heuristic." },
+  { q: "Is any patient data stored?", a: "No. The app is fully client-side: attempts, notes and bookmarks live in your browser's localStorage. There's no backend." }
+];
+function Landing() {
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_jsx_runtime4.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "bg-orbs", "aria-hidden": "true" }),
+    /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("section", { className: "container hero", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "hero__copy fade-in", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("span", { className: "hero__chip", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { className: "dot" }),
+          "Computer Vision \xB7 BSCS \xB7 Assignment 3"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("h1", { children: [
+          "Make oral pathology",
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { className: "grad", children: "click, rotate, and stick." })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("p", { children: [
+          "An interactive educational platform for ",
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("b", { children: "odontogenic oral pathology" }),
+          ": 8 curated reading modules, photoreal 3D anatomy with augmented-reality projection, an AI tutor chatbot, PDF-to-quiz generation and class-wide performance analytics \u2014 all in one installable web app."
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "hero__cta", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Link, { to: "/login", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("button", { className: "btn btn--primary btn--lg", children: "Get started \u2014 it's free" }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Link, { to: "/cv", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("button", { className: "btn btn--violet btn--lg", children: "\u{1F52C} CV Lab" }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Link, { to: "/ar", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("button", { className: "btn btn--lg", children: "Try AR demo \u2192" }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Link, { to: "/guide", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("button", { className: "btn btn--ghost btn--lg", children: "User guide" }) })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "stats mt-32", children: STATS.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "stat fade-in fade-in--d2", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "stat__label", children: s.l }),
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "stat__value", children: s.n })
+        ] }, i)) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "hero__art fade-in fade-in--d1", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "hero__art-frame", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+          "model-viewer",
+          {
+            src: "./assets/Maxillary_teeth_w_base_NIH3D.glb",
+            alt: "Maxillary dental anatomy 3D model",
+            "camera-controls": true,
+            "auto-rotate": true,
+            "shadow-intensity": "0.9",
+            exposure: "1.05",
+            "environment-image": "neutral",
+            "disable-zoom": true,
+            style: { width: "100%", height: 380, background: "transparent" }
+          }
+        ) }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "muted center mt-12", style: { fontSize: 12 }, children: "Live preview \xB7 maxillary arch \u2014 interact with the model above" })
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "container marquee", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "marquee__track", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { children: "\u{1F9B7} Dentigerous cyst" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { children: "\xB7 OKC (Gorlin syndrome)" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { children: "\xB7 Ameloblastoma" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { children: "\xB7 Odontoma \xB7 compound & complex" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { children: "\xB7 Radicular cyst" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { children: "\xB7 CEOT (Pindborg)" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { children: "\xB7 Cone-Beam CT correlation" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { children: "\xB7 Augmented reality with ARCore" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { children: "\xB7 OpenAI gpt-4o-mini integration" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { children: "\xB7 Faculty PDF \u2192 quiz auto-generation" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { children: "\u{1F9B7} Dentigerous cyst" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { children: "\xB7 OKC (Gorlin syndrome)" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { children: "\xB7 Ameloblastoma" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { children: "\xB7 Odontoma \xB7 compound & complex" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { children: "\xB7 Radicular cyst" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { children: "\xB7 CEOT (Pindborg)" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { children: "\xB7 Cone-Beam CT correlation" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { children: "\xB7 Augmented reality with ARCore" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { children: "\xB7 OpenAI gpt-4o-mini integration" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { children: "\xB7 Faculty PDF \u2192 quiz auto-generation" })
+    ] }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("section", { className: "container section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h2", { className: "section__title", children: "Everything a dental learner needs \u2014 in one app" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("p", { className: "section__sub", children: "A complete learning loop: read \xB7 visualise \xB7 practise \xB7 assess \xB7 iterate." }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "grid", children: FEATURES.map((f, i) => /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: `card card--${f.k} fade-in`, style: { animationDelay: `${i * 0.04}s` }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "card__icon", children: f.i }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h3", { children: f.t }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("p", { children: f.d })
+      ] }, i)) })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("section", { className: "container section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "spread mb-16", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h2", { className: "section__title", children: "Topics in this release" }),
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("p", { className: "section__sub", children: [
+            TOPICS.length,
+            " curated reading modules \xB7 linked quizzes \xB7 cross-referenced 3D anatomy."
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Link, { to: "/reading", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("button", { className: "btn", children: "Browse all modules \u2192" }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "grid", children: TOPICS.map((t) => /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "row row--wrap", children: t.tags.map((tag) => /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { className: "tag", children: tag }, tag)) }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h3", { children: t.title }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("p", { children: t.summary }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "card__row", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Link, { to: "/reading", params: { topic: t.id }, children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("button", { className: "btn btn--sm", children: "\u{1F4D6} Read" }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Link, { to: "/quiz", params: { topic: t.id }, children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("button", { className: "btn btn--sm btn--primary", children: "\u{1F4DD} Quiz" }) })
+        ] })
+      ] }, t.id)) })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("section", { className: "container section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h2", { className: "section__title", children: "Built on a modern, fully client-side stack" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("p", { className: "section__sub", children: "No backend, no telemetry, no patient data \u2014 everything runs in your browser." }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "grid", children: [
+        { i: "\u269B\uFE0F", t: "React 18", d: "Hash-based router, tiny custom build with esbuild." },
+        { i: "\u{1F9CA}", t: "glTF + model-viewer", d: "Google's <model-viewer> custom element for 3D + WebXR/ARCore AR." },
+        { i: "\u{1F4C4}", t: "pdf.js", d: "Mozilla's PDF library extracts text from uploaded chapters in the browser." },
+        { i: "\u{1F916}", t: "OpenAI API", d: "gpt-4o-mini powers the chatbot and quiz generation when a key is configured." },
+        { i: "\u{1F4BE}", t: "localStorage", d: "Notes, bookmarks, attempts and settings all persist on-device." },
+        { i: "\u{1F4F1}", t: "PWA + Service Worker", d: "Installable from Chrome; works offline once visited." }
+      ].map((f, i) => /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "card__icon", children: f.i }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h3", { children: f.t }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("p", { children: f.d })
+      ] }, i)) })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("section", { className: "container section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h2", { className: "section__title", children: "Frequently asked" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "grid", style: { gridTemplateColumns: "repeat(auto-fill, minmax(330px, 1fr))" }, children: FAQ.map((f, i) => /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h3", { children: f.q }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("p", { children: f.a })
+      ] }, i)) })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("section", { className: "container section center", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "card", style: { display: "block", padding: 36, background: "var(--grad-glass)" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { className: "tag tag--violet", children: "Ready when you are" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h2", { className: "section__title mt-12", style: { fontSize: 30 }, children: "Sign in, take a quiz, and impress your faculty." }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("p", { className: "muted", style: { maxWidth: 560, margin: "8px auto 24px" }, children: "Demo credentials work \u2014 any email and password. Try the AR demo first if you'd rather kick the tyres." }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "row", style: { justifyContent: "center", gap: 10, flexWrap: "wrap" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Link, { to: "/login", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("button", { className: "btn btn--primary btn--lg", children: "Sign in or register" }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Link, { to: "/ar", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("button", { className: "btn btn--lg", children: "Open AR viewer" }) })
+      ] })
+    ] }) })
+  ] });
+}
+
+// src/pages/Login.jsx
+var import_react5 = __toESM(require_react(), 1);
+var import_jsx_runtime5 = __toESM(require_jsx_runtime(), 1);
+function Login({ onLogin }) {
+  const [role, setRole] = (0, import_react5.useState)("student");
+  const [mode, setMode] = (0, import_react5.useState)("login");
+  const [form, setForm] = (0, import_react5.useState)({ name: "", email: "", password: "" });
+  const [err, setErr] = (0, import_react5.useState)("");
+  const change = (k) => (e) => setForm({ ...form, [k]: e.target.value });
+  const submit = (e) => {
+    e.preventDefault();
+    setErr("");
+    const email = form.email.trim().toLowerCase();
+    const name = form.name.trim() || email.split("@")[0];
+    if (!email || !form.password) {
+      setErr("Enter your email and password.");
+      return;
+    }
+    if (mode === "register" && !form.name.trim()) {
+      setErr("Enter your full name.");
+      return;
+    }
+    const user = { name, email, role, since: (/* @__PURE__ */ new Date()).toISOString() };
+    setUser(user);
+    onLogin(user);
+    navigate(role === "faculty" ? "/faculty" : "/student");
+  };
+  const demoFill = () => {
+    setForm({
+      name: role === "faculty" ? "Dr. Ayesha Khan" : "Hamza Ali",
+      email: role === "faculty" ? "ayesha.khan@bahria.edu.pk" : "hamza.bscs@bahria.edu.pk",
+      password: "demo123"
+    });
+    setMode("login");
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("section", { className: "container auth-wrap fade-in", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: "bg-orbs", "aria-hidden": "true" }),
+    /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "auth-card", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("span", { className: "hero__chip", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { className: "dot" }),
+        "Sign in or register"
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("h2", { className: "mt-12", children: mode === "login" ? "Welcome back" : "Create your account" }),
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("p", { children: mode === "login" ? "Sign in to continue your OralPath learning journey." : "Register as a student or faculty member to access the modules." }),
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "auth-tabs", role: "tablist", "aria-label": "Role", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", className: role === "student" ? "active" : "", onClick: () => setRole("student"), children: "\u{1F393} Student" }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", className: role === "faculty" ? "active" : "", onClick: () => setRole("faculty"), children: "\u{1F9D1}\u200D\u{1F3EB} Faculty" })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("form", { className: "form", onSubmit: submit, children: [
+        mode === "register" && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "field", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("label", { children: "Full name" }),
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { value: form.name, onChange: change("name"), placeholder: "e.g. Dr. Ayesha Khan" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "field", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("label", { children: "Email" }),
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "email", value: form.email, onChange: change("email"), placeholder: "you@bahria.edu.pk" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "field", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("label", { children: "Password" }),
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "password", value: form.password, onChange: change("password"), placeholder: "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022" })
+        ] }),
+        err && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: "notice notice--warn", children: err }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { className: "btn btn--primary btn--block btn--lg", type: "submit", children: mode === "login" ? "Sign in \u2192" : "Create account \u2192" }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "row", style: { justifyContent: "space-between", fontSize: 13 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { className: "muted", children: mode === "login" ? /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_jsx_runtime5.Fragment, { children: [
+            "New here? ",
+            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("a", { href: "#", onClick: (e) => {
+              e.preventDefault();
+              setMode("register");
+            }, children: "Create an account" })
+          ] }) : /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_jsx_runtime5.Fragment, { children: [
+            "Already registered? ",
+            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("a", { href: "#", onClick: (e) => {
+              e.preventDefault();
+              setMode("login");
+            }, children: "Sign in" })
+          ] }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", className: "btn btn--sm btn--ghost", onClick: demoFill, children: "\u2728 Fill demo credentials" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: "notice", style: { fontSize: 12 }, children: "Demo build \xB7 credentials are stored locally on this device \u2014 no server. Use any email + password to enter." })
+      ] })
+    ] })
+  ] });
+}
+
+// src/utils/achievements.js
+var ACHIEVEMENTS = [
+  { id: "first-quiz", icon: "\u{1F680}", title: "First steps", hint: "Complete your first quiz" },
+  { id: "perfect", icon: "\u{1F4AF}", title: "Perfectionist", hint: "Score 100% on any quiz" },
+  { id: "five-quizzes", icon: "\u{1F525}", title: "On a roll", hint: "Complete 5 quizzes" },
+  { id: "high-flyer", icon: "\u{1F3C6}", title: "High flyer", hint: "Average \u2265 80% across attempts" },
+  { id: "explorer", icon: "\u{1F9ED}", title: "Topic explorer", hint: "Attempt quizzes on 3+ topics" },
+  { id: "bookworm", icon: "\u{1F4DA}", title: "Bookworm", hint: "Bookmark 3+ reading modules" },
+  { id: "scholar", icon: "\u270D\uFE0F", title: "Scholar", hint: "Write notes on 3+ topics" },
+  { id: "ar-pioneer", icon: "\u{1F9B7}", title: "AR pioneer", hint: "Open the AR viewer" }
+];
+var computeAchievements = (email) => {
+  const attempts = attemptsFor(email);
+  const bookmarks = getBookmarks(email);
+  const notes = getNotes(email);
+  const noteCount = Object.values(notes).filter((v) => (v || "").trim().length > 10).length;
+  const topics = new Set(attempts.map((a) => a.quizId));
+  const avg = attempts.length ? attempts.reduce((s, a) => s + a.percent, 0) / attempts.length : 0;
+  const visitedAR = !!localStorage.getItem("oralpath:v1:visited_ar");
+  return {
+    "first-quiz": attempts.length >= 1,
+    "perfect": attempts.some((a) => a.percent === 100),
+    "five-quizzes": attempts.length >= 5,
+    "high-flyer": attempts.length >= 3 && avg >= 80,
+    "explorer": topics.size >= 3,
+    "bookworm": bookmarks.length >= 3,
+    "scholar": noteCount >= 3,
+    "ar-pioneer": visitedAR
+  };
+};
+var markARVisited = () => {
+  try {
+    localStorage.setItem("oralpath:v1:visited_ar", "1");
+  } catch {
+  }
+};
+var computeStreak = (email) => {
+  const attempts = attemptsFor(email);
+  if (!attempts.length) return 0;
+  const dayKey = (d) => new Date(d).toISOString().slice(0, 10);
+  const days = new Set(attempts.map((a) => dayKey(a.when)));
+  let streak = 0;
+  const cur = /* @__PURE__ */ new Date();
+  cur.setHours(0, 0, 0, 0);
+  for (; ; ) {
+    const k = cur.toISOString().slice(0, 10);
+    if (days.has(k)) {
+      streak++;
+      cur.setDate(cur.getDate() - 1);
+    } else break;
+  }
+  return streak;
+};
+var attemptsByDay = (email, span = 84) => {
+  const attempts = attemptsFor(email);
+  const map = {};
+  for (const a of attempts) {
+    const k = new Date(a.when).toISOString().slice(0, 10);
+    map[k] = (map[k] || 0) + 1;
+  }
+  return map;
+};
+
+// src/components/Charts.jsx
+var import_jsx_runtime6 = __toESM(require_jsx_runtime(), 1);
+var Sparkline = ({ values = [], width = 240, height = 56, stroke = "var(--brand)", fill = "rgba(25,211,197,0.20)" }) => {
+  if (!values.length) {
+    return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("svg", { width, height, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("text", { x: "50%", y: "50%", textAnchor: "middle", dominantBaseline: "middle", fill: "var(--muted)", fontSize: "12", children: "No data yet" }) });
+  }
+  const min = Math.min(...values, 0);
+  const max = Math.max(...values, 100);
+  const pad = 4;
+  const w = width - pad * 2;
+  const h = height - pad * 2;
+  const step = values.length > 1 ? w / (values.length - 1) : w;
+  const pts = values.map((v, i) => {
+    const x = pad + i * step;
+    const y = pad + h - (v - min) / Math.max(1, max - min) * h;
+    return [x, y];
+  });
+  const path = pts.map(([x, y], i) => i === 0 ? `M${x},${y}` : `L${x},${y}`).join(" ");
+  const area = `${path} L${pts[pts.length - 1][0]},${pad + h} L${pts[0][0]},${pad + h} Z`;
+  return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("svg", { width, height, role: "img", "aria-label": "Score trend", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("path", { d: area, fill }),
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("path", { d: path, fill: "none", stroke, strokeWidth: "2.4", strokeLinecap: "round", strokeLinejoin: "round" }),
+    pts.map(([x, y], i) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("circle", { cx: x, cy: y, r: "2.6", fill: stroke }, i))
+  ] });
+};
+var LineChart = ({ data = [], width = 640, height = 220, yLabel = "Score (%)" }) => {
+  const padL = 36, padR = 16, padT = 16, padB = 30;
+  const w = width - padL - padR;
+  const h = height - padT - padB;
+  const yMin = 0, yMax = 100;
+  if (!data.length) {
+    return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("svg", { width, height, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("text", { x: "50%", y: "50%", textAnchor: "middle", dominantBaseline: "middle", fill: "var(--muted)", fontSize: "13", children: "No attempts yet \u2014 take a quiz to populate this chart." }) });
+  }
+  const xStep = data.length > 1 ? w / (data.length - 1) : w;
+  const xy = data.map((d, i) => [
+    padL + i * xStep,
+    padT + h - (d.y - yMin) / (yMax - yMin) * h
+  ]);
+  const path = xy.map(([x, y], i) => i === 0 ? `M${x},${y}` : `L${x},${y}`).join(" ");
+  const area = `${path} L${xy[xy.length - 1][0]},${padT + h} L${xy[0][0]},${padT + h} Z`;
+  const gridYs = [0, 25, 50, 75, 100];
+  return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("svg", { width: "100%", viewBox: `0 0 ${width} ${height}`, role: "img", "aria-label": yLabel, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("defs", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("linearGradient", { id: "lc-fill", x1: "0", y1: "0", x2: "0", y2: "1", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "0%", stopColor: "var(--brand)", stopOpacity: "0.35" }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "100%", stopColor: "var(--brand)", stopOpacity: "0.02" })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("linearGradient", { id: "lc-stroke", x1: "0", y1: "0", x2: "1", y2: "0", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "0%", stopColor: "var(--brand)" }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("stop", { offset: "100%", stopColor: "var(--violet)" })
+      ] })
+    ] }),
+    gridYs.map((v) => {
+      const y = padT + h - (v - yMin) / (yMax - yMin) * h;
+      return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("g", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("line", { x1: padL, y1: y, x2: padL + w, y2: y, stroke: "var(--border)", strokeDasharray: "2 4" }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("text", { x: padL - 8, y: y + 4, textAnchor: "end", fontSize: "11", fill: "var(--muted)", children: v })
+      ] }, v);
+    }),
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("path", { d: area, fill: "url(#lc-fill)" }),
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("path", { d: path, fill: "none", stroke: "url(#lc-stroke)", strokeWidth: "3", strokeLinecap: "round", strokeLinejoin: "round" }),
+    xy.map(([x, y], i) => /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("g", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("circle", { cx: x, cy: y, r: "4", fill: "var(--bg)", stroke: "var(--brand)", strokeWidth: "2" }),
+      (data.length <= 12 || i === xy.length - 1) && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("text", { x, y: padT + h + 16, textAnchor: "middle", fontSize: "10", fill: "var(--muted)", children: data[i].x })
+    ] }, i))
+  ] });
+};
+var Donut = ({ value = 0, max = 100, size = 110, stroke = 12, color = "var(--brand)", label = "" }) => {
+  const r = (size - stroke) / 2;
+  const c = 2 * Math.PI * r;
+  const pct = Math.max(0, Math.min(1, value / max));
+  return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("svg", { width: size, height: size, role: "img", "aria-label": label || `${value}/${max}`, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("circle", { cx: size / 2, cy: size / 2, r, stroke: "var(--bg-2)", strokeWidth: stroke, fill: "none" }),
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+      "circle",
+      {
+        cx: size / 2,
+        cy: size / 2,
+        r,
+        stroke: color,
+        strokeWidth: stroke,
+        fill: "none",
+        strokeLinecap: "round",
+        strokeDasharray: `${c * pct} ${c}`,
+        transform: `rotate(-90 ${size / 2} ${size / 2})`
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
+      "text",
+      {
+        x: "50%",
+        y: "50%",
+        textAnchor: "middle",
+        dominantBaseline: "middle",
+        fontSize: size * 0.26,
+        fill: "var(--text)",
+        fontWeight: "800",
+        fontFamily: "var(--font-display)",
+        children: [
+          Math.round(pct * 100),
+          "%"
+        ]
+      }
+    )
+  ] });
+};
+var MultiDonut = ({ segments = [], size = 130, stroke = 14 }) => {
+  const total = segments.reduce((s, x) => s + x.value, 0) || 1;
+  const r = (size - stroke) / 2;
+  const c = 2 * Math.PI * r;
+  let offset = 0;
+  return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("svg", { width: size, height: size, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("circle", { cx: size / 2, cy: size / 2, r, stroke: "var(--bg-2)", strokeWidth: stroke, fill: "none" }),
+    segments.map((s, i) => {
+      const len = s.value / total * c;
+      const el = /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+        "circle",
+        {
+          cx: size / 2,
+          cy: size / 2,
+          r,
+          fill: "none",
+          stroke: s.color,
+          strokeWidth: stroke,
+          strokeLinecap: "butt",
+          strokeDasharray: `${len} ${c - len}`,
+          strokeDashoffset: -offset,
+          transform: `rotate(-90 ${size / 2} ${size / 2})`
+        },
+        i
+      );
+      offset += len;
+      return el;
+    }),
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+      "text",
+      {
+        x: "50%",
+        y: "50%",
+        textAnchor: "middle",
+        dominantBaseline: "middle",
+        fontSize: size * 0.22,
+        fill: "var(--text)",
+        fontWeight: "800",
+        fontFamily: "var(--font-display)",
+        children: total
+      }
+    )
+  ] });
+};
+var Heatmap = ({ days = 84, values = {}, max = 5 }) => {
+  const today = /* @__PURE__ */ new Date();
+  today.setHours(0, 0, 0, 0);
+  const cells = [];
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const key = d.toISOString().slice(0, 10);
+    const v = values[key] || 0;
+    cells.push({ key, v, d });
+  }
+  return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { style: { display: "grid", gridTemplateColumns: `repeat(${Math.ceil(days / 7)}, 1fr)`, gap: 4 }, children: Array.from({ length: 7 }).map((_, row) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { style: { display: "contents" }, children: cells.filter((_2, idx) => idx % 7 === row).map((c) => {
+    const level = Math.min(4, Math.floor(c.v / max * 4));
+    const colors = ["var(--bg-2)", "rgba(25,211,197,0.25)", "rgba(25,211,197,0.45)", "rgba(25,211,197,0.70)", "var(--brand)"];
+    return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+      "div",
+      {
+        title: `${c.key}: ${c.v} attempt${c.v === 1 ? "" : "s"}`,
+        style: {
+          width: 12,
+          height: 12,
+          borderRadius: 3,
+          background: colors[level],
+          border: "1px solid var(--border)"
+        }
+      },
+      c.key
+    );
+  }) }, row)) });
+};
+
+// src/pages/StudentHome.jsx
+var import_jsx_runtime7 = __toESM(require_jsx_runtime(), 1);
+function StudentHome({ user }) {
+  const attempts = attemptsFor(user.email);
+  const last = attempts[0];
+  const avg = attempts.length ? Math.round(attempts.reduce((s, a) => s + a.percent, 0) / attempts.length) : 0;
+  const best = attempts.length ? Math.max(...attempts.map((a) => a.percent)) : 0;
+  const trend = attempts.slice(0, 12).reverse().map((a) => a.percent);
+  const streak = computeStreak(user.email);
+  const days = attemptsByDay(user.email);
+  const earned = computeAchievements(user.email);
+  const earnedCount = Object.values(earned).filter(Boolean).length;
+  return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("section", { className: "container section fade-in", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "spread mb-24", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("span", { className: "hero__chip", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "dot" }),
+          "Student dashboard"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("h2", { className: "section__title mt-12", children: [
+          "Welcome back, ",
+          user.name?.split(" ")[0] || "Student",
+          " \u{1F44B}"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { className: "section__sub", children: "Pick up where you left off, take a quick quiz, or explore anatomy in 3D." })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "row", style: { gap: 10, flexWrap: "wrap" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Link, { to: "/quiz", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { className: "btn btn--primary", children: "\u{1F4DD} Take sample quiz" }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Link, { to: "/ar", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { className: "btn", children: "\u{1F9B7} Explore AR" }) })
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "grid mb-24", style: { gridTemplateColumns: "1.4fr 1fr" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "chart-card fade-in fade-in--d1", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "spread", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { children: "Recent score trend" }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("p", { className: "muted", style: { fontSize: 13 }, children: [
+              "Last ",
+              trend.length || 0,
+              " attempts \xB7 higher is better."
+            ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "row", style: { gap: 8 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("span", { className: "tag", children: [
+              "avg ",
+              avg,
+              "%"
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("span", { className: "tag tag--accent", children: [
+              "best ",
+              best,
+              "%"
+            ] })
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "mt-12", style: { width: "100%" }, children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Sparkline, { values: trend.length ? trend : [0], width: 680, height: 120 }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "chart-card fade-in fade-in--d2", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "spread", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { children: "Mastery" }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { className: "muted", style: { fontSize: 13 }, children: "Average across all attempts." })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Donut, { value: avg, max: 100, color: "var(--brand)" })
+        ] }),
+        streak > 0 ? /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "streak mt-16", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "streak__num", children: streak }),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "streak__label", children: "day streak \u{1F525}" }),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "streak__sub", children: "Keep going \u2014 take a quiz today." })
+        ] }) }) : /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "notice mt-16", children: "Take a quiz today to start a learning streak." })
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "stats mb-24", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "stat", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "stat__icon", children: "\u{1F4DD}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "stat__label", children: "Attempts" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "stat__value", children: attempts.length })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "stat", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "stat__icon", children: "\u2B50" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "stat__label", children: "Best score" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "stat__value", children: [
+          best,
+          "%"
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "stat", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "stat__icon", children: "\u{1F4CA}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "stat__label", children: "Average" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "stat__value", children: [
+          avg,
+          "%"
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "stat", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "stat__icon", children: "\u{1F4DA}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "stat__label", children: "Topics" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "stat__value", children: TOPICS.length })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "stat", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "stat__icon", children: "\u{1F3C6}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "stat__label", children: "Achievements" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "stat__value", children: [
+          earnedCount,
+          "/",
+          ACHIEVEMENTS.length
+        ] })
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { className: "section__title", children: "Study tools" }),
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "grid mb-24", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Link, { to: "/reading", className: "card card--feature", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "card__icon", children: "\u{1F4D6}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { children: "Reading" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { children: "Concise notes on every topic in the syllabus, with bookmarks and per-topic notes." })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Link, { to: "/cv", className: "card card--violet", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "card__icon", children: "\u{1F52C}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { children: "CV image lab" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { children: "Upload a radiograph and explore grayscale, histogram, Sobel edges and segmentation in-browser." })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Link, { to: "/prompting", className: "card card--warm", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "card__icon", children: "\u{1F4A1}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { children: "Prompting drills" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { children: "Clinical vignettes \u2014 type your answer and compare against the model response." })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Link, { to: "/ar", className: "card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "card__icon", children: "\u{1F9B7}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { children: "3D / AR anatomy" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { children: "Photoreal NIH 3D models with augmented-reality projection on Android." })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Link, { to: "/quiz", className: "card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "card__icon", children: "\u{1F4DD}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { children: "Take a quiz" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { children: "Topic-targeted or randomised mixed quizzes with instant feedback." })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Link, { to: "/blog", className: "card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "card__icon", children: "\u270D\uFE0F" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { children: "Faculty blog" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { children: "Articles and supplementary PDFs published by your teachers." })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Link, { to: "/results", className: "card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "card__icon", children: "\u{1F4C8}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { children: "My results" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { children: "Review your trends, per-quiz averages and every attempt." })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Link, { to: "/guide", className: "card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "card__icon", children: "\u2753" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { children: "User guide" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { children: "Every feature, with annotated screenshots." })
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "grid mb-24", style: { gridTemplateColumns: "1.2fr 1fr" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "chart-card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "spread", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { children: "Achievements" }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("p", { className: "muted", style: { fontSize: 13 }, children: [
+              earnedCount,
+              " of ",
+              ACHIEVEMENTS.length,
+              " unlocked \u2014 keep practising to fill the set."
+            ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("span", { className: "tag tag--accent", children: [
+            "+",
+            earnedCount * 10,
+            " XP"
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "badge-grid mt-16", children: ACHIEVEMENTS.map((a) => /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "badge " + (earned[a.id] ? "badge--earned" : "badge--locked"), children: [
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "badge__icon", children: a.icon }),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h4", { children: a.title }),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { children: a.hint })
+        ] }, a.id)) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "chart-card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "spread", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { children: "Activity (last 84 days)" }),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { className: "muted", style: { fontSize: 13 }, children: "One dot per day. Darker = more attempts." })
+        ] }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "mt-16", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Heatmap, { days: 84, values: days, max: 5 }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "row mt-16", style: { gap: 10, fontSize: 12, color: "var(--muted)" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { children: "Less" }),
+          ["var(--bg-2)", "rgba(25,211,197,0.25)", "rgba(25,211,197,0.45)", "rgba(25,211,197,0.70)", "var(--brand)"].map((c, i) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { style: { width: 12, height: 12, borderRadius: 3, background: c, border: "1px solid var(--border)" } }, i)),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { children: "More" })
+        ] })
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { className: "section__title", children: "Recent attempts" }),
+    attempts.length ? /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("table", { className: "table", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("tr", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("th", { children: "When" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("th", { children: "Quiz" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("th", { children: "Score" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("th", { children: "Result" })
+      ] }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("tbody", { children: attempts.slice(0, 8).map((a) => /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("tr", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("td", { children: new Date(a.when).toLocaleString() }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("td", { children: a.title }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("td", { children: [
+          a.score,
+          "/",
+          a.total
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("td", { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("span", { className: "tag " + (a.percent >= 70 ? "" : a.percent >= 50 ? "tag--warn" : "tag--danger"), children: [
+          a.percent,
+          "%"
+        ] }) })
+      ] }, a.id)) })
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "notice", children: "No attempts yet. Take your first quiz to see results here." })
+  ] });
+}
+
+// src/pages/FacultyHome.jsx
+var import_jsx_runtime8 = __toESM(require_jsx_runtime(), 1);
+function FacultyHome({ user }) {
+  const materials = getMaterials();
+  const attempts = getAttempts();
+  const studentCount = new Set(attempts.filter((a) => a.role === "student").map((a) => a.userEmail)).size;
+  const avg = attempts.length ? Math.round(attempts.reduce((s, a) => s + a.percent, 0) / attempts.length) : 0;
+  const passRate = attempts.length ? Math.round(attempts.filter((a) => a.percent >= 50).length / attempts.length * 100) : 0;
+  const recent = attempts.slice(0, 14).reverse().map((a) => a.percent);
+  return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("section", { className: "container section fade-in", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "spread mb-24", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("span", { className: "hero__chip", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { className: "dot" }),
+          "Faculty dashboard"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("h2", { className: "section__title mt-12", children: [
+          "Welcome, Dr. ",
+          user.name?.split(" ").slice(-1)[0] || "Faculty",
+          " \u{1F44B}"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { className: "section__sub", children: "Manage materials, generate quizzes from PDFs, and review class performance." })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "row", style: { gap: 10, flexWrap: "wrap" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Link, { to: "/upload", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { className: "btn btn--primary", children: "\u{1F4C4} Upload PDF & generate quiz" }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Link, { to: "/reports", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { className: "btn", children: "\u{1F4CA} Reports" }) })
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "grid mb-24", style: { gridTemplateColumns: "1.4fr 1fr" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "chart-card fade-in fade-in--d1", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "spread", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { children: "Class score trend" }),
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("p", { className: "muted", style: { fontSize: 13 }, children: [
+              "Most recent ",
+              recent.length,
+              " attempts in chronological order."
+            ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("span", { className: "tag", children: [
+            "avg ",
+            avg,
+            "% \xB7 pass ",
+            passRate,
+            "%"
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "mt-12", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Sparkline, { values: recent.length ? recent : [0], width: 680, height: 130 }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "chart-card fade-in fade-in--d2", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "spread", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { children: "Class average" }),
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("p", { className: "muted", style: { fontSize: 13 }, children: [
+            "Across ",
+            attempts.length,
+            " attempts."
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Donut, { value: avg, max: 100, color: "var(--violet)" })
+      ] }) })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "stats mb-24", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "stat", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "stat__icon", children: "\u{1F4DA}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "stat__label", children: "Materials" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "stat__value", children: materials.length })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "stat", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "stat__icon", children: "\u{1F4DD}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "stat__label", children: "Total attempts" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "stat__value", children: attempts.length })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "stat", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "stat__icon", children: "\u{1F465}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "stat__label", children: "Active students" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "stat__value", children: studentCount })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "stat", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "stat__icon", children: "\u{1F3AF}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "stat__label", children: "Pass rate (\u226550%)" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "stat__value", children: [
+          passRate,
+          "%"
+        ] })
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { className: "section__title", children: "Quick actions" }),
+    /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "grid mb-24", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(Link, { to: "/upload", className: "card card--feature", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "card__icon", children: "\u{1F4C4}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { children: "Upload & generate" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { children: "Upload a PDF chapter and auto-generate a quiz with AI or the offline heuristic." })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(Link, { to: "/faculty/blog", className: "card card--violet", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "card__icon", children: "\u270D\uFE0F" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { children: "Blog manager" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { children: "Compose articles for your students \u2014 cover image, body, tags and optional PDF attachment." })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(Link, { to: "/reports", className: "card card--warm", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "card__icon", children: "\u{1F4CA}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { children: "Performance reports" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { children: "Class average, pass rate, grade-distribution donut and per-student attempt history. CSV export." })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(Link, { to: "/cv", className: "card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "card__icon", children: "\u{1F52C}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { children: "CV image lab" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { children: "Run the radiograph analysis pipeline yourself \u2014 useful for demos and class showcases." })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(Link, { to: "/ar", className: "card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "card__icon", children: "\u{1F9B7}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { children: "Preview AR models" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { children: "Compare normal anatomy vs pathology side-by-side; check what students see in the AR view." })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(Link, { to: "/guide", className: "card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "card__icon", children: "\u2753" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { children: "User guide" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { children: "Walkthrough of every feature with annotated screenshots." })
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { className: "section__title", children: "Recent materials" }),
+    materials.length ? /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("table", { className: "table", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("tr", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("th", { children: "Title" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("th", { children: "Uploaded" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("th", { children: "By" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("th", { children: "Quiz" })
+      ] }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("tbody", { children: materials.slice(0, 6).map((m) => /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("tr", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("td", { children: m.title }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("td", { children: new Date(m.when).toLocaleDateString() }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("td", { children: m.by }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("td", { children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Link, { to: "/quiz", params: { material: m.id }, children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { className: "btn btn--sm", children: "Preview quiz" }) }) })
+      ] }, m.id)) })
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "notice", children: "No materials yet. Upload a PDF to auto-generate your first quiz." })
+  ] });
+}
+
+// src/pages/Reading.jsx
+var import_react6 = __toESM(require_react(), 1);
 var import_jsx_runtime9 = __toESM(require_jsx_runtime(), 1);
+var wordsPerMinute = 220;
+function Reading({ user }) {
+  const { params } = useRoute();
+  const startId = params.topic && TOPICS.some((t) => t.id === params.topic) ? params.topic : TOPICS[0].id;
+  const [active, setActive] = (0, import_react6.useState)(startId);
+  const [query, setQuery] = (0, import_react6.useState)("");
+  const topic = TOPICS.find((t) => t.id === active);
+  const email = user?.email || "guest@local";
+  const [bookmarks, setBookmarks] = (0, import_react6.useState)(getBookmarks(email));
+  const [note, setNote] = (0, import_react6.useState)(getNotes(email)[active] || "");
+  const [progress, setProgress] = (0, import_react6.useState)(0);
+  const articleRef = (0, import_react6.useRef)(null);
+  (0, import_react6.useEffect)(() => {
+    setNote(getNotes(email)[active] || "");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [active, email]);
+  (0, import_react6.useEffect)(() => {
+    const onScroll = () => {
+      const el = articleRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const total = rect.height - window.innerHeight;
+      const scrolled = -rect.top;
+      const p = Math.max(0, Math.min(1, total > 0 ? scrolled / total : 0));
+      setProgress(p);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [active]);
+  const saveNote = (v) => {
+    setNote(v);
+    setNoteFor(email, active, v);
+  };
+  const onBookmark = () => setBookmarks(toggleBookmark(email, active));
+  const filteredTopics = (0, import_react6.useMemo)(() => {
+    if (!query.trim()) return TOPICS;
+    const q = query.toLowerCase();
+    return TOPICS.filter(
+      (t) => t.title.toLowerCase().includes(q) || t.summary.toLowerCase().includes(q) || t.body.some((p) => p.toLowerCase().includes(q))
+    );
+  }, [query]);
+  const wordCount = (0, import_react6.useMemo)(
+    () => topic.body.join(" ").split(/\s+/).filter(Boolean).length,
+    [topic]
+  );
+  const readMin = Math.max(1, Math.round(wordCount / wordsPerMinute));
+  return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("section", { className: "container section fade-in", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+      "div",
+      {
+        className: "reading__progress",
+        style: { transform: `scaleX(${progress})` },
+        "aria-hidden": "true"
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "spread mb-16", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("span", { className: "hero__chip", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "dot" }),
+          "Reading library"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h2", { className: "section__title mt-12", children: "Reading" }),
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("p", { className: "section__sub", children: [
+          TOPICS.length,
+          " modules \xB7 curated from standard oral pathology references."
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(Link, { to: "/quiz", params: { topic: active }, children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { className: "btn btn--primary", children: "\u{1F4DD} Quiz on this topic" }) })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "reading", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("aside", { className: "reading__toc", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { className: "field", style: { marginBottom: 10 }, children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+          "input",
+          {
+            value: query,
+            onChange: (e) => setQuery(e.target.value),
+            placeholder: "\u{1F50D} Search topics\u2026",
+            style: { background: "var(--bg-2)" }
+          }
+        ) }),
+        filteredTopics.map((t) => /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+          "button",
+          {
+            className: t.id === active ? "active" : "",
+            onClick: () => {
+              setActive(t.id);
+              navigate("/reading", { topic: t.id });
+            },
+            children: [
+              bookmarks.includes(t.id) && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "star", children: "\u2605" }),
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { children: t.title })
+            ]
+          },
+          t.id
+        )),
+        !filteredTopics.length && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { className: "muted center", style: { padding: 12, fontSize: 13 }, children: "No matches." })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("article", { className: "reading__content", ref: articleRef, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "spread", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h2", { children: topic.title }),
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "row mt-4", style: { gap: 10, flexWrap: "wrap", fontSize: 12, color: "var(--muted)" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("span", { children: [
+                "\u23F1 ~",
+                readMin,
+                " min read"
+              ] }),
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("span", { children: [
+                "\u{1F4DD} ",
+                wordCount,
+                " words"
+              ] }),
+              topic.tags.map((t) => /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "tag", children: t }, t))
+            ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { className: "btn btn--sm", onClick: onBookmark, children: bookmarks.includes(topic.id) ? "\u2605 Bookmarked" : "\u2606 Bookmark" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { className: "muted mt-12", style: { fontStyle: "italic" }, children: topic.summary }),
+        topic.body.map((p, i) => /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { children: p }, i)),
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h3", { className: "mt-24", children: "My notes" }),
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+          "textarea",
+          {
+            className: "field",
+            value: note,
+            onChange: (e) => saveNote(e.target.value),
+            placeholder: "Type your notes here \u2014 saved locally as you type.",
+            style: { width: "100%", minHeight: 140, background: "var(--bg-2)", border: "1px solid var(--border)", color: "var(--text)", padding: 14, borderRadius: 12, fontFamily: "inherit", fontSize: 14, lineHeight: 1.6 }
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { className: "muted mt-8", style: { fontSize: 12 }, children: "\u{1F4BE} Notes auto-save to your browser and stay private to your device." }),
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "row mt-24", style: { gap: 10, flexWrap: "wrap" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(Link, { to: "/quiz", params: { topic: active }, children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("button", { className: "btn btn--primary", children: [
+            "\u{1F4DD} Quiz on ",
+            topic.title
+          ] }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(Link, { to: "/ar", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { className: "btn", children: "\u{1F9B7} View in 3D / AR" }) })
+        ] })
+      ] })
+    ] })
+  ] });
+}
+
+// src/pages/ARView.jsx
+var import_react7 = __toESM(require_react(), 1);
+var import_jsx_runtime10 = __toESM(require_jsx_runtime(), 1);
 function ARView() {
-  const [active, setActive] = (0, import_react5.useState)(MODELS[0].id);
-  const mvRef = (0, import_react5.useRef)(null);
+  const [active, setActive] = (0, import_react7.useState)(MODELS[0].id);
+  const [compareId, setCompareId] = (0, import_react7.useState)(null);
+  const [mode, setMode] = (0, import_react7.useState)("inspect");
+  const [bgPattern, setBgPattern] = (0, import_react7.useState)("neutral");
+  const mvRef = (0, import_react7.useRef)(null);
+  const mv2Ref = (0, import_react7.useRef)(null);
   const m = MODELS.find((x) => x.id === active);
-  (0, import_react5.useEffect)(() => {
+  const m2 = compareId ? MODELS.find((x) => x.id === compareId) : null;
+  (0, import_react7.useEffect)(() => {
+    markARVisited();
+  }, []);
+  const placeHotspots = (mv, model) => {
+    if (!mv || !model?.hotspots?.length) return;
+    try {
+      const c = mv.getBoundingBoxCenter();
+      const d = mv.getDimensions();
+      if (!c || !d) return;
+      const fmt = (n) => Number(n).toFixed(3);
+      const positions = [
+        `${fmt(c.x)} ${fmt(c.y + d.y * 0.3)} ${fmt(c.z + d.z * 0.35)}`,
+        `${fmt(c.x + d.x * 0.42)} ${fmt(c.y)} ${fmt(c.z - d.z * 0.1)}`,
+        `${fmt(c.x)} ${fmt(c.y - d.y * 0.3)} ${fmt(c.z - d.z * 0.25)}`,
+        `${fmt(c.x - d.x * 0.42)} ${fmt(c.y)} ${fmt(c.z - d.z * 0.1)}`
+      ];
+      model.hotspots.forEach((h, i) => {
+        if (positions[i]) mv.updateHotspot({ name: `hotspot-${h.id}`, position: positions[i] });
+      });
+    } catch (_) {
+    }
+  };
+  (0, import_react7.useEffect)(() => {
     const mv = mvRef.current;
     if (!mv) return;
-    const placeHotspots = () => {
-      try {
-        const c = mv.getBoundingBoxCenter();
-        const d = mv.getDimensions();
-        if (!c || !d) return;
-        const fmt = (n) => Number(n).toFixed(3);
-        const positions = [
-          `${fmt(c.x)}                   ${fmt(c.y + d.y * 0.3)} ${fmt(c.z + d.z * 0.35)}`,
-          `${fmt(c.x + d.x * 0.42)}     ${fmt(c.y)}               ${fmt(c.z - d.z * 0.1)}`,
-          `${fmt(c.x)}                   ${fmt(c.y - d.y * 0.3)} ${fmt(c.z - d.z * 0.25)}`,
-          `${fmt(c.x - d.x * 0.42)}     ${fmt(c.y)}               ${fmt(c.z - d.z * 0.1)}`
-        ];
-        m.hotspots.forEach((h, i) => {
-          if (positions[i]) {
-            mv.updateHotspot({ name: `hotspot-${h.id}`, position: positions[i] });
-          }
-        });
-      } catch (_) {
-      }
-    };
-    mv.addEventListener("load", placeHotspots);
-    if (mv.loaded) placeHotspots();
-    return () => mv.removeEventListener("load", placeHotspots);
+    const fn = () => placeHotspots(mv, m);
+    mv.addEventListener("load", fn);
+    if (mv.loaded) fn();
+    return () => mv.removeEventListener("load", fn);
   }, [active, m]);
-  return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("section", { className: "container section", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h2", { className: "section__title", children: "3D & Augmented Reality" }),
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("p", { className: "section__sub", children: [
-      "Rotate, pinch-zoom, and orbit the model. On supported Android devices, tap",
-      " ",
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("b", { children: "View in your space" }),
-      " to project the model into your environment using ARCore."
+  (0, import_react7.useEffect)(() => {
+    const mv = mv2Ref.current;
+    if (!mv || !m2) return;
+    const fn = () => placeHotspots(mv, m2);
+    mv.addEventListener("load", fn);
+    if (mv.loaded) fn();
+    return () => mv.removeEventListener("load", fn);
+  }, [compareId, m2]);
+  const otherModels = MODELS.filter((x) => x.id !== active);
+  return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("section", { className: "container section fade-in", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "spread mb-16", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("span", { className: "hero__chip", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "dot" }),
+          "3D \xB7 WebXR \xB7 ARCore"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("h2", { className: "section__title mt-12", children: "3D & Augmented Reality" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("p", { className: "section__sub", children: [
+          "Rotate, pinch-zoom and orbit photoreal NIH 3D models. On supported Android devices, tap",
+          " ",
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("b", { children: "View in your space" }),
+          " to project the model into your environment using ARCore."
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "row", style: { gap: 8, flexWrap: "wrap" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+          "button",
+          {
+            className: "btn btn--sm " + (mode === "inspect" ? "btn--primary" : ""),
+            onClick: () => {
+              setMode("inspect");
+              setCompareId(null);
+            },
+            children: "\u{1F50D} Inspect"
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+          "button",
+          {
+            className: "btn btn--sm " + (mode === "compare" ? "btn--primary" : ""),
+            onClick: () => {
+              setMode("compare");
+              if (!compareId) setCompareId(otherModels[0]?.id);
+            },
+            children: "\u21C6 Compare"
+          }
+        )
+      ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { className: "grid mb-24", style: { gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }, children: MODELS.map((model) => /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "grid mb-24", style: { gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))" }, children: MODELS.map((model) => /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
       "button",
       {
-        className: "card " + (model.id === active ? "" : ""),
+        className: "card",
         onClick: () => setActive(model.id),
         style: {
           textAlign: "left",
           cursor: "pointer",
           borderColor: model.id === active ? "var(--brand)" : "var(--border)",
-          background: model.id === active ? "var(--panel-2)" : "var(--panel)"
+          background: model.id === active ? "rgba(25,211,197,0.08)" : "var(--panel)"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { className: "row", children: model.tags.map((t) => /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "tag", children: t }, t)) }),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h3", { children: model.title }),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { children: model.description })
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "row row--wrap", children: model.tags.map((t) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "tag", children: t }, t)) }),
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("h3", { children: model.title }),
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { children: model.description })
         ]
       },
       model.id
     )) }),
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "viewer", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+    mode === "inspect" && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "viewer", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
         "model-viewer",
         {
           ref: mvRef,
@@ -25446,10 +26267,10 @@ function ARView() {
           "auto-rotate": true,
           ar: true,
           "ar-modes": "webxr scene-viewer quick-look",
-          "shadow-intensity": "1",
-          exposure: "1",
-          "environment-image": "neutral",
-          children: m.hotspots.map((h) => /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+          "shadow-intensity": "0.9",
+          exposure: "1.05",
+          "environment-image": bgPattern,
+          children: m.hotspots.map((h) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
             "button",
             {
               className: "hotspot",
@@ -25457,14 +26278,15 @@ function ARView() {
               "data-position": "0 0 0",
               "data-normal": "0 1 0",
               style: {
-                background: "rgba(24,169,153,0.95)",
-                color: "#fff",
-                border: "0",
-                padding: "6px 10px",
+                background: "linear-gradient(135deg, #19d3c5, #9b7bff)",
+                color: "#06141a",
+                border: 0,
+                padding: "6px 12px",
                 borderRadius: 999,
                 fontSize: 12,
                 fontWeight: 700,
-                boxShadow: "0 2px 6px rgba(0,0,0,0.4)"
+                boxShadow: "0 6px 16px rgba(0,0,0,0.5)",
+                cursor: "pointer"
               },
               children: h.label
             },
@@ -25473,41 +26295,142 @@ function ARView() {
         },
         m.id
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "viewer__info", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h2", { children: m.title }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { className: "tags", children: m.tags.map((t) => /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "tag", children: t }, t)) }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { className: "muted", children: m.description }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h3", { className: "mt-16", children: "Controls" }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("ul", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("li", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("b", { children: "Drag" }),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "viewer__info", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("h2", { children: m.title }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "tags", children: m.tags.map((t) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "tag", children: t }, t)) }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { className: "muted", children: m.description }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("h3", { className: "mt-16", children: "Controls" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("ul", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("li", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("b", { children: "Drag" }),
             " to orbit"
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("li", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("b", { children: "Pinch" }),
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("li", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("b", { children: "Pinch" }),
             " / scroll to zoom"
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("li", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("b", { children: "Two-finger drag" }),
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("li", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("b", { children: "Two-finger drag" }),
             " to pan"
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("li", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("b", { children: "View in your space" }),
-            " (mobile AR) \u2014 requires ARCore on Android"
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("li", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("b", { children: "View in your space" }),
+            " (mobile AR) \u2014 requires ARCore on Android or Quick Look on iOS"
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "notice mt-16", children: [
-          "All anatomical models are sourced from the NIH 3D Print Exchange and processed for interactive clinical education. Use ",
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "kbd", children: "View in your space" }),
-          " on supported Android devices for augmented reality overlay."
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("h3", { className: "mt-16", children: "Environment" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "row", style: { gap: 6, flexWrap: "wrap" }, children: ["neutral", "legacy"].map((p) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+          "button",
+          {
+            className: "btn btn--sm " + (bgPattern === p ? "btn--primary" : ""),
+            onClick: () => setBgPattern(p),
+            children: p
+          },
+          p
+        )) }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "notice mt-16", children: [
+          "Models sourced from the NIH 3D Print Exchange. Use",
+          " ",
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "kbd", children: "View in your space" }),
+          " on supported Android devices for AR overlay."
         ] })
+      ] })
+    ] }),
+    mode === "compare" && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_jsx_runtime10.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "row mb-12", style: { gap: 10, flexWrap: "wrap" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "muted", children: "Comparing:" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+          "select",
+          {
+            value: active,
+            onChange: (e) => setActive(e.target.value),
+            style: { background: "var(--bg-2)", color: "var(--text)", padding: "8px 10px", borderRadius: 10, border: "1px solid var(--border)" },
+            children: MODELS.map((model) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("option", { value: model.id, children: model.title }, model.id))
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "muted", children: "vs" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+          "select",
+          {
+            value: compareId || "",
+            onChange: (e) => setCompareId(e.target.value),
+            style: { background: "var(--bg-2)", color: "var(--text)", padding: "8px 10px", borderRadius: 10, border: "1px solid var(--border)" },
+            children: MODELS.filter((x) => x.id !== active).map((model) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("option", { value: model.id, children: model.title }, model.id))
+          }
+        )
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "viewer viewer--split", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "viewer__toolbar", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "tag", children: "A" }),
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("b", { style: { fontSize: 13 }, children: m.title })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+            "model-viewer",
+            {
+              ref: mvRef,
+              src: m.url,
+              alt: m.title,
+              "camera-controls": true,
+              "auto-rotate": true,
+              "shadow-intensity": "0.9",
+              exposure: "1.05",
+              "environment-image": "neutral"
+            },
+            `A-${m.id}`
+          )
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "viewer__toolbar", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "tag tag--violet", children: "B" }),
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("b", { style: { fontSize: 13 }, children: m2?.title })
+          ] }),
+          m2 && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+            "model-viewer",
+            {
+              ref: mv2Ref,
+              src: m2.url,
+              alt: m2.title,
+              "camera-controls": true,
+              "auto-rotate": true,
+              "shadow-intensity": "0.9",
+              exposure: "1.05",
+              "environment-image": "neutral"
+            },
+            `B-${m2.id}`
+          )
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("p", { className: "muted mt-12", style: { fontSize: 13 }, children: [
+        "Use compare mode to visually correlate ",
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("i", { children: "normal anatomy" }),
+        " with ",
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("i", { children: "pathology" }),
+        " \u2014 for example, the mandibular third-molar region vs. the same region with an ameloblastoma."
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "grid mt-24", style: { gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "card__icon", children: "\u{1F4F1}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("h3", { children: "How to use AR" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { children: 'Open this page on an Android device with ARCore installed. Tap "View in your space" and follow the camera prompts.' })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "card__icon", children: "\u{1F9EA}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("h3", { children: "Clinical correlation" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { children: "Each model is annotated with anatomical hotspots that link to the relevant Reading module." })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "card__icon", children: "\u{1F393}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("h3", { children: "Educational use" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { children: "Models are from the NIH 3D Print Exchange \u2014 public domain, suitable for teaching." })
       ] })
     ] })
   ] });
 }
 
 // src/pages/Quiz.jsx
-var import_react6 = __toESM(require_react(), 1);
+var import_react8 = __toESM(require_react(), 1);
 
 // src/data/quizzes.js
 var QUIZZES = {
@@ -25712,13 +26635,38 @@ var quizForTopic = (topicId) => {
   return q ? { title: q.title, questions: q.questions.map((x, i) => ({ ...x, topicId, qid: `${topicId}-${i}` })) } : null;
 };
 
+// src/utils/confetti.js
+var COLORS = ["#19d3c5", "#9b7bff", "#ff9d6b", "#ffd06b", "#ff7ac9", "#2ad29c"];
+var burstConfetti = (count = 90) => {
+  const wrap = document.createElement("div");
+  wrap.className = "confetti";
+  document.body.appendChild(wrap);
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement("i");
+    const left = Math.random() * 100;
+    const delay = Math.random() * 0.5;
+    const dur = 1.8 + Math.random() * 1.6;
+    const sway = (Math.random() - 0.5) * 240;
+    el.style.left = `${left}vw`;
+    el.style.background = COLORS[i % COLORS.length];
+    el.style.animationDuration = `${dur}s`;
+    el.style.animationDelay = `${delay}s`;
+    el.style.transform = `translateX(${sway}px)`;
+    el.style.width = `${6 + Math.random() * 6}px`;
+    el.style.height = `${10 + Math.random() * 8}px`;
+    wrap.appendChild(el);
+  }
+  setTimeout(() => wrap.remove(), 4200);
+};
+
 // src/pages/Quiz.jsx
-var import_jsx_runtime10 = __toESM(require_jsx_runtime(), 1);
+var import_jsx_runtime11 = __toESM(require_jsx_runtime(), 1);
+var SECONDS_PER_Q = 45;
 function Quiz({ user }) {
   const { params } = useRoute();
   const facultyQuizId = params.material;
   const topicId = params.topic;
-  const quiz = (0, import_react6.useMemo)(() => {
+  const quiz = (0, import_react8.useMemo)(() => {
     if (facultyQuizId) {
       const mat = getMaterials().find((m) => m.id === facultyQuizId);
       if (mat?.generatedQuiz?.length) {
@@ -25731,18 +26679,36 @@ function Quiz({ user }) {
     }
     return { title: "Sample Quiz \u2014 Mixed Topics", questions: sampleQuiz(10) };
   }, [topicId, facultyQuizId]);
-  const [i, setI] = (0, import_react6.useState)(0);
-  const [answers, setAnswers] = (0, import_react6.useState)({});
-  const [done, setDone] = (0, import_react6.useState)(false);
-  (0, import_react6.useEffect)(() => {
+  const [i, setI] = (0, import_react8.useState)(0);
+  const [answers, setAnswers] = (0, import_react8.useState)({});
+  const [done, setDone] = (0, import_react8.useState)(false);
+  const [secondsLeft, setSecondsLeft] = (0, import_react8.useState)(quiz.questions.length * SECONDS_PER_Q);
+  const [started] = (0, import_react8.useState)(Date.now());
+  const timerRef = (0, import_react8.useRef)(null);
+  (0, import_react8.useEffect)(() => {
     setI(0);
     setAnswers({});
     setDone(false);
+    setSecondsLeft(quiz.questions.length * SECONDS_PER_Q);
   }, [quiz.title]);
+  (0, import_react8.useEffect)(() => {
+    if (done) return;
+    timerRef.current = setInterval(() => {
+      setSecondsLeft((s) => {
+        if (s <= 1) {
+          clearInterval(timerRef.current);
+          submit();
+          return 0;
+        }
+        return s - 1;
+      });
+    }, 1e3);
+    return () => clearInterval(timerRef.current);
+  }, [done, quiz.title]);
   if (!quiz.questions.length) {
-    return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("section", { className: "container section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "notice notice--warn", children: "No questions found for this quiz." }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Link, { to: "/quiz", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("button", { className: "btn mt-12", children: "Take sample quiz" }) })
+    return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("section", { className: "container section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "notice notice--warn", children: "No questions found for this quiz." }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Link, { to: "/quiz", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { className: "btn mt-12", children: "Take sample quiz" }) })
     ] });
   }
   const q = quiz.questions[i];
@@ -25750,6 +26716,8 @@ function Quiz({ user }) {
   const next = () => setI(Math.min(i + 1, quiz.questions.length - 1));
   const prev = () => setI(Math.max(i - 1, 0));
   const choose = (idx) => setAnswers({ ...answers, [q.qid ?? i]: idx });
+  const answeredCount = quiz.questions.filter((qq, idx) => answers[qq.qid ?? idx] != null).length;
+  const allAnswered = answeredCount === quiz.questions.length;
   const submit = () => {
     let score2 = 0;
     quiz.questions.forEach((qq, idx) => {
@@ -25765,113 +26733,156 @@ function Quiz({ user }) {
       score: score2,
       total: quiz.questions.length,
       percent,
+      timeSec: Math.round((Date.now() - started) / 1e3),
       when: (/* @__PURE__ */ new Date()).toISOString(),
       answers
     };
     saveAttempt(attempt);
     setDone(attempt);
+    clearInterval(timerRef.current);
+    if (percent >= 70) burstConfetti(percent >= 90 ? 140 : 90);
   };
+  const mm = String(Math.floor(secondsLeft / 60)).padStart(2, "0");
+  const ss = String(secondsLeft % 60).padStart(2, "0");
+  const timerCls = secondsLeft < 30 ? "quiz__timer quiz__timer--danger" : secondsLeft < 60 ? "quiz__timer quiz__timer--warn" : "quiz__timer";
   if (done) {
-    return /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("section", { className: "container section", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "quiz", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("h2", { style: { marginTop: 0 }, children: [
-        "Result \xB7 ",
-        quiz.title
+    const verdict = done.percent >= 90 ? { tag: "Excellent", color: "var(--success)", msg: "Outstanding \u2014 you're ready for clinical scenarios." } : done.percent >= 70 ? { tag: "Great work", color: "var(--brand)", msg: "Solid grasp of the material \u2014 review the missed items below." } : done.percent >= 50 ? { tag: "Keep going", color: "var(--warn)", msg: "Foundation is there \u2014 re-read the topic and try again." } : { tag: "Needs work", color: "var(--danger)", msg: "Start with the Reading module then retake the quiz." };
+    return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("section", { className: "container section fade-in", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "quiz", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "spread", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { className: "tag", style: { background: "rgba(155,123,255,0.13)", color: "var(--violet)", borderColor: "rgba(155,123,255,0.28)" }, children: verdict.tag }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("h2", { style: { marginTop: 8, marginBottom: 0 }, children: [
+            quiz.title,
+            " \xB7 result"
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "muted mt-4", children: verdict.msg })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Donut, { value: done.percent, max: 100, color: verdict.color, size: 130 })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "stats", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "stat", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "stat__label", children: "Score" }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "stat__value", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "stats mt-24", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "stat", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "stat__label", children: "Score" }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "stat__value", children: [
             done.score,
             "/",
             done.total
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "stat", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "stat__label", children: "Percentage" }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "stat__value", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "stat", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "stat__label", children: "Percentage" }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "stat__value", children: [
             done.percent,
             "%"
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "stat", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "stat__label", children: "When" }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "stat__value", style: { fontSize: 16 }, children: new Date(done.when).toLocaleString() })
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "stat", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "stat__label", children: "Time" }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "stat__value", style: { fontSize: 22 }, children: [
+            Math.floor(done.timeSec / 60),
+            "m ",
+            done.timeSec % 60,
+            "s"
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "stat", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "stat__label", children: "When" }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "stat__value", style: { fontSize: 16 }, children: new Date(done.when).toLocaleString() })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("h3", { className: "mt-24", children: "Review" }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("h3", { className: "mt-24", children: "Question-by-question review" }),
       quiz.questions.map((qq, idx) => {
         const userIdx = answers[qq.qid ?? idx];
         const correct = userIdx === qq.a;
-        return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "card mb-12", style: { display: "block" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "row", style: { gap: 8 }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("span", { className: "tag", children: [
+        return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "card mb-12", style: { display: "block" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "row", style: { gap: 8 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("span", { className: "tag", children: [
               "Q",
               idx + 1
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "tag " + (correct ? "" : "tag--danger"), children: correct ? "Correct" : "Incorrect" })
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { className: "tag " + (correct ? "" : "tag--danger"), children: correct ? "\u2713 Correct" : "\u2717 Incorrect" })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { className: "mt-12", style: { color: "var(--text)" }, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("b", { children: qq.q }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("ul", { className: "list", style: { gap: 6 }, children: qq.opts.map((o, j) => /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("li", { className: "list__item " + (j === qq.a ? "" : j === userIdx ? "" : ""), style: {
-            borderColor: j === qq.a ? "rgba(42,157,143,0.6)" : j === userIdx ? "rgba(230,57,70,0.6)" : "var(--border)",
-            background: j === qq.a ? "rgba(42,157,143,0.08)" : j === userIdx && userIdx !== qq.a ? "rgba(230,57,70,0.08)" : "var(--panel)"
-          }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("span", { children: [
-              String.fromCharCode(65 + j),
-              ". ",
-              o
-            ] }),
-            j === qq.a && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "tag", children: "Correct" }),
-            j === userIdx && userIdx !== qq.a && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "tag tag--danger", children: "Your choice" })
-          ] })) }),
-          qq.explain && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("p", { className: "muted mt-12", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("b", { children: "Explanation: " }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "mt-12", style: { color: "var(--text)" }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("b", { children: qq.q }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("ul", { className: "list", style: { gap: 6 }, children: qq.opts.map((o, j) => /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
+            "li",
+            {
+              className: "list__item",
+              style: {
+                borderColor: j === qq.a ? "rgba(42,210,156,0.55)" : j === userIdx ? "rgba(255,93,108,0.55)" : "var(--border)",
+                background: j === qq.a ? "rgba(42,210,156,0.08)" : j === userIdx && userIdx !== qq.a ? "rgba(255,93,108,0.08)" : "var(--panel)"
+              },
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("span", { children: [
+                  String.fromCharCode(65 + j),
+                  ". ",
+                  o
+                ] }),
+                j === qq.a && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { className: "tag", children: "Correct" }),
+                j === userIdx && userIdx !== qq.a && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { className: "tag tag--danger", children: "Your choice" })
+              ]
+            },
+            j
+          )) }),
+          qq.explain && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("p", { className: "muted mt-12", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("b", { children: "Explanation: " }),
             qq.explain
           ] })
         ] }, qq.qid ?? idx);
       }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "row mt-16", style: { gap: 10 }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("button", { className: "btn btn--primary", onClick: () => navigate("/results"), children: "View all results" }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("button", { className: "btn", onClick: () => {
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "row mt-16", style: { gap: 10, flexWrap: "wrap" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { className: "btn btn--primary", onClick: () => navigate("/results"), children: "\u{1F4CA} View all results" }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { className: "btn", onClick: () => {
           setI(0);
           setAnswers({});
           setDone(false);
-        }, children: "Retake" }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Link, { to: "/student", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("button", { className: "btn btn--ghost", children: "Back to dashboard" }) })
+          setSecondsLeft(quiz.questions.length * SECONDS_PER_Q);
+        }, children: "\u21BB Retake" }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Link, { to: user?.role === "faculty" ? "/faculty" : "/student", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { className: "btn btn--ghost", children: "Back to dashboard" }) })
       ] })
     ] }) });
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("section", { className: "container section", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "spread mb-12", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("h2", { className: "section__title", children: quiz.title }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("p", { className: "section__sub", children: [
+  const progressPct = (i + 1) / quiz.questions.length * 100;
+  return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("section", { className: "container section fade-in", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "spread mb-12", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { className: "tag tag--violet", children: topicId ? "Topic quiz" : facultyQuizId ? "Faculty quiz" : "Mixed practice" }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("h2", { className: "section__title mt-8", style: { marginBottom: 4 }, children: quiz.title }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("p", { className: "section__sub", style: { marginBottom: 0 }, children: [
           "Question ",
-          i + 1,
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("b", { children: i + 1 }),
           " of ",
-          quiz.questions.length
+          quiz.questions.length,
+          " \xB7 ",
+          answeredCount,
+          " answered"
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "row", style: { gap: 8 }, children: !topicId && !facultyQuizId && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "row", style: { gap: 8 }, children: !topicId && !facultyQuizId && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
         "select",
         {
           className: "field",
           value: "",
           onChange: (e) => e.target.value && navigate("/quiz", { topic: e.target.value }),
-          style: { background: "var(--bg-2)", color: "var(--text)", padding: "8px 10px", borderRadius: 10, border: "1px solid var(--border)" },
+          style: { background: "var(--bg-2)", color: "var(--text)", padding: "10px 12px", borderRadius: 10, border: "1px solid var(--border)" },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("option", { value: "", children: "Jump to topic quiz\u2026" }),
-            TOPICS.map((t) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("option", { value: t.id, children: t.title }, t.id))
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("option", { value: "", children: "Jump to topic quiz\u2026" }),
+            TOPICS.map((t) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("option", { value: t.id, children: t.title }, t.id))
           ]
         }
       ) })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "quiz", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "quiz__progress", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { style: { width: `${(i + 1) / quiz.questions.length * 100}%` } }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { className: "quiz__q", children: q.q }),
-      q.opts.map((o, j) => /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("label", { className: "quiz__opt", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("input", { type: "radio", name: `q-${i}`, checked: picked === j, onChange: () => choose(j) }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("span", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("b", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "quiz", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: timerCls, "aria-label": "Time remaining", children: [
+        "\u23F1 ",
+        mm,
+        ":",
+        ss
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "quiz__progress", "aria-label": "Progress", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { style: { width: `${progressPct}%` } }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "quiz__q", children: q.q }),
+      q.opts.map((o, j) => /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("label", { className: "quiz__opt" + (picked === j ? " quiz__opt--selected" : ""), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("input", { type: "radio", name: `q-${i}`, checked: picked === j, onChange: () => choose(j) }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("span", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("b", { children: [
             String.fromCharCode(65 + j),
             "."
           ] }),
@@ -25879,23 +26890,40 @@ function Quiz({ user }) {
           o
         ] })
       ] }, j)),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "quiz__nav", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("button", { className: "btn", disabled: i === 0, onClick: prev, children: "Previous" }),
-        i < quiz.questions.length - 1 ? /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("button", { className: "btn btn--primary", disabled: picked == null, onClick: next, children: "Next" }) : /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("button", { className: "btn btn--primary", disabled: picked == null, onClick: submit, children: "Submit" })
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "quiz__nav", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { className: "btn", disabled: i === 0, onClick: prev, children: "\u2190 Previous" }),
+        i < quiz.questions.length - 1 ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { className: "btn btn--primary", disabled: picked == null, onClick: next, children: "Next \u2192" }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { className: "btn btn--primary", disabled: !allAnswered, onClick: submit, children: "\u2713 Submit" })
       ] })
-    ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "row mt-16", style: { gap: 8, flexWrap: "wrap", justifyContent: "center" }, children: quiz.questions.map((qq, idx) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+      "button",
+      {
+        className: "btn btn--sm",
+        style: {
+          minWidth: 36,
+          background: idx === i ? "var(--grad-brand)" : answers[qq.qid ?? idx] != null ? "rgba(25,211,197,0.13)" : "var(--panel)",
+          color: idx === i ? "#06141a" : "var(--text)",
+          borderColor: idx === i ? "transparent" : "var(--border)"
+        },
+        onClick: () => setI(idx),
+        "aria-label": `Go to question ${idx + 1}`,
+        children: idx + 1
+      },
+      idx
+    )) })
   ] });
 }
 
 // src/pages/Results.jsx
-var import_jsx_runtime11 = __toESM(require_jsx_runtime(), 1);
+var import_jsx_runtime12 = __toESM(require_jsx_runtime(), 1);
 function Results({ user }) {
   const attempts = attemptsFor(user.email);
+  const earned = computeAchievements(user.email);
   if (!attempts.length) {
-    return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("section", { className: "container section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("h2", { className: "section__title", children: "My results" }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "notice", children: "No attempts yet. Take a quiz to see your scores here." }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Link, { to: "/quiz", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { className: "btn btn--primary mt-12", children: "Take a quiz" }) })
+    return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("section", { className: "container section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h2", { className: "section__title", children: "My results" }),
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { className: "notice", children: "No attempts yet. Take a quiz to see your scores here." }),
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Link, { to: "/quiz", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("button", { className: "btn btn--primary mt-12", children: "Take a quiz" }) })
     ] });
   }
   const byQuiz = {};
@@ -25903,63 +26931,102 @@ function Results({ user }) {
     if (!byQuiz[a.title]) byQuiz[a.title] = [];
     byQuiz[a.title].push(a);
   });
-  return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("section", { className: "container section", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("h2", { className: "section__title", children: "My results" }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("p", { className: "section__sub", children: [
-      attempts.length,
-      " attempts across ",
-      Object.keys(byQuiz).length,
-      " quizzes."
+  const avg = Math.round(attempts.reduce((s, a) => s + a.percent, 0) / attempts.length);
+  const best = Math.max(...attempts.map((a) => a.percent));
+  const trend = [...attempts].sort((a, b) => new Date(a.when) - new Date(b.when)).map((a, i) => ({ x: `#${i + 1}`, y: a.percent }));
+  return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("section", { className: "container section fade-in", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "spread mb-16", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h2", { className: "section__title", children: "My results" }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { className: "section__sub", children: [
+          attempts.length,
+          " attempts across ",
+          Object.keys(byQuiz).length,
+          " quizzes."
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Link, { to: "/quiz", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("button", { className: "btn btn--primary", children: "\u{1F4DD} Take another" }) })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "stats mb-24", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "stat", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "stat__label", children: "Best score" }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "stat__value", children: [
-          Math.max(...attempts.map((a) => a.percent)),
-          "%"
-        ] })
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "grid mb-24", style: { gridTemplateColumns: "1.5fr 1fr" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "chart-card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "spread", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h3", { children: "Score over time" }),
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { className: "muted", style: { fontSize: 13 }, children: "Every attempt in chronological order." })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("span", { className: "tag", children: [
+            "avg ",
+            avg,
+            "% \xB7 best ",
+            best,
+            "%"
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { className: "mt-16", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(LineChart, { data: trend, height: 240 }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "stat", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "stat__label", children: "Average score" }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "stat__value", children: [
-          Math.round(attempts.reduce((s, a) => s + a.percent, 0) / attempts.length),
-          "%"
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "chart-card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "spread", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h3", { children: "Overall mastery" }),
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { className: "muted", style: { fontSize: 13 }, children: "Average across all attempts." })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Donut, { value: avg, max: 100, color: "var(--brand)" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "row mt-16", style: { gap: 8, flexWrap: "wrap" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("span", { className: "tag", children: [
+            attempts.length,
+            " attempts"
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("span", { className: "tag tag--accent", children: [
+            "best ",
+            best,
+            "%"
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("span", { className: "tag tag--violet", children: [
+            Object.keys(byQuiz).length,
+            " quizzes"
+          ] })
         ] })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "stat", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "stat__label", children: "Total attempts" }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "stat__value", children: attempts.length })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("h3", { className: "section__title", children: "Performance by quiz" }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "bars mb-24", children: Object.entries(byQuiz).map(([title, list]) => {
-      const avg = Math.round(list.reduce((s, a) => s + a.percent, 0) / list.length);
-      return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "bar", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { style: { fontSize: 13 }, children: title }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "bar__track", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "bar__fill", style: { width: `${avg}%` } }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "bar__val", children: [
-          avg,
-          "%"
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h3", { className: "section__title", children: "Performance by quiz" }),
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { className: "chart-card mb-24", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { className: "bars", children: Object.entries(byQuiz).map(([title, list]) => {
+      const a = Math.round(list.reduce((s, x) => s + x.percent, 0) / list.length);
+      return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "bar", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: { fontSize: 13 }, children: title }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { className: "bar__track", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { className: "bar__fill", style: { width: `${a}%` } }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "bar__val", children: [
+          a,
+          "% \xB7 n=",
+          list.length
         ] })
       ] }, title);
-    }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("h3", { className: "section__title", children: "All attempts" }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("table", { className: "table", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("tr", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("th", { children: "When" }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("th", { children: "Quiz" }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("th", { children: "Score" }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("th", { children: "%" })
+    }) }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h3", { className: "section__title", children: "Achievements unlocked" }),
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { className: "badge-grid mb-24", children: ACHIEVEMENTS.map((a) => /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "badge " + (earned[a.id] ? "badge--earned" : "badge--locked"), children: [
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { className: "badge__icon", children: a.icon }),
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h4", { children: a.title }),
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: a.hint })
+    ] }, a.id)) }),
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h3", { className: "section__title", children: "All attempts" }),
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("table", { className: "table", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("tr", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("th", { children: "When" }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("th", { children: "Quiz" }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("th", { children: "Score" }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("th", { children: "Time" }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("th", { children: "%" })
       ] }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("tbody", { children: attempts.map((a) => /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("tr", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("td", { children: new Date(a.when).toLocaleString() }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("td", { children: a.title }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("td", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("tbody", { children: attempts.map((a) => /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("tr", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("td", { children: new Date(a.when).toLocaleString() }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("td", { children: a.title }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("td", { children: [
           a.score,
           "/",
           a.total
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("td", { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("span", { className: "tag " + (a.percent >= 70 ? "" : a.percent >= 50 ? "tag--warn" : "tag--danger"), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("td", { children: a.timeSec ? `${Math.floor(a.timeSec / 60)}m ${a.timeSec % 60}s` : "\u2014" }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("td", { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("span", { className: "tag " + (a.percent >= 70 ? "" : a.percent >= 50 ? "tag--warn" : "tag--danger"), children: [
           a.percent,
           "%"
         ] }) })
@@ -25969,38 +27036,43 @@ function Results({ user }) {
 }
 
 // src/pages/Prompting.jsx
-var import_react7 = __toESM(require_react(), 1);
-var import_jsx_runtime12 = __toESM(require_jsx_runtime(), 1);
+var import_react9 = __toESM(require_react(), 1);
+var import_jsx_runtime13 = __toESM(require_jsx_runtime(), 1);
 var PROMPTS = [
   {
     id: 1,
     case: "A 22-year-old male presents with painless swelling of the right posterior mandible. An OPG shows a well-defined unilocular radiolucency surrounding the crown of an impacted third molar, attached at the cement-enamel junction.",
     question: "What is the most likely diagnosis and what is the typical histologic finding?",
-    model: "Dentigerous cyst. Histology shows a thin, non-keratinised stratified squamous epithelial lining 2\u20134 cells thick over a fibrous connective tissue wall."
+    model: "Dentigerous cyst. Histology shows a thin, non-keratinised stratified squamous epithelial lining 2\u20134 cells thick over a fibrous connective tissue wall.",
+    tags: ["dentigerous", "cyst"]
   },
   {
     id: 2,
     case: "A 17-year-old female with multiple basal cell carcinomas presents with bilateral, multilocular radiolucencies in the posterior mandible and ramus. Biopsy shows a parakeratinised lining 6\u20138 cells thick with a palisaded basal layer.",
     question: "Name the lesion and the syndrome to investigate.",
-    model: "Odontogenic keratocysts (OKC) in nevoid basal cell carcinoma syndrome (Gorlin syndrome)."
+    model: "Odontogenic keratocysts (OKC) in nevoid basal cell carcinoma syndrome (Gorlin syndrome).",
+    tags: ["OKC", "Gorlin"]
   },
   {
     id: 3,
     case: "A 45-year-old male presents with expansion of the left posterior mandible. An OPG shows a multilocular 'soap-bubble' radiolucency with cortical expansion and root resorption.",
     question: "What is the most likely diagnosis and what surgical margin is recommended?",
-    model: "Conventional (multicystic) ameloblastoma. Recommended margin: 1\u20131.5 cm of clear bone."
+    model: "Conventional (multicystic) ameloblastoma. Recommended margin: 1\u20131.5 cm of clear bone.",
+    tags: ["ameloblastoma", "tumor"]
   },
   {
     id: 4,
     case: "An 11-year-old boy is referred after a routine periapical radiograph reveals a cluster of small tooth-like radiopacities in the anterior maxilla, blocking the eruption of a permanent canine.",
     question: "What lesion is most likely, and how is it classified pathologically?",
-    model: "Compound odontoma \u2014 most authors classify it as a developmental hamartoma rather than a true neoplasm."
+    model: "Compound odontoma \u2014 most authors classify it as a developmental hamartoma rather than a true neoplasm.",
+    tags: ["odontoma", "hamartoma"]
   },
   {
     id: 5,
     case: "A 36-year-old female has a chronically discoloured upper central incisor. A periapical radiograph shows a well-circumscribed apical radiolucency with loss of lamina dura. The tooth fails to respond to pulp vitality testing.",
     question: "What is the most likely diagnosis and what is the conservative treatment?",
-    model: "Radicular (periapical) cyst on a non-vital tooth. Treat by endodontic therapy; persistence after RCT warrants surgical curettage."
+    model: "Radicular (periapical) cyst on a non-vital tooth. Treat by endodontic therapy; persistence after RCT warrants surgical curettage.",
+    tags: ["radicular", "inflammatory"]
   }
 ];
 var score = (user, model) => {
@@ -26011,11 +27083,11 @@ var score = (user, model) => {
   return Math.min(100, Math.round(hits / Math.max(8, tokens.length) * 100));
 };
 function Prompting() {
-  const [i, setI] = (0, import_react7.useState)(0);
-  const [answer, setAnswer] = (0, import_react7.useState)("");
-  const [shown, setShown] = (0, import_react7.useState)(false);
+  const [i, setI] = (0, import_react9.useState)(0);
+  const [answer, setAnswer] = (0, import_react9.useState)("");
+  const [shown, setShown] = (0, import_react9.useState)(false);
   const p = PROMPTS[i];
-  const matchPct = (0, import_react7.useMemo)(() => shown ? score(answer, p.model) : null, [shown, answer, p.model]);
+  const matchPct = (0, import_react9.useMemo)(() => shown ? score(answer, p.model) : null, [shown, answer, p.model]);
   const reset = () => {
     setAnswer("");
     setShown(false);
@@ -26024,46 +27096,85 @@ function Prompting() {
     setI(idx);
     reset();
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("section", { className: "container section", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h2", { className: "section__title", children: "Prompting drills" }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { className: "section__sub", children: "Type your answer, then reveal the model answer. Your overlap is scored heuristically." }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { className: "row mb-16", style: { flexWrap: "wrap", gap: 6 }, children: PROMPTS.map((_, idx) => /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("button", { className: "btn btn--sm " + (idx === i ? "btn--primary" : ""), onClick: () => goto(idx), children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("section", { className: "container section fade-in", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "spread mb-16", children: /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("span", { className: "hero__chip", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "dot" }),
+        "Prompt engineering \xB7 clinical reasoning"
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { className: "section__title mt-12", children: "Prompting drills" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { className: "section__sub", children: "Type your differential and rationale for each clinical vignette, then reveal the model answer. Overlap is scored heuristically against domain keywords." })
+    ] }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "row mb-16", style: { flexWrap: "wrap", gap: 6 }, children: PROMPTS.map((pr, idx) => /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("button", { className: "btn btn--sm " + (idx === i ? "btn--primary" : ""), onClick: () => goto(idx), children: [
       "Case ",
       idx + 1
     ] }, idx)) }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "card mb-16", style: { display: "block" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { className: "tag", children: "Clinical vignette" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { className: "mt-12", style: { fontSize: 15 }, children: p.case }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { style: { fontWeight: 700 }, children: [
-        "Q: ",
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "card mb-16", style: { display: "block" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "row", style: { gap: 6, flexWrap: "wrap" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("span", { className: "tag tag--violet", children: [
+          "Clinical vignette \xB7 Case ",
+          p.id
+        ] }),
+        p.tags.map((t) => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "tag", children: t }, t))
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { className: "mt-12", style: { fontSize: 16, lineHeight: 1.65 }, children: p.case }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { style: { fontWeight: 700, fontSize: 15 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { color: "var(--brand)" }, children: "Q: " }),
         p.question
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "field mb-16", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("label", { children: "Your answer" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("textarea", { value: answer, onChange: (e) => setAnswer(e.target.value), placeholder: "Type your differential and rationale\u2026" })
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "field mb-16", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("label", { children: "Your answer" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+        "textarea",
+        {
+          value: answer,
+          onChange: (e) => setAnswer(e.target.value),
+          placeholder: "Type your differential and rationale\u2026 (focus on diagnosis name, key histology/radiology features and management)"
+        }
+      )
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "row", style: { gap: 10 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("button", { className: "btn btn--primary", disabled: !answer.trim(), onClick: () => setShown(true), children: "Reveal model answer" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("button", { className: "btn", onClick: reset, children: "Clear" })
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "row", style: { gap: 10 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("button", { className: "btn btn--primary", disabled: !answer.trim(), onClick: () => setShown(true), children: "\u{1F50D} Reveal model answer" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("button", { className: "btn", onClick: reset, children: "Clear" })
     ] }),
-    shown && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "card mt-16", style: { display: "block" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "row", style: { gap: 8 }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { className: "tag", children: "Model answer" }),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("span", { className: "tag " + (matchPct >= 60 ? "" : matchPct >= 30 ? "tag--warn" : "tag--danger"), children: [
-          "Overlap ",
-          matchPct,
-          "%"
-        ] })
+    shown && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "card mt-16", style: { display: "block" }, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "spread", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "row", style: { gap: 8, flexWrap: "wrap" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "tag", children: "Model answer" }),
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("span", { className: "tag " + (matchPct >= 60 ? "" : matchPct >= 30 ? "tag--warn" : "tag--danger"), children: [
+            "Keyword overlap ",
+            matchPct,
+            "%"
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { className: "mt-12", style: { fontSize: 16, lineHeight: 1.6 }, children: p.model }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { className: "muted", style: { fontSize: 13 }, children: "Overlap is a simple keyword match meant to encourage including the key clinical terms in your answer. In a real clinical exam, the markers will look for the diagnosis, radiologic feature, histology and management." })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { className: "mt-12", children: p.model }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { className: "muted", style: { fontSize: 13 }, children: "Note: overlap is a simple keyword match meant to encourage including the key terms in your answer." })
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Donut, { value: matchPct || 0, max: 100, color: matchPct >= 60 ? "var(--success)" : matchPct >= 30 ? "var(--warn)" : "var(--danger)", size: 120 })
+    ] }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "grid mt-24", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "card__icon", children: "\u{1F9E0}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Why prompt engineering?" }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "Clinical reasoning maps closely to prompting an LLM \u2014 being specific, scoped and using domain vocabulary changes the answer dramatically." })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "card__icon", children: "\u{1F4DA}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Use the Reading module" }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "If you score under 60% on a case, open the matching topic in Reading and try again \u2014 overlap should improve." })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "card__icon", children: "\u{1F916}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Ask the chatbot" }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "Use the chat bubble to ask the assistant to explain a specific term from the model answer." })
+      ] })
     ] })
   ] });
 }
 
 // src/pages/FacultyUpload.jsx
-var import_react8 = __toESM(require_react(), 1);
+var import_react10 = __toESM(require_react(), 1);
 
 // src/utils/pdf.js
 var pdfLib = null;
@@ -26123,13 +27234,13 @@ var generateQuizFromText = (text, { maxQuestions = 8 } = {}) => {
     const words = candidateWords(s);
     const ans = pickAnswer(words);
     if (!ans) continue;
-    const blank = s.replace(new RegExp(`\\b${ans}\\b`), "_____");
-    if (!blank.includes("_____")) continue;
+    const blank2 = s.replace(new RegExp(`\\b${ans}\\b`), "_____");
+    if (!blank2.includes("_____")) continue;
     const distractors = shuffle(pool.filter((w) => w.toLowerCase() !== ans.toLowerCase())).slice(0, 6);
     const choices = shuffle([ans, ...distractors.slice(0, 3)]);
     if (choices.length < 4) continue;
     out.push({
-      q: `Fill in the blank: ${blank}`,
+      q: `Fill in the blank: ${blank2}`,
       opts: choices,
       a: choices.indexOf(ans),
       explain: `Source sentence: "${s}"`,
@@ -26140,20 +27251,20 @@ var generateQuizFromText = (text, { maxQuestions = 8 } = {}) => {
 };
 
 // src/pages/FacultyUpload.jsx
-var import_jsx_runtime13 = __toESM(require_jsx_runtime(), 1);
+var import_jsx_runtime14 = __toESM(require_jsx_runtime(), 1);
 function FacultyUpload({ user }) {
-  const [busy, setBusy] = (0, import_react8.useState)(false);
-  const [busyLabel, setBusyLabel] = (0, import_react8.useState)("");
-  const [error, setError] = (0, import_react8.useState)("");
-  const [extracted, setExtracted] = (0, import_react8.useState)("");
-  const [draft, setDraft] = (0, import_react8.useState)(null);
-  const [draftSource, setDraftSource] = (0, import_react8.useState)(null);
-  const [title, setTitle] = (0, import_react8.useState)("");
-  const [list, setList] = (0, import_react8.useState)(getMaterials());
-  const [useAI, setUseAI] = (0, import_react8.useState)(hasApiKey());
-  const [count, setCount] = (0, import_react8.useState)(8);
-  const inputRef = (0, import_react8.useRef)(null);
-  const [dragOver, setDragOver] = (0, import_react8.useState)(false);
+  const [busy, setBusy] = (0, import_react10.useState)(false);
+  const [busyLabel, setBusyLabel] = (0, import_react10.useState)("");
+  const [error, setError] = (0, import_react10.useState)("");
+  const [extracted, setExtracted] = (0, import_react10.useState)("");
+  const [draft, setDraft] = (0, import_react10.useState)(null);
+  const [draftSource, setDraftSource] = (0, import_react10.useState)(null);
+  const [title, setTitle] = (0, import_react10.useState)("");
+  const [list, setList] = (0, import_react10.useState)(getMaterials());
+  const [useAI, setUseAI] = (0, import_react10.useState)(hasApiKey());
+  const [count, setCount] = (0, import_react10.useState)(8);
+  const inputRef = (0, import_react10.useRef)(null);
+  const [dragOver, setDragOver] = (0, import_react10.useState)(false);
   const handle = async (file) => {
     setError("");
     setExtracted("");
@@ -26220,20 +27331,20 @@ function FacultyUpload({ user }) {
     removeMaterial(id);
     setList(getMaterials());
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("section", { className: "container section", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "spread mb-16", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { className: "section__title", children: "Upload PDF & auto-generate quiz" }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { className: "section__sub", children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("section", { className: "container section", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "spread mb-16", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h2", { className: "section__title", children: "Upload PDF & auto-generate quiz" }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("p", { className: "section__sub", children: [
           "Upload a text-based PDF (lecture notes, chapter). Text is extracted in the browser using pdf.js, then questions are generated by",
           " ",
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("b", { children: hasApiKey() && useAI ? "OpenAI gpt-4o-mini" : "the offline heuristic" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("b", { children: hasApiKey() && useAI ? "OpenAI gpt-4o-mini" : "the offline heuristic" }),
           "."
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "row", style: { gap: 10, flexWrap: "wrap" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("label", { className: "row", style: { gap: 6, fontSize: 13 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "row", style: { gap: 10, flexWrap: "wrap" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("label", { className: "row", style: { gap: 6, fontSize: 13 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
             "input",
             {
               type: "checkbox",
@@ -26245,22 +27356,22 @@ function FacultyUpload({ user }) {
           "Use OpenAI ",
           hasApiKey() ? "" : "(add key in Settings)"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("label", { className: "row", style: { gap: 6, fontSize: 13 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("label", { className: "row", style: { gap: 6, fontSize: 13 }, children: [
           "Questions:",
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
             "select",
             {
               value: count,
               onChange: (e) => setCount(Number(e.target.value)),
               style: { background: "var(--bg-2)", color: "var(--text)", padding: "6px 8px", borderRadius: 8, border: "1px solid var(--border)" },
-              children: [5, 8, 10, 15, 20].map((n) => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("option", { value: n, children: n }, n))
+              children: [5, 8, 10, 15, 20].map((n) => /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("option", { value: n, children: n }, n))
             }
           )
         ] }),
-        !hasApiKey() && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Link, { to: "/settings", children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("button", { className: "btn btn--sm", children: "Add OpenAI key" }) })
+        !hasApiKey() && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Link, { to: "/settings", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("button", { className: "btn btn--sm", children: "Add OpenAI key" }) })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
       "div",
       {
         className: "drop " + (dragOver ? "over" : ""),
@@ -26277,10 +27388,10 @@ function FacultyUpload({ user }) {
         onClick: () => inputRef.current?.click(),
         style: { cursor: "pointer" },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { fontSize: 22 }, children: "\u{1F4C4}" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { style: { margin: "6px 0" }, children: "Click to choose a PDF, or drop it here" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "Up to ~25 MB \xB7 text-based PDFs only (scanned images won't extract)." }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "drop__icon", children: "\u{1F4C4}" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { style: { margin: "6px 0", fontFamily: "var(--font-display)", fontSize: 22, letterSpacing: "-0.01em" }, children: "Click to choose a PDF, or drop it here" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: "Up to ~25 MB \xB7 text-based PDFs only (scanned images won't extract)." }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
             "input",
             {
               ref: inputRef,
@@ -26293,18 +27404,18 @@ function FacultyUpload({ user }) {
         ]
       }
     ),
-    busy && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "notice mt-16", children: busyLabel || "Working\u2026" }),
-    error && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "notice notice--warn mt-16", children: error }),
-    draft && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "card mt-16", style: { display: "block" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "spread", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("h3", { style: { margin: 0 }, children: [
+    busy && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "notice mt-16", children: busyLabel || "Working\u2026" }),
+    error && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "notice notice--warn mt-16", children: error }),
+    draft && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "card mt-16", style: { display: "block" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "spread", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("h3", { style: { margin: 0 }, children: [
           "Draft quiz \xB7 ",
           draft.length,
           " questions",
-          draftSource && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "tag", style: { marginLeft: 10 }, children: draftSource === "ai" ? "gpt-4o-mini" : "offline heuristic" })
+          draftSource && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "tag", style: { marginLeft: 10 }, children: draftSource === "ai" ? "gpt-4o-mini" : "offline heuristic" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "row", style: { gap: 8 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "row", style: { gap: 8 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
             "input",
             {
               value: title,
@@ -26313,32 +27424,32 @@ function FacultyUpload({ user }) {
               style: { background: "var(--bg-2)", color: "var(--text)", padding: "8px 10px", borderRadius: 10, border: "1px solid var(--border)" }
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("button", { className: "btn btn--primary", onClick: save, children: "Save & publish" })
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("button", { className: "btn btn--primary", onClick: save, children: "Save & publish" })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "mt-16", children: draft.map((q, i) => /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "card mb-12", style: { display: "block" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "row", children: /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("span", { className: "tag", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "mt-16", children: draft.map((q, i) => /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "card mb-12", style: { display: "block" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "row", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("span", { className: "tag", children: [
           "Q",
           i + 1
         ] }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { className: "mt-12", children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("b", { children: q.q }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("ul", { className: "list", children: q.opts.map((o, j) => /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { className: "list__item", style: j === q.a ? { borderColor: "rgba(42,157,143,0.6)", background: "rgba(42,157,143,0.08)" } : {}, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("span", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { className: "mt-12", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("b", { children: q.q }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("ul", { className: "list", children: q.opts.map((o, j) => /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { className: "list__item", style: j === q.a ? { borderColor: "rgba(42,157,143,0.6)", background: "rgba(42,157,143,0.08)" } : {}, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("span", { children: [
             String.fromCharCode(65 + j),
             ". ",
             o
           ] }),
-          j === q.a && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "tag", children: "Correct" })
+          j === q.a && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "tag", children: "Correct" })
         ] }, j)) }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { className: "muted", style: { fontSize: 12 }, children: q.explain })
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { className: "muted", style: { fontSize: 12 }, children: q.explain })
       ] }, i)) })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { className: "section__title mt-24", children: "Published materials" }),
-    list.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "notice", children: "No materials yet \u2014 upload your first PDF above." }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "list", children: list.map((m) => /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "list__item", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { fontWeight: 700 }, children: m.title }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "muted", style: { fontSize: 12 }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { className: "section__title mt-24", children: "Published materials" }),
+    list.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "notice", children: "No materials yet \u2014 upload your first PDF above." }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "list", children: list.map((m) => /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "list__item", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { style: { fontWeight: 700 }, children: m.title }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "muted", style: { fontSize: 12 }, children: [
           new Date(m.when).toLocaleString(),
           " \xB7 ",
           m.by,
@@ -26347,22 +27458,22 @@ function FacultyUpload({ user }) {
           " questions"
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "row", style: { gap: 8 }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Link, { to: "/quiz", params: { material: m.id }, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("button", { className: "btn btn--sm", children: "Open quiz" }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("button", { className: "btn btn--sm btn--danger", onClick: () => remove(m.id), children: "Delete" })
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "row", style: { gap: 8 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Link, { to: "/quiz", params: { material: m.id }, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("button", { className: "btn btn--sm", children: "Open quiz" }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("button", { className: "btn btn--sm btn--danger", onClick: () => remove(m.id), children: "Delete" })
       ] })
     ] }, m.id)) }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "row mt-24", children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("button", { className: "btn", onClick: () => navigate("/faculty"), children: "Back to dashboard" }) })
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "row mt-24", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("button", { className: "btn", onClick: () => navigate("/faculty"), children: "Back to dashboard" }) })
   ] });
 }
 
 // src/pages/FacultyReports.jsx
-var import_react9 = __toESM(require_react(), 1);
-var import_jsx_runtime14 = __toESM(require_jsx_runtime(), 1);
+var import_react11 = __toESM(require_react(), 1);
+var import_jsx_runtime15 = __toESM(require_jsx_runtime(), 1);
 function FacultyReports() {
   const attempts = getAttempts();
-  const [filterStudent, setFilterStudent] = (0, import_react9.useState)("");
-  const students = (0, import_react9.useMemo)(() => {
+  const [filterStudent, setFilterStudent] = (0, import_react11.useState)("");
+  const students = (0, import_react11.useMemo)(() => {
     const map = {};
     attempts.forEach((a) => {
       if (a.role !== "student") return;
@@ -26371,10 +27482,10 @@ function FacultyReports() {
     });
     return Object.values(map);
   }, [attempts]);
-  const byQuiz = (0, import_react9.useMemo)(() => {
+  const filtered = filterStudent ? attempts.filter((a) => a.userEmail === filterStudent) : attempts;
+  const byQuiz = (0, import_react11.useMemo)(() => {
     const map = {};
-    attempts.forEach((a) => {
-      if (filterStudent && a.userEmail !== filterStudent) return;
+    filtered.forEach((a) => {
       if (!map[a.title]) map[a.title] = [];
       map[a.title].push(a);
     });
@@ -26383,46 +27494,88 @@ function FacultyReports() {
       n: list.length,
       avg: Math.round(list.reduce((s, a) => s + a.percent, 0) / list.length)
     })).sort((a, b) => b.n - a.n);
-  }, [attempts, filterStudent]);
-  const filtered = filterStudent ? attempts.filter((a) => a.userEmail === filterStudent) : attempts;
-  return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("section", { className: "container section", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h2", { className: "section__title", children: "Performance reports" }),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { className: "section__sub", children: "All student quiz attempts on this device. In a deployed multi-user build, this would aggregate from the server." }),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "stats mb-24", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "stat", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "stat__label", children: "Total attempts" }),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "stat__value", children: attempts.length })
+  }, [filtered]);
+  const trend = (0, import_react11.useMemo)(() => {
+    return [...filtered].sort((a, b) => new Date(a.when) - new Date(b.when)).map((a, i) => ({ x: `#${i + 1}`, y: a.percent }));
+  }, [filtered]);
+  const dist = (0, import_react11.useMemo)(() => {
+    const distn = filtered.filter((a) => a.percent >= 80).length;
+    const pass = filtered.filter((a) => a.percent >= 50 && a.percent < 80).length;
+    const fail = filtered.filter((a) => a.percent < 50).length;
+    return [
+      { label: "Distinction (\u226580%)", value: distn, color: "var(--success)" },
+      { label: "Pass (50\u201379%)", value: pass, color: "var(--brand)" },
+      { label: "Fail (<50%)", value: fail, color: "var(--danger)" }
+    ];
+  }, [filtered]);
+  const avg = filtered.length ? Math.round(filtered.reduce((s, a) => s + a.percent, 0) / filtered.length) : 0;
+  const passRate = filtered.length ? Math.round(filtered.filter((a) => a.percent >= 50).length / filtered.length * 100) : 0;
+  const exportCSV = () => {
+    const rows = [["When", "Student", "Email", "Quiz", "Score", "Total", "Percent"]];
+    filtered.forEach((a2) => rows.push([
+      new Date(a2.when).toISOString(),
+      a2.userName,
+      a2.userEmail,
+      a2.title,
+      a2.score,
+      a2.total,
+      a2.percent
+    ]));
+    const csv = rows.map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `oralpath-attempts-${Date.now()}.csv`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("section", { className: "container section fade-in", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "spread mb-16", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h2", { className: "section__title", children: "Performance reports" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { className: "section__sub", children: "Every student quiz attempt on this device. In a deployed multi-user build, this would aggregate from a server." })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "stat", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "stat__label", children: "Unique students" }),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "stat__value", children: students.length })
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { className: "btn", onClick: exportCSV, disabled: !filtered.length, children: "\u2913 Export CSV" })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "stats mb-24", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "stat", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "stat__icon", children: "\u{1F4DD}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "stat__label", children: "Total attempts" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "stat__value", children: filtered.length })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "stat", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "stat__label", children: "Class average" }),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "stat__value", children: [
-          attempts.length ? Math.round(attempts.reduce((s, a) => s + a.percent, 0) / attempts.length) : 0,
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "stat", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "stat__icon", children: "\u{1F465}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "stat__label", children: "Unique students" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "stat__value", children: students.length })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "stat", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "stat__icon", children: "\u{1F4CA}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "stat__label", children: "Class average" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "stat__value", children: [
+          avg,
           "%"
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "stat", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "stat__label", children: "Pass rate (\u226550%)" }),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "stat__value", children: [
-          attempts.length ? Math.round(attempts.filter((a) => a.percent >= 50).length / attempts.length * 100) : 0,
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "stat", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "stat__icon", children: "\u{1F3AF}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "stat__label", children: "Pass rate (\u226550%)" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "stat__value", children: [
+          passRate,
           "%"
         ] })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "row mb-16", style: { gap: 10 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("label", { className: "muted", children: "Filter by student:" }),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "row mb-16", style: { gap: 10, flexWrap: "wrap" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("label", { className: "muted", children: "Filter by student:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(
         "select",
         {
           value: filterStudent,
           onChange: (e) => setFilterStudent(e.target.value),
-          style: { background: "var(--bg-2)", color: "var(--text)", padding: "8px 10px", borderRadius: 10, border: "1px solid var(--border)" },
+          style: { background: "var(--bg-2)", color: "var(--text)", padding: "10px 12px", borderRadius: 10, border: "1px solid var(--border)" },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("option", { value: "", children: "All students" }),
-            students.map((s) => /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("option", { value: s.email, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("option", { value: "", children: "All students" }),
+            students.map((s) => /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("option", { value: s.email, children: [
               s.name,
               " (",
               s.email,
@@ -26432,55 +27585,874 @@ function FacultyReports() {
         }
       )
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { className: "section__title", children: "Average score per quiz" }),
-    byQuiz.length ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "bars mb-24", children: byQuiz.map((q) => /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "bar", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { style: { fontSize: 13 }, children: q.title }),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "bar__track", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "bar__fill", style: { width: `${q.avg}%` } }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "bar__val", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "grid mb-24", style: { gridTemplateColumns: "1.5fr 1fr" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "chart-card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h3", { children: "Score over time" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { className: "muted", style: { fontSize: 13 }, children: "Chronological view of every attempt currently in scope." }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "mt-16", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(LineChart, { data: trend, height: 240 }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "chart-card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h3", { children: "Grade distribution" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { className: "muted", style: { fontSize: 13 }, children: "Pass = \u226550% \xB7 Distinction = \u226580%." }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "donut-wrap mt-16", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "donut", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(MultiDonut, { segments: dist, size: 150 }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "donut-legend", children: dist.map((s) => /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "dot", style: { background: s.color } }),
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("b", { children: s.value }),
+            " \xB7 ",
+            s.label
+          ] }, s.label)) })
+        ] })
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h3", { className: "section__title", children: "Average score per quiz" }),
+    byQuiz.length ? /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "chart-card mb-24", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "bars", children: byQuiz.map((q) => /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "bar", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { style: { fontSize: 13 }, children: q.title }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "bar__track", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "bar__fill", style: { width: `${q.avg}%` } }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "bar__val", children: [
         q.avg,
         "% \xB7 n=",
         q.n
       ] })
-    ] }, q.title)) }) : /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "notice", children: "No data yet. Ask students to take a quiz to populate this view." }),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { className: "section__title", children: "All attempts" }),
-    filtered.length ? /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("table", { className: "table", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("tr", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("th", { children: "When" }),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("th", { children: "Student" }),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("th", { children: "Quiz" }),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("th", { children: "Score" }),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("th", { children: "%" })
+    ] }, q.title)) }) }) : /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "notice", children: "No data yet. Ask students to take a quiz to populate this view." }),
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h3", { className: "section__title", children: "All attempts" }),
+    filtered.length ? /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("table", { className: "table", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("tr", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("th", { children: "When" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("th", { children: "Student" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("th", { children: "Quiz" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("th", { children: "Score" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("th", { children: "%" })
       ] }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("tbody", { children: filtered.map((a) => /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("tr", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("td", { children: new Date(a.when).toLocaleString() }),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("td", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("tbody", { children: filtered.map((a) => /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("tr", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("td", { children: new Date(a.when).toLocaleString() }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("td", { children: [
           a.userName,
           " ",
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "muted", style: { fontSize: 12 }, children: a.userEmail })
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "muted", style: { fontSize: 12 }, children: a.userEmail })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("td", { children: a.title }),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("td", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("td", { children: a.title }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("td", { children: [
           a.score,
           "/",
           a.total
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("td", { children: /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("span", { className: "tag " + (a.percent >= 70 ? "" : a.percent >= 50 ? "tag--warn" : "tag--danger"), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("td", { children: /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("span", { className: "tag " + (a.percent >= 70 ? "" : a.percent >= 50 ? "tag--warn" : "tag--danger"), children: [
           a.percent,
           "%"
         ] }) })
       ] }, a.id)) })
-    ] }) : /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "notice", children: "No attempts found for this filter." })
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "notice", children: "No attempts found for this filter." })
   ] });
 }
 
-// src/pages/UserGuide.jsx
-var import_jsx_runtime15 = __toESM(require_jsx_runtime(), 1);
-var Step = ({ title, children }) => /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "card mb-12", style: { display: "block" }, children: [
-  /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h3", { style: { margin: 0 }, children: title }),
-  /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "mt-12", children })
+// src/pages/FacultyBlog.jsx
+var import_react12 = __toESM(require_react(), 1);
+var import_jsx_runtime16 = __toESM(require_jsx_runtime(), 1);
+var blank = () => ({
+  id: null,
+  title: "",
+  body: "",
+  tags: "",
+  coverDataUrl: "",
+  pdfDataUrl: "",
+  pdfName: ""
+});
+var readFile = (file) => new Promise((res, rej) => {
+  const r = new FileReader();
+  r.onload = (e) => res(e.target.result);
+  r.onerror = rej;
+  r.readAsDataURL(file);
+});
+function FacultyBlog({ user }) {
+  const [list, setList] = (0, import_react12.useState)(getBlogPosts());
+  const [draft, setDraft] = (0, import_react12.useState)(blank());
+  const [savedTick, setSavedTick] = (0, import_react12.useState)(false);
+  const [err, setErr] = (0, import_react12.useState)("");
+  const coverRef = (0, import_react12.useRef)(null);
+  const pdfRef = (0, import_react12.useRef)(null);
+  const onCover = async (f) => {
+    setErr("");
+    if (!f) return;
+    if (f.size > 2.5 * 1024 * 1024) {
+      setErr("Cover image must be under 2.5 MB.");
+      return;
+    }
+    setDraft((d) => ({ ...d, coverDataUrl: "" }));
+    try {
+      const url = await readFile(f);
+      setDraft((d) => ({ ...d, coverDataUrl: url }));
+    } catch {
+      setErr("Could not read the cover image.");
+    }
+  };
+  const onPdf = async (f) => {
+    setErr("");
+    if (!f) return;
+    if (f.type !== "application/pdf" && !f.name.toLowerCase().endsWith(".pdf")) {
+      setErr("Attachment must be a PDF file.");
+      return;
+    }
+    if (f.size > 6 * 1024 * 1024) {
+      setErr("PDF must be under 6 MB (browser storage limit).");
+      return;
+    }
+    try {
+      const url = await readFile(f);
+      setDraft((d) => ({ ...d, pdfDataUrl: url, pdfName: f.name }));
+    } catch {
+      setErr("Could not read the PDF.");
+    }
+  };
+  const submit = (e) => {
+    e.preventDefault();
+    setErr("");
+    if (!draft.title.trim() || !draft.body.trim()) {
+      setErr("Title and body are required.");
+      return;
+    }
+    const saved = saveBlogPost({
+      id: draft.id || null,
+      title: draft.title.trim(),
+      body: draft.body,
+      tags: draft.tags.split(",").map((t) => t.trim()).filter(Boolean),
+      coverDataUrl: draft.coverDataUrl || "",
+      pdfDataUrl: draft.pdfDataUrl || "",
+      pdfName: draft.pdfName || "",
+      by: user.name || user.email,
+      byEmail: user.email
+    });
+    setList(getBlogPosts());
+    setDraft(blank());
+    if (coverRef.current) coverRef.current.value = "";
+    if (pdfRef.current) pdfRef.current.value = "";
+    setSavedTick(true);
+    setTimeout(() => setSavedTick(false), 1500);
+  };
+  const edit = (p) => {
+    setDraft({
+      id: p.id,
+      title: p.title,
+      body: p.body,
+      tags: (p.tags || []).join(", "),
+      coverDataUrl: p.coverDataUrl || "",
+      pdfDataUrl: p.pdfDataUrl || "",
+      pdfName: p.pdfName || ""
+    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  const del = (id) => {
+    if (!confirm("Delete this blog post?")) return;
+    removeBlogPost(id);
+    setList(getBlogPosts());
+  };
+  const reset = () => {
+    setDraft(blank());
+    if (coverRef.current) coverRef.current.value = "";
+    if (pdfRef.current) pdfRef.current.value = "";
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("section", { className: "container section fade-in", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "spread mb-16", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("span", { className: "hero__chip", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { className: "dot" }),
+          "Faculty content manager"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h2", { className: "section__title mt-12", children: "Blog & teaching resources" }),
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { className: "section__sub", children: "Publish articles for your students. Each post can carry a cover image, free-text body (Markdown-friendly), tags and an optional PDF attachment they can read in-browser." })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Link, { to: "/blog", children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { className: "btn", children: "\u{1F441}\uFE0F View as student" }) })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("form", { className: "card mb-24", style: { display: "block", padding: 22 }, onSubmit: submit, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "spread", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("h3", { style: { marginTop: 0 }, children: [
+          draft.id ? "Edit post" : "Compose a new post",
+          savedTick && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { className: "tag tag--violet", style: { marginLeft: 10 }, children: "Saved \u2713" })
+        ] }),
+        draft.id && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "btn btn--sm", onClick: reset, children: "Clear" })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "grid mt-16", style: { gridTemplateColumns: "1.4fr 1fr", gap: 18 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "field", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("label", { children: "Title" }),
+          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+            "input",
+            {
+              value: draft.title,
+              onChange: (e) => setDraft((d) => ({ ...d, title: e.target.value })),
+              placeholder: "e.g. Differential diagnosis of multilocular radiolucencies"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "field", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("label", { children: "Tags (comma separated)" }),
+          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+            "input",
+            {
+              value: draft.tags,
+              onChange: (e) => setDraft((d) => ({ ...d, tags: e.target.value })),
+              placeholder: "OKC, ameloblastoma, OPG"
+            }
+          )
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "field mt-12", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("label", { children: "Body" }),
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+          "textarea",
+          {
+            value: draft.body,
+            onChange: (e) => setDraft((d) => ({ ...d, body: e.target.value })),
+            placeholder: `Write your article here.
+
+Markdown-light: use **bold**, *italic*, double newlines to start a new paragraph,
+and \u2022 or - to bullet a list.`,
+            style: { minHeight: 220 }
+          }
+        )
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "grid mt-12", style: { gridTemplateColumns: "1fr 1fr" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "field", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("label", { children: "Cover image (optional \xB7 \u22642.5 MB)" }),
+          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("input", { ref: coverRef, type: "file", accept: "image/*", onChange: (e) => onCover(e.target.files?.[0]) }),
+          draft.coverDataUrl && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+            "img",
+            {
+              src: draft.coverDataUrl,
+              alt: "cover preview",
+              style: { marginTop: 8, maxHeight: 130, borderRadius: 10, border: "1px solid var(--border)" }
+            }
+          )
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "field", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("label", { children: "PDF attachment (optional \xB7 \u22646 MB)" }),
+          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("input", { ref: pdfRef, type: "file", accept: "application/pdf", onChange: (e) => onPdf(e.target.files?.[0]) }),
+          draft.pdfName && /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "row mt-8", style: { gap: 8 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("span", { className: "tag", children: [
+              "\u{1F4C4} ",
+              draft.pdfName
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+              "button",
+              {
+                type: "button",
+                className: "btn btn--sm btn--danger",
+                onClick: () => setDraft((d) => ({ ...d, pdfDataUrl: "", pdfName: "" })),
+                children: "Remove"
+              }
+            )
+          ] })
+        ] })
+      ] }),
+      err && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "notice notice--warn mt-16", children: err }),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "row mt-16", style: { gap: 10 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { className: "btn btn--primary", type: "submit", children: draft.id ? "\u{1F4BE} Save changes" : "\u{1F4E8} Publish post" }),
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { className: "btn", type: "button", onClick: reset, children: "Reset form" }),
+        draft.coverDataUrl || draft.pdfDataUrl ? /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { className: "muted", style: { fontSize: 12 }, children: "Attachments are stored in localStorage on this device." }) : null
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "spread mb-12", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("h3", { className: "section__title", style: { margin: 0 }, children: [
+        "Published posts (",
+        list.length,
+        ")"
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Link, { to: "/blog", children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { className: "btn btn--sm", children: "Open student blog \u2192" }) })
+    ] }),
+    list.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "notice", children: "No posts yet \u2014 write your first article above." }) : /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "grid", children: list.map((p) => /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "card", style: { display: "block" }, children: [
+      p.coverDataUrl && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("img", { src: p.coverDataUrl, alt: "", style: { width: "100%", maxHeight: 140, objectFit: "cover", borderRadius: 12, marginBottom: 10 } }),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "row", style: { gap: 6, flexWrap: "wrap" }, children: [
+        (p.tags || []).map((t) => /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { className: "tag", children: t }, t)),
+        p.pdfName && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { className: "tag tag--accent", children: "\u{1F4C4} PDF" })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h3", { className: "mt-8", children: p.title }),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("p", { className: "muted", style: { fontSize: 12 }, children: [
+        new Date(p.when).toLocaleString(),
+        " \xB7 by ",
+        p.by,
+        " \xB7 ",
+        p.views || 0,
+        " view",
+        p.views === 1 ? "" : "s"
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "row mt-12", style: { gap: 8 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Link, { to: "/blog", params: { post: p.id }, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { className: "btn btn--sm", children: "Preview" }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { className: "btn btn--sm", onClick: () => edit(p), children: "\u270E Edit" }),
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { className: "btn btn--sm btn--danger", onClick: () => del(p.id), children: "Delete" })
+      ] })
+    ] }, p.id)) })
+  ] });
+}
+
+// src/pages/Blog.jsx
+var import_react13 = __toESM(require_react(), 1);
+var import_jsx_runtime17 = __toESM(require_jsx_runtime(), 1);
+var renderBody = (text) => {
+  if (!text) return null;
+  const escape = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const blocks = text.split(/\n{2,}/).map((b) => b.trim()).filter(Boolean);
+  return blocks.map((b, idx) => {
+    if (/^[-•]/.test(b)) {
+      const items = b.split(/\n/).map((l) => l.replace(/^[-•]\s*/, "")).filter(Boolean);
+      return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("ul", { children: items.map((l, i) => /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { dangerouslySetInnerHTML: { __html: inline(escape(l)) } }, i)) }, idx);
+    }
+    return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { dangerouslySetInnerHTML: { __html: inline(escape(b)) } }, idx);
+  });
+};
+var inline = (s) => s.replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>").replace(/\*([^*]+)\*/g, "<i>$1</i>").replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\n/g, "<br />");
+function Blog({ user }) {
+  const { params } = useRoute();
+  const postId = params.post;
+  const [query, setQuery] = (0, import_react13.useState)("");
+  const [tag, setTag] = (0, import_react13.useState)("");
+  const [posts, setPosts] = (0, import_react13.useState)(getBlogPosts());
+  (0, import_react13.useEffect)(() => {
+    if (postId) {
+      incrementBlogView(postId);
+      setPosts(getBlogPosts());
+    }
+  }, [postId]);
+  const active = postId ? getBlogPost(postId) : null;
+  const allTags = (0, import_react13.useMemo)(() => {
+    const set = /* @__PURE__ */ new Set();
+    posts.forEach((p) => (p.tags || []).forEach((t) => set.add(t)));
+    return [...set].sort();
+  }, [posts]);
+  const filtered = (0, import_react13.useMemo)(() => {
+    const q = query.trim().toLowerCase();
+    return posts.filter((p) => {
+      if (tag && !(p.tags || []).includes(tag)) return false;
+      if (!q) return true;
+      return p.title.toLowerCase().includes(q) || p.body.toLowerCase().includes(q) || (p.tags || []).some((t) => t.toLowerCase().includes(q));
+    });
+  }, [posts, query, tag]);
+  if (active) {
+    return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { className: "container section fade-in", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "row mb-12", style: { gap: 8 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { className: "btn btn--sm", onClick: () => navigate("/blog"), children: "\u2190 All posts" }),
+        user?.role === "faculty" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Link, { to: "/faculty/blog", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { className: "btn btn--sm", children: "\u270E Edit in faculty manager" }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("article", { className: "reading__content", style: { padding: 28 }, children: [
+        active.coverDataUrl && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+          "img",
+          {
+            src: active.coverDataUrl,
+            alt: "",
+            style: { width: "100%", maxHeight: 360, objectFit: "cover", borderRadius: 14, marginBottom: 16 }
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "row", style: { gap: 6, flexWrap: "wrap", fontSize: 12 }, children: [
+          (active.tags || []).map((t) => /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "tag", children: t }, t)),
+          active.pdfName && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "tag tag--accent", children: "\u{1F4C4} PDF" }),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { className: "muted", children: [
+            "\xB7 ",
+            new Date(active.when).toLocaleString(),
+            " \xB7 by ",
+            active.by,
+            " \xB7 ",
+            active.views || 0,
+            " views"
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { style: { fontFamily: "var(--font-display)", letterSpacing: "-0.02em", margin: "12px 0 14px", fontSize: 30 }, children: active.title }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { style: { fontSize: 16, lineHeight: 1.75, color: "var(--text-soft)" }, children: renderBody(active.body) }),
+        active.pdfDataUrl && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "card mt-24", style: { display: "block" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "spread", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "tag tag--accent", children: "PDF attachment" }),
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { style: { margin: "8px 0 0" }, children: active.pdfName })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "row", style: { gap: 8 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("a", { href: active.pdfDataUrl, download: active.pdfName, className: "btn btn--sm", children: "\u2913 Download" }),
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("a", { href: active.pdfDataUrl, target: "_blank", rel: "noreferrer", className: "btn btn--sm btn--primary", children: "\u2197 Open" })
+            ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+            "iframe",
+            {
+              src: active.pdfDataUrl,
+              title: active.pdfName,
+              style: { width: "100%", height: 600, marginTop: 14, borderRadius: 12, border: "1px solid var(--border)", background: "var(--bg-2)" }
+            }
+          )
+        ] })
+      ] })
+    ] });
+  }
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { className: "container section fade-in", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "spread mb-16", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { className: "hero__chip", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "dot" }),
+          "Articles by your faculty"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { className: "section__title mt-12", children: "Resources & blog" }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { className: "section__sub", children: "Curated articles written by your teachers. Filter by tag, search the body, or download attached PDFs for offline reading." })
+      ] }),
+      user?.role === "faculty" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Link, { to: "/faculty/blog", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { className: "btn btn--primary", children: "\u270E New post" }) })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "row mb-16", style: { gap: 10, flexWrap: "wrap" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+        "input",
+        {
+          value: query,
+          onChange: (e) => setQuery(e.target.value),
+          placeholder: "\u{1F50D} Search posts\u2026",
+          style: { flex: 1, minWidth: 220, background: "var(--bg-2)", color: "var(--text)", padding: "10px 12px", borderRadius: 12, border: "1px solid var(--border)" }
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
+        "select",
+        {
+          value: tag,
+          onChange: (e) => setTag(e.target.value),
+          style: { background: "var(--bg-2)", color: "var(--text)", padding: "10px 12px", borderRadius: 12, border: "1px solid var(--border)" },
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("option", { value: "", children: "All tags" }),
+            allTags.map((t) => /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("option", { value: t, children: t }, t))
+          ]
+        }
+      )
+    ] }),
+    filtered.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "notice", children: posts.length === 0 ? "No articles yet. Faculty: open the blog manager to publish your first post." : "No posts match the current filter." }) : /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "grid", children: filtered.map((p) => /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Link, { to: "/blog", params: { post: p.id }, className: "card", style: { display: "block", padding: 0, overflow: "hidden" }, children: [
+      p.coverDataUrl ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+        "img",
+        {
+          src: p.coverDataUrl,
+          alt: "",
+          style: { width: "100%", height: 160, objectFit: "cover", display: "block" }
+        }
+      ) : /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { style: { height: 160, background: "var(--grad-brand)", display: "grid", placeItems: "center", color: "#06141a", fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 22 }, children: "\u{1F4D6} OralPath" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { padding: 18 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "row", style: { gap: 6, flexWrap: "wrap" }, children: [
+          (p.tags || []).slice(0, 3).map((t) => /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "tag", children: t }, t)),
+          p.pdfName && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "tag tag--accent", children: "\u{1F4C4} PDF" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { className: "mt-8", children: p.title }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { className: "muted", style: { fontSize: 12 }, children: [
+          new Date(p.when).toLocaleDateString(),
+          " \xB7 by ",
+          p.by,
+          " \xB7 ",
+          p.views || 0,
+          " view",
+          p.views === 1 ? "" : "s"
+        ] })
+      ] })
+    ] }, p.id)) })
+  ] });
+}
+
+// src/pages/CVAnalysis.jsx
+var import_react14 = __toESM(require_react(), 1);
+
+// src/utils/cv.js
+var loadImage = (fileOrUrl) => new Promise((resolve, reject) => {
+  const img = new Image();
+  img.crossOrigin = "anonymous";
+  img.onload = () => resolve(img);
+  img.onerror = reject;
+  if (typeof fileOrUrl === "string") {
+    img.src = fileOrUrl;
+  } else {
+    const r = new FileReader();
+    r.onload = (e) => {
+      img.src = e.target.result;
+    };
+    r.onerror = reject;
+    r.readAsDataURL(fileOrUrl);
+  }
+});
+var imageToCanvas = (img, maxSide = 720) => {
+  const ratio = Math.min(1, maxSide / Math.max(img.width, img.height));
+  const w = Math.round(img.width * ratio);
+  const h = Math.round(img.height * ratio);
+  const c = document.createElement("canvas");
+  c.width = w;
+  c.height = h;
+  c.getContext("2d").drawImage(img, 0, 0, w, h);
+  return c;
+};
+var toLuma = (canvas) => {
+  const { width: w, height: h } = canvas;
+  const ctx = canvas.getContext("2d");
+  const img = ctx.getImageData(0, 0, w, h);
+  const data = img.data;
+  const out = new Uint8ClampedArray(w * h);
+  for (let i = 0, j = 0; i < data.length; i += 4, j++) {
+    out[j] = data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114 | 0;
+  }
+  return { luma: out, w, h };
+};
+var lumaToCanvas = ({ luma, w, h }, colour = null) => {
+  const c = document.createElement("canvas");
+  c.width = w;
+  c.height = h;
+  const ctx = c.getContext("2d");
+  const img = ctx.createImageData(w, h);
+  const d = img.data;
+  for (let i = 0, j = 0; j < luma.length; i += 4, j++) {
+    const v = luma[j];
+    if (colour) {
+      d[i] = v * colour[0] | 0;
+      d[i + 1] = v * colour[1] | 0;
+      d[i + 2] = v * colour[2] | 0;
+    } else {
+      d[i] = d[i + 1] = d[i + 2] = v;
+    }
+    d[i + 3] = 255;
+  }
+  ctx.putImageData(img, 0, 0);
+  return c;
+};
+var histogram = (luma) => {
+  const h = new Uint32Array(256);
+  for (let i = 0; i < luma.length; i++) h[luma[i]]++;
+  return h;
+};
+var otsuThreshold = (luma) => {
+  const hist = histogram(luma);
+  const total = luma.length;
+  let sum = 0;
+  for (let t = 0; t < 256; t++) sum += t * hist[t];
+  let sumB = 0, wB = 0, wF = 0, maxVar = 0, threshold = 127;
+  for (let t = 0; t < 256; t++) {
+    wB += hist[t];
+    if (wB === 0) continue;
+    wF = total - wB;
+    if (wF === 0) break;
+    sumB += t * hist[t];
+    const mB = sumB / wB;
+    const mF = (sum - sumB) / wF;
+    const between = wB * wF * (mB - mF) * (mB - mF);
+    if (between > maxVar) {
+      maxVar = between;
+      threshold = t;
+    }
+  }
+  return threshold;
+};
+var applyThreshold = ({ luma, w, h }, t) => {
+  const out = new Uint8ClampedArray(luma.length);
+  for (let i = 0; i < luma.length; i++) out[i] = luma[i] >= t ? 255 : 0;
+  return { luma: out, w, h };
+};
+var sobel = ({ luma, w, h }) => {
+  const out = new Uint8ClampedArray(luma.length);
+  const at = (x, y) => luma[y * w + x];
+  let maxMag = 1;
+  const tmp = new Float32Array(luma.length);
+  for (let y = 1; y < h - 1; y++) {
+    for (let x = 1; x < w - 1; x++) {
+      const gx = -at(x - 1, y - 1) + at(x + 1, y - 1) - 2 * at(x - 1, y) + 2 * at(x + 1, y) - at(x - 1, y + 1) + at(x + 1, y + 1);
+      const gy = -at(x - 1, y - 1) - 2 * at(x, y - 1) - at(x + 1, y - 1) + at(x - 1, y + 1) + 2 * at(x, y + 1) + at(x + 1, y + 1);
+      const m = Math.sqrt(gx * gx + gy * gy);
+      tmp[y * w + x] = m;
+      if (m > maxMag) maxMag = m;
+    }
+  }
+  for (let i = 0; i < tmp.length; i++) out[i] = Math.min(255, tmp[i] / maxMag * 255) | 0;
+  return { luma: out, w, h };
+};
+var renderHistogramSVG = (hist, width = 320, height = 110, color = "var(--brand)") => {
+  const max = Math.max(...hist);
+  if (!max) return `<svg width="${width}" height="${height}"></svg>`;
+  const bw = width / 256;
+  const bars = Array.from(hist).map((v, i) => {
+    const bh = Math.max(1, v / max * (height - 2));
+    return `<rect x="${(i * bw).toFixed(2)}" y="${height - bh}" width="${bw + 0.5}" height="${bh}" fill="${color}"/>`;
+  }).join("");
+  return `<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">${bars}</svg>`;
+};
+var canvasToDataURL = (canvas, type = "image/png", quality = 0.92) => canvas.toDataURL(type, quality);
+var canvasToBase64 = (canvas) => {
+  const url = canvas.toDataURL("image/jpeg", 0.85);
+  return url.split(",")[1];
+};
+var summariseLuma = ({ luma }) => {
+  const hist = histogram(luma);
+  const total = luma.length;
+  let mean = 0;
+  for (let t = 0; t < 256; t++) mean += t * hist[t];
+  mean /= total;
+  let variance = 0;
+  for (let i = 0; i < luma.length; i++) variance += (luma[i] - mean) ** 2;
+  variance /= total;
+  const std = Math.sqrt(variance);
+  const dark = hist.slice(0, 64).reduce((s, v) => s + v, 0) / total;
+  const bright = hist.slice(192, 256).reduce((s, v) => s + v, 0) / total;
+  return {
+    meanLuma: Math.round(mean),
+    stdLuma: Math.round(std),
+    darkRatio: +(dark * 100).toFixed(1),
+    brightRatio: +(bright * 100).toFixed(1),
+    contrastClass: std < 30 ? "low" : std < 60 ? "moderate" : "high"
+  };
+};
+
+// src/pages/CVAnalysis.jsx
+var import_jsx_runtime18 = __toESM(require_jsx_runtime(), 1);
+var SAMPLES = [
+  { name: "Sample \xB7 OPG mandible", url: "./assets/sample-opg.svg", hint: "Synthetic panoramic radiograph illustration." },
+  { name: "Sample \xB7 intra-oral", url: "./assets/sample-intraoral.svg", hint: "Illustrative intra-oral photograph (mock)." }
+];
+var PIPELINE_STEPS = [
+  { id: "gray", label: "1 \xB7 Grayscale (Rec. 601 luma)", desc: "Collapse RGB to a single brightness channel \u2014 most diagnostic imaging is intrinsically grayscale." },
+  { id: "hist", label: "2 \xB7 Histogram", desc: "Distribution of pixel intensities. Bimodal histograms suggest a clear foreground/background split, e.g. tooth vs. background." },
+  { id: "sobel", label: "3 \xB7 Sobel edge magnitude", desc: "Convolve 3\xD73 horizontal and vertical kernels and combine magnitudes. Highlights tooth outlines, root tips and cyst margins." },
+  { id: "otsu", label: "4 \xB7 Otsu binarisation", desc: "Automatically pick the global threshold that maximises between-class variance. Useful for segmenting radiolucent lesions." }
+];
+function CVAnalysis() {
+  const [filename, setFilename] = (0, import_react14.useState)("");
+  const [busy, setBusy] = (0, import_react14.useState)(false);
+  const [err, setErr] = (0, import_react14.useState)("");
+  const [outputs, setOutputs] = (0, import_react14.useState)(null);
+  const [aiBusy, setAiBusy] = (0, import_react14.useState)(false);
+  const [aiText, setAiText] = (0, import_react14.useState)("");
+  const [aiErr, setAiErr] = (0, import_react14.useState)("");
+  const [manualT, setManualT] = (0, import_react14.useState)(127);
+  const sourceRef = (0, import_react14.useRef)(null);
+  const runPipeline = async (input) => {
+    setBusy(true);
+    setErr("");
+    setOutputs(null);
+    setAiText("");
+    setAiErr("");
+    try {
+      const img = await loadImage(input);
+      const src = imageToCanvas(img, 720);
+      sourceRef.current = src;
+      const luma = toLuma(src);
+      const grayC = lumaToCanvas(luma);
+      const edges = sobel(luma);
+      const edgesC = lumaToCanvas(edges, [0.4, 1, 0.95]);
+      const t = otsuThreshold(luma.luma);
+      const otsuC = lumaToCanvas(applyThreshold(luma, t));
+      const summary = summariseLuma(luma);
+      const hist = histogram(luma.luma);
+      setManualT(t);
+      setOutputs({
+        sourceUrl: canvasToDataURL(src),
+        grayUrl: canvasToDataURL(grayC),
+        sobelUrl: canvasToDataURL(edgesC),
+        otsuUrl: canvasToDataURL(otsuC),
+        histSvg: renderHistogramSVG(hist, 320, 110, "var(--brand)"),
+        summary,
+        thresholdT: t,
+        lumaRef: luma
+      });
+    } catch (e) {
+      setErr("Could not read that image. Try a JPG or PNG.");
+    } finally {
+      setBusy(false);
+    }
+  };
+  (0, import_react14.useEffect)(() => {
+    if (!outputs?.lumaRef) return;
+    const c = lumaToCanvas(applyThreshold(outputs.lumaRef, manualT));
+    setOutputs((o) => ({ ...o, otsuUrl: canvasToDataURL(c) }));
+  }, [manualT]);
+  const onFile = (f) => {
+    if (!f) return;
+    setFilename(f.name);
+    runPipeline(f);
+  };
+  const onSample = (url) => {
+    setFilename(url.split("/").pop());
+    runPipeline(url);
+  };
+  const askAI = async () => {
+    if (!sourceRef.current || !hasApiKey()) return;
+    setAiBusy(true);
+    setAiText("");
+    setAiErr("");
+    try {
+      const b64 = canvasToBase64(sourceRef.current);
+      const out = await analyseImageWithOpenAI(b64);
+      setAiText(out);
+    } catch (e) {
+      const m = e instanceof OpenAIError ? e.type === "auth" ? "OpenAI rejected the key (401). Update in Settings." : e.type === "rate_limit" ? "Rate limit \u2014 try again shortly." : e.message : "Unexpected error.";
+      setAiErr(m);
+    } finally {
+      setAiBusy(false);
+    }
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("section", { className: "container section fade-in", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "spread mb-16", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { className: "hero__chip", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "dot" }),
+          "Computer vision \xB7 canvas pipeline"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { className: "section__title mt-12", children: "Radiograph & image analysis" }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { className: "section__sub", children: "Upload an OPG, periapical, intra-oral photograph or histology slide. The app runs a classical CV pipeline entirely in your browser \u2014 grayscale \u21D2 histogram \u21D2 Sobel edges \u21D2 Otsu binarisation \u2014 and can optionally hand the image to GPT-4o-mini for a structured educational interpretation." })
+      ] }),
+      !hasApiKey() && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Link, { to: "/settings", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { className: "btn btn--sm", children: "\u2699\uFE0F Add OpenAI key for AI step" }) })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "grid mb-16", style: { gridTemplateColumns: "1.4fr 1fr" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "drop", onClick: () => document.getElementById("cv-file").click(), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "drop__icon", children: "\u{1F5BC}\uFE0F" }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { style: { margin: "6px 0", fontFamily: "var(--font-display)", fontSize: 20 }, children: "Drop an image or click to choose" }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("p", { children: [
+          "Local-only \u2014 your image never leaves the browser unless you press ",
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("b", { children: "Run AI analysis" }),
+          "."
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+          "input",
+          {
+            id: "cv-file",
+            type: "file",
+            accept: "image/*",
+            style: { display: "none" },
+            onChange: (e) => onFile(e.target.files?.[0])
+          }
+        )
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "card", style: { display: "block" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { style: { marginTop: 0 }, children: "Try a built-in sample" }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { className: "muted", style: { fontSize: 13 }, children: "Synthetic illustrations \u2014 useful when you don't have a radiograph at hand." }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "row mt-12", style: { gap: 8, flexWrap: "wrap" }, children: SAMPLES.map((s) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { className: "btn btn--sm", onClick: () => onSample(s.url), children: s.name }, s.url)) }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { className: "muted mt-12", style: { fontSize: 12 }, children: "Want real radiographs? Use any anonymised image from the public NIH 3D / OpenI dental dataset." })
+      ] })
+    ] }),
+    err && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "notice notice--warn", children: err }),
+    busy && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "notice", children: "Running pipeline\u2026" }),
+    outputs && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { className: "section__title mt-24", children: "Pipeline output" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("p", { className: "section__sub", children: [
+        "File: ",
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "kbd", children: filename }),
+        " \xB7 contrast: ",
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("b", { children: outputs.summary.contrastClass }),
+        " \xB7 mean luma: ",
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("b", { children: outputs.summary.meanLuma }),
+        " \xB7 std: ",
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("b", { children: outputs.summary.stdLuma }),
+        " \xB7 dark pixels: ",
+        outputs.summary.darkRatio,
+        "% \xB7 bright: ",
+        outputs.summary.brightRatio,
+        "%"
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "grid mb-16", style: { gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PipelineCard, { title: "Original", img: outputs.sourceUrl, caption: "Input image, resized to \u2264720px." }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+          PipelineCard,
+          {
+            title: "1 \xB7 Grayscale",
+            img: outputs.grayUrl,
+            caption: "Rec.601 luma (0.299R + 0.587G + 0.114B)."
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+          PipelineCard,
+          {
+            title: "3 \xB7 Sobel edges",
+            img: outputs.sobelUrl,
+            caption: "3\xD73 horizontal + vertical kernels, magnitude scaled to 0\u2013255."
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+          PipelineCard,
+          {
+            title: `4 \xB7 Threshold @ ${manualT}`,
+            img: outputs.otsuUrl,
+            caption: `Otsu auto-picked ${outputs.thresholdT}. Use the slider to override.`
+          }
+        )
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "grid", style: { gridTemplateColumns: "1fr 1fr", gap: 18 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "chart-card", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "2 \xB7 Intensity histogram" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { className: "muted", style: { fontSize: 13 }, children: "256-bin distribution of pixel luminance. Bimodal = good candidate for global thresholding; unimodal = consider adaptive methods." }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "mt-12", dangerouslySetInnerHTML: { __html: outputs.histSvg } })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "chart-card", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Manual threshold" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { className: "muted", style: { fontSize: 13 }, children: 'Drag the slider to see how the binarisation responds. The label "Otsu" highlights the value that maximises between-class variance.' }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "row mt-12", style: { gap: 12 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+              "input",
+              {
+                type: "range",
+                min: 0,
+                max: 255,
+                value: manualT,
+                onChange: (e) => setManualT(+e.target.value),
+                style: { flex: 1 }
+              }
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "kbd", style: { minWidth: 48, textAlign: "center" }, children: manualT }),
+            /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { className: "btn btn--sm", onClick: () => setManualT(outputs.thresholdT), children: [
+              "Otsu (",
+              outputs.thresholdT,
+              ")"
+            ] })
+          ] })
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "card mt-24", style: { display: "block" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "spread", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "tag tag--violet", children: "AI assistant \xB7 GPT-4o-mini vision" }),
+            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { style: { margin: "8px 0 4px" }, children: "Optional \xB7 structured educational interpretation" }),
+            /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("p", { className: "muted", style: { fontSize: 13 }, children: [
+              "Sends the original image to OpenAI for a structured teaching caption. ",
+              /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("b", { children: "Educational use only \u2014 not a clinical diagnosis." })
+            ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+            "button",
+            {
+              className: "btn btn--primary",
+              disabled: !hasApiKey() || aiBusy,
+              onClick: askAI,
+              children: aiBusy ? "Analysing\u2026" : "\u{1F9E0} Run AI analysis"
+            }
+          )
+        ] }),
+        !hasApiKey() && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "notice notice--warn mt-12", children: [
+          "Add an OpenAI key in ",
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Link, { to: "/settings", children: "Settings" }),
+          " to enable the AI step."
+        ] }),
+        aiErr && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "notice notice--warn mt-12", children: aiErr }),
+        aiText && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "notice notice--success mt-12", style: { whiteSpace: "pre-wrap" }, children: aiText })
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { className: "section__title mt-32", children: "What this pipeline does & why it matters" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "grid", children: PIPELINE_STEPS.map((s) => /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "card", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: s.label }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: s.desc })
+    ] }, s.id)) }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "notice mt-24", children: [
+      "\u{1F512} ",
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("b", { children: "Privacy:" }),
+      ' classical CV runs entirely in your browser \u2014 your image never leaves your device. Only the explicit "Run AI analysis" button sends data to OpenAI.'
+    ] })
+  ] });
+}
+var PipelineCard = ({ title, img, caption }) => /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "card", style: { display: "block", padding: 14 }, children: [
+  /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { style: { fontSize: 14, margin: "0 0 8px" }, children: title }),
+  /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+    "img",
+    {
+      src: img,
+      alt: title,
+      style: { width: "100%", borderRadius: 10, background: "var(--bg-2)", border: "1px solid var(--border)" }
+    }
+  ),
+  /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { className: "muted mt-8", style: { fontSize: 12 }, children: caption })
 ] });
-var Shot = ({ src, caption }) => /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("figure", { style: { margin: "10px 0 0" }, children: [
-  /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+
+// src/pages/UserGuide.jsx
+var import_jsx_runtime19 = __toESM(require_jsx_runtime(), 1);
+var Step = ({ title, children }) => /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { className: "card mb-12", style: { display: "block" }, children: [
+  /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h3", { style: { margin: 0 }, children: title }),
+  /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { className: "mt-12", children })
+] });
+var Shot = ({ src, caption }) => /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("figure", { style: { margin: "10px 0 0" }, children: [
+  /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
     "img",
     {
       src,
@@ -26498,137 +28470,169 @@ var Shot = ({ src, caption }) => /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(
       }
     }
   ),
-  /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("figcaption", { className: "muted", style: { fontSize: 12, marginTop: 6, textAlign: "center" }, children: caption })
+  /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("figcaption", { className: "muted", style: { fontSize: 12, marginTop: 6, textAlign: "center" }, children: caption })
 ] });
 function UserGuide() {
-  return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("section", { className: "container section", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h2", { className: "section__title", children: "User guide" }),
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("p", { className: "section__sub", children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("section", { className: "container section", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h2", { className: "section__title", children: "User guide" }),
+    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("p", { className: "section__sub", children: [
       "End-to-end walkthrough of every feature, for both student and faculty roles. All screenshots are real captures from this build, located in",
       " ",
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "kbd", children: "/screenshots" }),
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { className: "kbd", children: "/screenshots" }),
       "."
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "grid mb-24", style: { gridTemplateColumns: "1fr" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Step, { title: "1 \xB7 Open the app & install (PWA)", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("p", { className: "muted", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { className: "grid mb-24", style: { gridTemplateColumns: "1fr" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Step, { title: "1 \xB7 Open the app & install (PWA)", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("p", { className: "muted", children: [
           "Open the deployed URL in Chrome on Android or Edge/Chrome on desktop. Tap the",
-          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "kbd", children: " Install " }),
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { className: "kbd", children: " Install " }),
           " prompt in the address bar to add the app to your home screen."
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Shot, { src: "./screenshots/landing.png", caption: "Landing page \u2014 the launch point for install" })
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Shot, { src: "./screenshots/landing.png", caption: "Landing page \u2014 the launch point for install" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Step, { title: "2 \xB7 Sign in or register", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("p", { className: "muted", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Step, { title: "2 \xB7 Sign in or register", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("p", { className: "muted", children: [
           "On the ",
-          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Link, { to: "/login", children: "Sign in" }),
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Link, { to: "/login", children: "Sign in" }),
           " page, choose ",
-          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("b", { children: "Student" }),
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("b", { children: "Student" }),
           " or ",
-          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("b", { children: "Faculty" }),
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("b", { children: "Faculty" }),
           ". New users click ",
-          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("b", { children: "Create an account" }),
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("b", { children: "Create an account" }),
           " and fill name + email + password. Credentials are stored locally for this demo."
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Shot, { src: "./screenshots/login.png", caption: "Login screen with role tabs (Student / Faculty)" })
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Shot, { src: "./screenshots/login.png", caption: "Login screen with role tabs (Student / Faculty)" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Step, { title: "3 \xB7 Student \u2014 read a topic", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("p", { className: "muted", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Step, { title: "3 \xB7 Student \u2014 read a topic", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("p", { className: "muted", children: [
           "From the dashboard, open ",
-          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Link, { to: "/reading", children: "Reading" }),
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Link, { to: "/reading", children: "Reading" }),
           ". Pick a topic from the left list, highlight key passages, and use the bookmark / notes panel to keep your study notes per topic."
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Shot, { src: "./screenshots/reading.png", caption: "Reading view \u2014 left TOC, full content, bookmark + notes" })
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Shot, { src: "./screenshots/reading.png", caption: "Reading view \u2014 left TOC, full content, bookmark + notes" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Step, { title: "4 \xB7 Student \u2014 explore 3D and AR", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("p", { className: "muted", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Step, { title: "4 \xB7 Student \u2014 explore 3D and AR", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("p", { className: "muted", children: [
           "Open ",
-          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Link, { to: "/ar", children: "AR" }),
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Link, { to: "/ar", children: "AR" }),
           ", pick a model, then rotate / zoom with your mouse or finger. On a supported Android device, tap ",
-          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("b", { children: "View in your space" }),
-          " to project the model into your environment."
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("b", { children: "View in your space" }),
+          " to project the model into your environment. Switch to ",
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("b", { children: "Compare" }),
+          " mode to view normal anatomy side-by-side with the pathology variant."
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Shot, { src: "./screenshots/ar.png", caption: "3D viewer with model selector and AR launcher" })
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Shot, { src: "./screenshots/ar.png", caption: "3D viewer with model selector and AR launcher" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Step, { title: "5 \xB7 Student \u2014 take a quiz", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("p", { className: "muted", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Step, { title: "4b \xB7 Computer-vision image lab", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("p", { className: "muted", children: [
+          "The ",
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Link, { to: "/cv", children: "CV Lab" }),
+          " is the assignment-critical Computer Vision module. Upload an OPG, periapical, intra-oral photograph or histology slide and the app runs a client-side pipeline: grayscale \u2192 histogram \u2192 Sobel edges \u2192 Otsu binarisation. A manual threshold slider lets you sweep through values, and the optional",
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("b", { children: " Run AI analysis" }),
+          " button sends the image to GPT-4o-mini for a structured educational interpretation (only with your own OpenAI key)."
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Shot, { src: "./screenshots/cv.png", caption: "CV Lab \u2014 pipeline output (grayscale / histogram / Sobel / Otsu) and AI panel" })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Step, { title: "5 \xB7 Student \u2014 take a quiz", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("p", { className: "muted", children: [
           "Go to ",
-          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Link, { to: "/quiz", children: "Quiz" }),
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Link, { to: "/quiz", children: "Quiz" }),
           ". Pick a topic-specific quiz or the sample (mixed) quiz. Choose one answer per question and click ",
-          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("b", { children: "Submit" }),
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("b", { children: "Submit" }),
           " on the last question to see your score and a question-by-question review with explanations."
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Shot, { src: "./screenshots/quiz.png", caption: "Quiz question with progress bar and four options" })
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Shot, { src: "./screenshots/quiz.png", caption: "Quiz question with progress bar and four options" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Step, { title: "6 \xB7 Student \u2014 prompting drill", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("p", { className: "muted", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Step, { title: "6 \xB7 Student \u2014 prompting drill", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("p", { className: "muted", children: [
           "On ",
-          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Link, { to: "/prompting", children: "Prompting" }),
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Link, { to: "/prompting", children: "Prompting" }),
           ", type your differential for each clinical vignette, then reveal the model answer. A heuristic 'overlap' score nudges you to include the key terms."
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Shot, { src: "./screenshots/prompting.png", caption: "Prompting drill \u2014 clinical vignette, answer box, reveal" })
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Shot, { src: "./screenshots/prompting.png", caption: "Prompting drill \u2014 clinical vignette, answer box, reveal" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Step, { title: "7 \xB7 Student \u2014 track results", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("p", { className: "muted", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Link, { to: "/results", children: "My Results" }),
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Step, { title: "7 \xB7 Student \u2014 track results", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("p", { className: "muted", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Link, { to: "/results", children: "My Results" }),
           " shows your average, best score, per-quiz performance bars and full attempt history."
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Shot, { src: "./screenshots/results.png", caption: "My results \u2014 best/average score, per-quiz bars, attempt history" })
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Shot, { src: "./screenshots/results.png", caption: "My results \u2014 best/average score, per-quiz bars, attempt history" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Step, { title: "8 \xB7 Faculty \u2014 upload a PDF and generate a quiz", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("p", { className: "muted", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Step, { title: "8 \xB7 Faculty \u2014 upload a PDF and generate a quiz", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("p", { className: "muted", children: [
           "From the faculty dashboard, open ",
-          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Link, { to: "/upload", children: "Upload & Generate" }),
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Link, { to: "/upload", children: "Upload & Generate" }),
           ". Drop a PDF chapter; the app extracts text in the browser and proposes 8\u201310 cloze-style MCQs. Edit the title and click ",
-          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("b", { children: "Save & publish" }),
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("b", { children: "Save & publish" }),
           " to make it available to students."
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Shot, { src: "./screenshots/faculty-upload.png", caption: "Faculty upload \u2014 drag-and-drop a PDF, get a generated draft quiz" })
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Shot, { src: "./screenshots/faculty-upload.png", caption: "Faculty upload \u2014 drag-and-drop a PDF, get a generated draft quiz" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Step, { title: "9 \xB7 Faculty \u2014 read performance reports", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("p", { className: "muted", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Link, { to: "/reports", children: "Reports" }),
-          " aggregates every quiz attempt: total attempts, unique students, class average, pass rate, average per quiz, and a filter by individual student."
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Step, { title: "9 \xB7 Faculty \u2014 read performance reports", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("p", { className: "muted", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Link, { to: "/reports", children: "Reports" }),
+          " aggregates every quiz attempt: total attempts, unique students, class average, pass rate, average per quiz, a filter by individual student, and a one-click",
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("b", { children: " CSV export" }),
+          " of the full table."
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Shot, { src: "./screenshots/faculty-reports.png", caption: "Faculty reports \u2014 class average, pass rate, per-quiz bars, all attempts" })
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Shot, { src: "./screenshots/faculty-reports.png", caption: "Faculty reports \u2014 class average, pass rate, per-quiz bars, all attempts" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Step, { title: "10 \xB7 Chatbot \u2014 get help any time", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { className: "muted", children: 'Click the green chat bubble (bottom-right) on any screen. Ask things like "what is a dentigerous cyst?" or "how do I use AR?". The assistant searches the knowledge base and links you to the relevant module.' }),
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Shot, { src: "./screenshots/student-home.png", caption: "The chat bubble (bottom-right) is available on every screen" })
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Step, { title: "9b \xB7 Faculty \u2014 blog manager (articles + PDFs)", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("p", { className: "muted", children: [
+          "The ",
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Link, { to: "/faculty/blog", children: "Blog manager" }),
+          " lets you publish supplementary articles for your students. Each post can carry a title, body (with light Markdown), tags, a cover image and an optional PDF attachment that students can read inline or download. Posts appear in the student-facing ",
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Link, { to: "/blog", children: "Blog" }),
+          " page and remain editable here."
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Shot, { src: "./screenshots/faculty-blog.png", caption: "Faculty blog manager \u2014 compose form and list of published posts" })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Step, { title: "9c \xB7 Student \u2014 read articles & attached PDFs", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("p", { className: "muted", children: [
+          "From the student dashboard or top navigation, open ",
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Link, { to: "/blog", children: "Blog" }),
+          ". Filter by tag, search the body, and click a card to read the article. Attached PDFs are embedded inline and can also be downloaded."
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Shot, { src: "./screenshots/blog.png", caption: "Student-facing blog \u2014 searchable list of faculty-published articles" })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Step, { title: "10 \xB7 Chatbot \u2014 get help any time", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("p", { className: "muted", children: 'Click the green chat bubble (bottom-right) on any screen. Ask things like "what is a dentigerous cyst?" or "how do I use AR?". The assistant searches the knowledge base and links you to the relevant module.' }),
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Shot, { src: "./screenshots/student-home.png", caption: "The chat bubble (bottom-right) is available on every screen" })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h3", { className: "section__title", children: "Re-capturing screenshots" }),
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("ol", { className: "steps", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("li", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h3", { className: "section__title", children: "Re-capturing screenshots" }),
+    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("ol", { className: "steps", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
         "Start the server: ",
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "kbd", children: "npm start" })
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { className: "kbd", children: "npm start" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("li", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
         "From the project root: ",
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "kbd", children: "node screenshot.mjs" })
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { className: "kbd", children: "node screenshot.mjs" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("li", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
         "All 12 screens are written into the ",
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "kbd", children: "screenshots/" }),
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { className: "kbd", children: "screenshots/" }),
         " folder."
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("li", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
         "To regenerate the research report after new screenshots: ",
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "kbd", children: "python3 report/build_report.py" })
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { className: "kbd", children: "python3 report/build_report.py" })
       ] })
     ] })
   ] });
 }
 
 // src/pages/Settings.jsx
-var import_react10 = __toESM(require_react(), 1);
-var import_jsx_runtime16 = __toESM(require_jsx_runtime(), 1);
+var import_react15 = __toESM(require_react(), 1);
+var import_jsx_runtime20 = __toESM(require_jsx_runtime(), 1);
 function Settings() {
-  const [key, setKey] = (0, import_react10.useState)(getApiKey());
-  const [saved, setSaved] = (0, import_react10.useState)(false);
-  const [show, setShow] = (0, import_react10.useState)(false);
-  const [testing, setTesting] = (0, import_react10.useState)(false);
-  const [testResult, setTestResult] = (0, import_react10.useState)(null);
+  const [key, setKey] = (0, import_react15.useState)(getApiKey());
+  const [saved, setSaved] = (0, import_react15.useState)(false);
+  const [show, setShow] = (0, import_react15.useState)(false);
+  const [testing, setTesting] = (0, import_react15.useState)(false);
+  const [testResult, setTestResult] = (0, import_react15.useState)(null);
   const save = (e) => {
     e?.preventDefault();
     if (!key.trim()) return;
@@ -26658,27 +28662,27 @@ function Settings() {
     }
   };
   const masked = (k) => k && k.length > 12 ? `${k.slice(0, 7)}\u2026${k.slice(-4)}` : k;
-  return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("section", { className: "container section", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h2", { className: "section__title", children: "Settings" }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { className: "section__sub", children: "Configure optional integrations. Keys are stored only in your browser's localStorage and are never transmitted except directly to the relevant provider." }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "card mb-16", style: { display: "block" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "row", style: { gap: 10 }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { className: "card__icon", children: "\u{1F916}" }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h3", { style: { margin: 0 }, children: "OpenAI integration" }),
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("p", { className: "muted", style: { margin: 0, fontSize: 13 }, children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("section", { className: "container section", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h2", { className: "section__title", children: "Settings" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { className: "section__sub", children: "Configure optional integrations. Keys are stored only in your browser's localStorage and are never transmitted except directly to the relevant provider." }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { className: "card mb-16", style: { display: "block" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { className: "row", style: { gap: 10 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { className: "card__icon", children: "\u{1F916}" }),
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { style: { margin: 0 }, children: "OpenAI integration" }),
+          /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("p", { className: "muted", style: { margin: 0, fontSize: 13 }, children: [
             "Powers the chatbot and the PDF\u2192quiz generator with",
             " ",
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { className: "kbd", children: "gpt-4o-mini" }),
+            /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { className: "kbd", children: "gpt-4o-mini" }),
             ". Without a key, the app uses its built-in offline heuristics."
           ] })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("form", { className: "form mt-16", onSubmit: save, style: { maxWidth: 560 }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "field", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("label", { children: "API key" }),
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "row", style: { gap: 8 }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("form", { className: "form mt-16", onSubmit: save, style: { maxWidth: 560 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { className: "field", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("label", { children: "API key" }),
+          /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { className: "row", style: { gap: 8 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
               "input",
               {
                 type: show ? "text" : "password",
@@ -26690,41 +28694,41 @@ function Settings() {
                 style: { flex: 1 }
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "btn btn--sm", onClick: () => setShow((s) => !s), children: show ? "Hide" : "Show" })
+            /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("button", { type: "button", className: "btn btn--sm", onClick: () => setShow((s) => !s), children: show ? "Hide" : "Show" })
           ] }),
-          getApiKey() && !key && /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "muted", style: { fontSize: 12 }, children: [
+          getApiKey() && !key && /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { className: "muted", style: { fontSize: 12 }, children: [
             "Saved key: ",
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { className: "kbd", children: masked(getApiKey()) })
+            /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { className: "kbd", children: masked(getApiKey()) })
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "row", style: { gap: 8, flexWrap: "wrap" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { className: "btn btn--primary", type: "submit", disabled: !key.trim(), children: saved ? "Saved \u2713" : "Save key" }),
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { className: "btn", type: "button", onClick: test, disabled: !getApiKey() || testing, children: testing ? "Testing\u2026" : "Test connection" }),
-          getApiKey() && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { className: "btn btn--danger", type: "button", onClick: remove, children: "Remove key" })
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { className: "row", style: { gap: 8, flexWrap: "wrap" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("button", { className: "btn btn--primary", type: "submit", disabled: !key.trim(), children: saved ? "Saved \u2713" : "Save key" }),
+          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("button", { className: "btn", type: "button", onClick: test, disabled: !getApiKey() || testing, children: testing ? "Testing\u2026" : "Test connection" }),
+          getApiKey() && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("button", { className: "btn btn--danger", type: "button", onClick: remove, children: "Remove key" })
         ] })
       ] }),
-      testResult && /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "notice mt-16 " + (testResult.ok ? "" : "notice--warn"), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("b", { children: testResult.ok ? "Connection OK." : "Test failed." }),
+      testResult && /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { className: "notice mt-16 " + (testResult.ok ? "" : "notice--warn"), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("b", { children: testResult.ok ? "Connection OK." : "Test failed." }),
         " ",
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { style: { whiteSpace: "pre-wrap" }, children: testResult.msg })
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { style: { whiteSpace: "pre-wrap" }, children: testResult.msg })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "notice notice--warn mt-16", style: { fontSize: 13 }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("b", { children: "Security:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { className: "notice notice--warn mt-16", style: { fontSize: 13 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("b", { children: "Security:" }),
         " API keys in browser storage are visible to any script running on this origin. This is fine for a single-user demo PWA but is",
         " ",
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("i", { children: "not production-grade" }),
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("i", { children: "not production-grade" }),
         ". For a real deployment, put the key behind a server-side proxy and authenticate users."
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "card", style: { display: "block" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h3", { style: { marginTop: 0 }, children: "Where the key is used" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("ul", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("b", { children: "Chatbot" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { className: "card", style: { display: "block" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { style: { marginTop: 0 }, children: "Where the key is used" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("b", { children: "Chatbot" }),
           " \u2014 answers any free-form question; falls back to the rule-based assistant if no key."
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("b", { children: "Faculty PDF\u2192Quiz" }),
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("b", { children: "Faculty PDF\u2192Quiz" }),
           " \u2014 produces higher-quality MCQs from uploaded text; the offline heuristic remains available as a fallback."
         ] })
       ] })
@@ -26733,8 +28737,8 @@ function Settings() {
 }
 
 // src/App.jsx
-var import_jsx_runtime17 = __toESM(require_jsx_runtime(), 1);
-var requireAuth = (user, allowedRoles, path) => {
+var import_jsx_runtime21 = __toESM(require_jsx_runtime(), 1);
+var requireAuth = (user, allowedRoles) => {
   if (!user) {
     navigate("/login");
     return false;
@@ -26747,81 +28751,102 @@ var requireAuth = (user, allowedRoles, path) => {
 };
 function App() {
   const { path } = useRoute();
-  const [user, setUser2] = (0, import_react11.useState)(getUser());
-  (0, import_react11.useEffect)(() => {
+  const [user, setUser2] = (0, import_react16.useState)(getUser());
+  (0, import_react16.useEffect)(() => {
     if (!window.location.hash) window.location.hash = "/";
   }, []);
   let page = null;
   switch (path) {
     case "/":
-      page = user ? user.role === "faculty" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FacultyHome, { user }) : /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(StudentHome, { user }) : /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Landing, {});
+      page = user ? user.role === "faculty" ? /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(FacultyHome, { user }) : /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(StudentHome, { user }) : /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Landing, {});
       break;
     case "/login":
-      page = user ? user.role === "faculty" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FacultyHome, { user }) : /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(StudentHome, { user }) : /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Login, { onLogin: setUser2 });
+      page = user ? user.role === "faculty" ? /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(FacultyHome, { user }) : /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(StudentHome, { user }) : /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Login, { onLogin: setUser2 });
       break;
     case "/student":
-      if (requireAuth(user, ["student"])) page = /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(StudentHome, { user });
+      if (requireAuth(user, ["student"])) page = /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(StudentHome, { user });
       break;
     case "/faculty":
-      if (requireAuth(user, ["faculty"])) page = /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FacultyHome, { user });
-      break;
-    case "/reading":
-      if (requireAuth(user, ["student", "faculty"])) page = /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Reading, { user });
-      break;
-    case "/ar":
-      page = /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ARView, {});
-      break;
-    case "/quiz":
-      if (requireAuth(user, ["student", "faculty"])) page = /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Quiz, { user });
-      break;
-    case "/results":
-      if (requireAuth(user, ["student", "faculty"])) page = /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Results, { user });
-      break;
-    case "/prompting":
-      if (requireAuth(user, ["student", "faculty"])) page = /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Prompting, {});
+      if (requireAuth(user, ["faculty"])) page = /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(FacultyHome, { user });
       break;
     case "/upload":
-      if (requireAuth(user, ["faculty"])) page = /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FacultyUpload, { user });
+      if (requireAuth(user, ["faculty"])) page = /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(FacultyUpload, { user });
       break;
     case "/reports":
-      if (requireAuth(user, ["faculty"])) page = /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FacultyReports, {});
+      if (requireAuth(user, ["faculty"])) page = /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(FacultyReports, {});
       break;
-    case "/guide":
-      page = /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(UserGuide, {});
+    case "/faculty/blog":
+      if (requireAuth(user, ["faculty"])) page = /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(FacultyBlog, { user });
+      break;
+    case "/reading":
+      if (requireAuth(user, ["student", "faculty"])) page = /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Reading, { user });
+      break;
+    case "/quiz":
+      if (requireAuth(user, ["student", "faculty"])) page = /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Quiz, { user });
+      break;
+    case "/results":
+      if (requireAuth(user, ["student", "faculty"])) page = /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Results, { user });
+      break;
+    case "/prompting":
+      if (requireAuth(user, ["student", "faculty"])) page = /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Prompting, {});
+      break;
+    case "/blog":
+      page = /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Blog, { user });
+      break;
+    case "/cv":
+      page = /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(CVAnalysis, {});
       break;
     case "/settings":
-      if (requireAuth(user, ["student", "faculty"])) page = /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Settings, {});
+      if (requireAuth(user, ["student", "faculty"])) page = /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Settings, {});
+      break;
+    case "/ar":
+      page = /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(ARView, {});
+      break;
+    case "/guide":
+      page = /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(UserGuide, {});
       break;
     default:
-      page = /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { className: "container section center", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { className: "section__title", children: "404 \xB7 Page not found" }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { className: "muted", children: [
+      page = /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("section", { className: "container section center", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { className: "section__title", children: "404 \xB7 Page not found" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("p", { className: "muted", children: [
           "The requested page ",
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "kbd", children: path }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("span", { className: "kbd", children: path }),
           " does not exist."
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { className: "btn btn--primary mt-12", onClick: () => navigate("/"), children: "Back to home" })
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("button", { className: "btn btn--primary mt-12", onClick: () => navigate("/"), children: "Back to home" })
       ] });
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "app", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Header, { user, onLogout: () => setUser2(null) }),
+  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { className: "app", "data-role": user?.role || "guest", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Header, { user, onLogout: () => setUser2(null) }),
     page,
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("footer", { className: "footer", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "container footer__inner", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
-        "\xA9 ",
-        (/* @__PURE__ */ new Date()).getFullYear(),
-        " OralPath Learn \u2014 Computer Vision Assignment 3"
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("footer", { className: "footer", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { className: "container footer__inner", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { children: [
+          "\xA9 ",
+          (/* @__PURE__ */ new Date()).getFullYear(),
+          " ",
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("b", { children: "OralPath Learn" }),
+          " \u2014 Computer Vision Assignment 3 \xB7 BSCS-8 \xB7 Bahria University Lahore"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { className: "footer__links", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("a", { className: "u-link", href: "#/guide", children: "User guide" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("a", { className: "u-link", href: "#/ar", children: "AR demo" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("a", { className: "u-link", href: "#/cv", children: "CV demo" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("a", { className: "u-link", href: "#/blog", children: "Blog" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("a", { className: "u-link", href: "https://3dprint.nih.gov/", target: "_blank", rel: "noreferrer", children: "3D source (NIH)" })
+        ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "muted", children: "Built with React \xB7 model-viewer \xB7 pdf.js" })
-    ] }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Chatbot, {})
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("div", { className: "container muted center mt-8", style: { fontSize: 12 }, children: "Built with React 18 \xB7 model-viewer \xB7 pdf.js \xB7 OpenAI gpt-4o-mini (chat + vision) \xB7 canvas-based CV pipeline \xB7 100% client-side \xB7 installable PWA" })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Chatbot, {})
   ] });
 }
 
 // src/main.jsx
-var import_jsx_runtime18 = __toESM(require_jsx_runtime(), 1);
+var import_jsx_runtime22 = __toESM(require_jsx_runtime(), 1);
+applyTheme(getTheme());
 var root = (0, import_client.createRoot)(document.getElementById("root"));
-root.render(/* @__PURE__ */ (0, import_jsx_runtime18.jsx)(App, {}));
+root.render(/* @__PURE__ */ (0, import_jsx_runtime22.jsx)(App, {}));
 /*! Bundled license information:
 
 react/cjs/react.development.js:

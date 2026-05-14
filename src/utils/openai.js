@@ -17,6 +17,7 @@ import { storage } from "./storage.js";
 
 const KEY = "openai_key";
 const MODEL = "gpt-4o-mini";
+const VISION_MODEL = "gpt-4o-mini"; // multimodal-capable; same auth + key
 const ENDPOINT = "https://api.openai.com/v1/chat/completions";
 
 export const getApiKey = () => storage.get(KEY, "");
@@ -158,6 +159,77 @@ ${trimmed}
       explain: typeof q.explain === "string" ? q.explain : "",
       qid: `ai_${i}`
     }));
+};
+
+// ---------- Vision: describe a dental / pathology image ----------
+
+const VISION_SYSTEM = `You are a dental-radiology teaching assistant. The user will
+share an image — typically an OPG / panoramic radiograph, a periapical film, a
+clinical intra-oral photograph, or a histopathology slide.
+
+Respond with a SHORT structured analysis (max ~180 words), strictly for student
+self-study and never as a clinical diagnosis. Use this exact structure:
+
+**Image type & quality:** one line.
+**Notable observations:** 3–5 bullets with what is visible (anatomical landmarks,
+radiolucent/radiopaque regions, asymmetry, expansion, etc.).
+**Educational differentials:** 2–4 plausible teaching differentials with one-line rationale each.
+**Suggested next steps for learning:** one line — which Reading module(s) to revisit
+(e.g., Dentigerous cyst, OKC, Ameloblastoma).
+
+End with: "⚠️ For education only — not a clinical diagnosis."`;
+
+export const analyseImageWithOpenAI = async (dataUrlOrBase64, { signal, prompt } = {}) => {
+  const apiKey = getApiKey();
+  if (!apiKey) throw new OpenAIError("No API key configured.", { type: "no_key" });
+
+  // Accept a raw data: URL ("data:image/jpeg;base64,...") or just the base64 body.
+  const url = dataUrlOrBase64.startsWith("data:")
+    ? dataUrlOrBase64
+    : `data:image/jpeg;base64,${dataUrlOrBase64}`;
+
+  const body = {
+    model: VISION_MODEL,
+    temperature: 0.25,
+    max_tokens: 600,
+    messages: [
+      { role: "system", content: VISION_SYSTEM },
+      {
+        role: "user",
+        content: [
+          { type: "text", text: prompt || "Analyse this dental image for educational purposes." },
+          { type: "image_url", image_url: { url, detail: "low" } }
+        ]
+      }
+    ]
+  };
+
+  let res;
+  try {
+    res = await fetch(ENDPOINT, {
+      method: "POST",
+      signal,
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
+      body: JSON.stringify(body)
+    });
+  } catch (e) {
+    if (e?.name === "AbortError") throw new OpenAIError("Request cancelled.", { type: "abort" });
+    throw new OpenAIError("Network error contacting OpenAI.", { type: "network" });
+  }
+
+  if (!res.ok) {
+    let detail = "";
+    try { detail = (await res.json())?.error?.message || ""; } catch {}
+    throw new OpenAIError(detail || `OpenAI returned HTTP ${res.status}`, {
+      status: res.status,
+      type: res.status === 401 ? "auth" : res.status === 429 ? "rate_limit" : "http"
+    });
+  }
+
+  const data = await res.json();
+  const content = data?.choices?.[0]?.message?.content;
+  if (!content) throw new OpenAIError("OpenAI returned an empty response.", { type: "empty" });
+  return content;
 };
 
 export { OpenAIError };

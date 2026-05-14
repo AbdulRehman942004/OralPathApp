@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="55%" r="65%">
+      <stop offset="0%" stop-color="#202020"/>
+      <stop offset="60%" stop-color="#0c0c0c"/>
+      <stop offset="100%" stop-color="#000"/>
+    </radialGradient>
+    <linearGradient id="bone" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#cfcfcf"/>
+      <stop offset="100%" stop-color="#7a7a7a"/>
+    </linearGradient>
+    <linearGradient id="tooth" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#fafafa"/>
+      <stop offset="100%" stop-color="#b8b8b8"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="500" fill="url(#bg)"/>
+  <path d="M 80 260 Q 450 90 820 260 Q 760 380 450 410 Q 140 380 80 260 Z"
+        fill="url(#bone)" opacity="0.85"/>
+  <path d="M 130 280 Q 450 140 770 280 Q 720 360 450 380 Q 180 360 130 280 Z"
+        fill="#0a0a0a" opacity="0.55"/>
+  <!-- mandibular canal -->
+  <path d="M 160 320 Q 450 260 740 320" fill="none" stroke="#202020" stroke-width="4" opacity="0.7"/>
+
+  <!-- tooth crowns (upper) -->
+  <g fill="url(#tooth)" stroke="#666" stroke-width="1">
+    <ellipse cx="200" cy="220" rx="22" ry="32"/>
+    <ellipse cx="250" cy="208" rx="22" ry="32"/>
+    <ellipse cx="300" cy="200" rx="22" ry="32"/>
+    <ellipse cx="350" cy="194" rx="22" ry="32"/>
+    <ellipse cx="400" cy="190" rx="22" ry="32"/>
+    <ellipse cx="450" cy="186" rx="22" ry="32"/>
+    <ellipse cx="500" cy="190" rx="22" ry="32"/>
+    <ellipse cx="550" cy="194" rx="22" ry="32"/>
+    <ellipse cx="600" cy="200" rx="22" ry="32"/>
+    <ellipse cx="650" cy="208" rx="22" ry="32"/>
+    <ellipse cx="700" cy="220" rx="22" ry="32"/>
+  </g>
+  <!-- tooth roots (upper) -->
+  <g fill="#888">
+    <path d="M 180 250 Q 200 290 220 250 Z"/>
+    <path d="M 230 244 Q 250 286 270 244 Z"/>
+    <path d="M 280 240 Q 300 282 320 240 Z"/>
+    <path d="M 330 234 Q 350 280 370 234 Z"/>
+    <path d="M 380 230 Q 400 276 420 230 Z"/>
+    <path d="M 430 226 Q 450 274 470 226 Z"/>
+    <path d="M 480 230 Q 500 276 520 230 Z"/>
+    <path d="M 530 234 Q 550 280 570 234 Z"/>
+    <path d="M 580 240 Q 600 282 620 240 Z"/>
+    <path d="M 630 244 Q 650 286 670 244 Z"/>
+    <path d="M 680 250 Q 700 290 720 250 Z"/>
+  </g>
+
+  <!-- "lesion" radiolucency near right third molar -->
+  <ellipse cx="740" cy="270" rx="44" ry="28" fill="#0a0a0a" opacity="0.85"/>
+  <ellipse cx="740" cy="270" rx="40" ry="24" fill="none" stroke="#cccccc" stroke-width="1.4"/>
+  <!-- impacted third molar within lesion -->
+  <ellipse cx="755" cy="270" rx="14" ry="18" fill="url(#tooth)" stroke="#999"/>
+
+  <!-- noise grain -->
+  <g opacity="0.05">
+    <rect width="900" height="500" fill="url(#bg)"/>
+  </g>
+</svg>

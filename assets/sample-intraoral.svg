@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <defs>
+    <radialGradient id="mouth" cx="50%" cy="55%" r="70%">
+      <stop offset="0%" stop-color="#8a2c2c"/>
+      <stop offset="80%" stop-color="#3a0e0e"/>
+      <stop offset="100%" stop-color="#1c0606"/>
+    </radialGradient>
+    <linearGradient id="tooth2" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#fff8ec"/>
+      <stop offset="100%" stop-color="#d8c7a0"/>
+    </linearGradient>
+    <linearGradient id="gum" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#d36a78"/>
+      <stop offset="100%" stop-color="#8e2b3a"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="#000"/>
+  <ellipse cx="400" cy="250" rx="320" ry="170" fill="url(#mouth)"/>
+  <!-- gumline -->
+  <path d="M 120 220 Q 400 110 680 220 L 680 290 Q 400 200 120 290 Z" fill="url(#gum)"/>
+  <!-- upper teeth -->
+  <g fill="url(#tooth2)" stroke="#9c8a60" stroke-width="1.2">
+    <rect x="150" y="200" width="32" height="56" rx="6"/>
+    <rect x="190" y="190" width="34" height="62" rx="6"/>
+    <rect x="232" y="180" width="36" height="68" rx="6"/>
+    <rect x="276" y="172" width="38" height="74" rx="6"/>
+    <rect x="322" y="166" width="40" height="78" rx="6"/>
+    <rect x="370" y="162" width="40" height="80" rx="6"/>
+    <rect x="418" y="166" width="40" height="78" rx="6"/>
+    <rect x="466" y="172" width="38" height="74" rx="6"/>
+    <rect x="512" y="180" width="36" height="68" rx="6"/>
+    <rect x="556" y="190" width="34" height="62" rx="6"/>
+    <rect x="598" y="200" width="32" height="56" rx="6"/>
+  </g>
+  <!-- a small "lesion" / discoloration on a tooth -->
+  <ellipse cx="338" cy="200" rx="10" ry="14" fill="#7a4a1d" opacity="0.75"/>
+  <ellipse cx="338" cy="200" rx="6"  ry="9"  fill="#3a2008" opacity="0.85"/>
+  <!-- highlights -->
+  <g fill="#ffffff" opacity="0.18">
+    <rect x="156" y="206" width="6" height="40"/>
+    <rect x="196" y="196" width="6" height="46"/>
+    <rect x="238" y="186" width="6" height="50"/>
+    <rect x="282" y="178" width="6" height="56"/>
+    <rect x="328" y="172" width="6" height="60"/>
+    <rect x="376" y="168" width="6" height="60"/>
+    <rect x="424" y="172" width="6" height="58"/>
+    <rect x="472" y="178" width="6" height="56"/>
+    <rect x="518" y="186" width="6" height="50"/>
+    <rect x="562" y="196" width="6" height="46"/>
+    <rect x="604" y="206" width="6" height="40"/>
+  </g>
+</svg>
